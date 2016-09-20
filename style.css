@@ -579,7 +579,7 @@ body {
 }
 
 div {
-  width: 10vw;
-  height: 10vh;
+  width: "10%";
+  height: "20%";
   float: left;
 }
