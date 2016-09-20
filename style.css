@@ -1,561 +1,577 @@
 .class-1 {
-  background: blue;
+  background: white;
 }
 
 .class-2 {
-  background: #0101fe;
+  background: #fdfdfd;
 }
 
 .class-3 {
-  background: #0202fd;
+  background: #fbfbfb;
 }
 
 .class-4 {
-  background: #0303fc;
+  background: #fafafa;
 }
 
 .class-5 {
-  background: #0404fb;
+  background: #f8f8f8;
 }
 
 .class-6 {
-  background: #0505fa;
+  background: #f6f6f6;
 }
 
 .class-7 {
-  background: #0606fa;
+  background: #f4f4f4;
 }
 
 .class-8 {
-  background: #0606f9;
+  background: #f3f3f3;
 }
 
 .class-9 {
-  background: #0707f8;
+  background: #f1f1f1;
 }
 
 .class-10 {
-  background: #0808f7;
+  background: #efefef;
 }
 
 .class-11 {
-  background: #0909f6;
+  background: #ededed;
 }
 
 .class-12 {
-  background: #0a0af5;
+  background: #ebebeb;
 }
 
 .class-13 {
-  background: #0b0bf4;
+  background: #eaeaea;
 }
 
 .class-14 {
-  background: #0c0cf3;
+  background: #e8e8e8;
 }
 
 .class-15 {
-  background: #0d0df2;
+  background: #e6e6e6;
 }
 
 .class-16 {
-  background: #0e0ef1;
+  background: #e4e4e4;
 }
 
 .class-17 {
-  background: #0f0ff0;
+  background: #e2e2e2;
 }
 
 .class-18 {
-  background: #1010ef;
+  background: #e1e1e1;
 }
 
 .class-19 {
-  background: #1111ef;
+  background: #dfdfdf;
 }
 
 .class-20 {
-  background: #1111ee;
+  background: #dddddd;
 }
 
 .class-21 {
-  background: #1212ed;
+  background: #dbdbdb;
 }
 
 .class-22 {
-  background: #1313ec;
+  background: #dadada;
 }
 
 .class-23 {
-  background: #1414eb;
+  background: #d8d8d8;
 }
 
 .class-24 {
-  background: #1515ea;
+  background: #d6d6d6;
 }
 
 .class-25 {
-  background: #1616e9;
+  background: #d4d4d4;
 }
 
 .class-26 {
-  background: #1717e8;
+  background: #d2d2d2;
 }
 
 .class-27 {
-  background: #1818e7;
+  background: #d1d1d1;
 }
 
 .class-28 {
-  background: #1919e6;
+  background: #cfcfcf;
 }
 
 .class-29 {
-  background: #1a1ae5;
+  background: #cdcdcd;
 }
 
 .class-30 {
-  background: #1b1be5;
+  background: #cbcbcb;
 }
 
 .class-31 {
-  background: #1c1ce4;
+  background: #cacaca;
 }
 
 .class-32 {
-  background: #1d1de3;
+  background: #c8c8c8;
 }
 
 .class-33 {
-  background: #1d1de2;
+  background: #c6c6c6;
 }
 
 .class-34 {
-  background: #1e1ee1;
+  background: #c4c4c4;
 }
 
 .class-35 {
-  background: #1f1fe0;
+  background: #c2c2c2;
 }
 
 .class-36 {
-  background: #2020df;
+  background: #c1c1c1;
 }
 
 .class-37 {
-  background: #2121de;
+  background: #bfbfbf;
 }
 
 .class-38 {
-  background: #2222dd;
+  background: #bdbdbd;
 }
 
 .class-39 {
-  background: #2323dc;
+  background: #bbbbbb;
 }
 
 .class-40 {
-  background: #2424db;
+  background: #b9b9b9;
 }
 
 .class-41 {
-  background: #2525da;
+  background: #b8b8b8;
 }
 
 .class-42 {
-  background: #2626da;
+  background: #b6b6b6;
 }
 
 .class-43 {
-  background: #2727d9;
+  background: #b4b4b4;
 }
 
 .class-44 {
-  background: #2828d8;
+  background: #b2b2b2;
 }
 
 .class-45 {
-  background: #2929d7;
+  background: #b1b1b1;
 }
 
 .class-46 {
-  background: #2929d6;
+  background: #afafaf;
 }
 
 .class-47 {
-  background: #2a2ad5;
+  background: #adadad;
 }
 
 .class-48 {
-  background: #2b2bd4;
+  background: #ababab;
 }
 
 .class-49 {
-  background: #2c2cd3;
+  background: darkgray;
 }
 
 .class-50 {
-  background: #2d2dd2;
+  background: #a8a8a8;
 }
 
 .class-51 {
-  background: #2e2ed1;
+  background: #a6a6a6;
 }
 
 .class-52 {
-  background: #2f2fd0;
+  background: #a4a4a4;
 }
 
 .class-53 {
-  background: #3030cf;
+  background: #a2a2a2;
 }
 
 .class-54 {
-  background: #3131cf;
+  background: #a0a0a0;
 }
 
 .class-55 {
-  background: #3232ce;
+  background: #9f9f9f;
 }
 
 .class-56 {
-  background: #3333cd;
+  background: #9d9d9d;
 }
 
 .class-57 {
-  background: #3434cc;
+  background: #9b9b9b;
 }
 
 .class-58 {
-  background: #3434cb;
+  background: #999999;
 }
 
 .class-59 {
-  background: #3535ca;
+  background: #989898;
 }
 
 .class-60 {
-  background: #3636c9;
+  background: #969696;
 }
 
 .class-61 {
-  background: #3737c8;
+  background: #949494;
 }
 
 .class-62 {
-  background: #3838c7;
+  background: #929292;
 }
 
 .class-63 {
-  background: #3939c6;
+  background: #909090;
 }
 
 .class-64 {
-  background: #3a3ac5;
+  background: #8f8f8f;
 }
 
 .class-65 {
-  background: #3b3bc5;
+  background: #8d8d8d;
 }
 
 .class-66 {
-  background: #3c3cc4;
+  background: #8b8b8b;
 }
 
 .class-67 {
-  background: #3d3dc3;
+  background: #898989;
 }
 
 .class-68 {
-  background: #3e3ec2;
+  background: #888888;
 }
 
 .class-69 {
-  background: #3f3fc1;
+  background: #868686;
 }
 
 .class-70 {
-  background: #4040c0;
+  background: #848484;
 }
 
 .class-71 {
-  background: #4040bf;
+  background: #828282;
 }
 
 .class-72 {
-  background: #4141be;
+  background: gray;
 }
 
 .class-73 {
-  background: #4242bd;
+  background: #7f7f7f;
 }
 
 .class-74 {
-  background: #4343bc;
+  background: #7d7d7d;
 }
 
 .class-75 {
-  background: #4444bb;
+  background: #7b7b7b;
 }
 
 .class-76 {
-  background: #4545ba;
+  background: #797979;
 }
 
 .class-77 {
-  background: #4646ba;
+  background: #777777;
 }
 
 .class-78 {
-  background: #4747b9;
+  background: #767676;
 }
 
 .class-79 {
-  background: #4848b8;
+  background: #747474;
 }
 
 .class-80 {
-  background: #4949b7;
+  background: #727272;
 }
 
 .class-81 {
-  background: #4a4ab6;
+  background: #707070;
 }
 
 .class-82 {
-  background: #4b4bb5;
+  background: #6f6f6f;
 }
 
 .class-83 {
-  background: #4c4cb4;
+  background: #6d6d6d;
 }
 
 .class-84 {
-  background: #4c4cb3;
+  background: #6b6b6b;
 }
 
 .class-85 {
-  background: #4d4db2;
+  background: dimgray;
 }
 
 .class-86 {
-  background: #4e4eb1;
+  background: #676767;
 }
 
 .class-87 {
-  background: #4f4fb0;
+  background: #666666;
 }
 
 .class-88 {
-  background: #5050b0;
+  background: #646464;
 }
 
 .class-89 {
-  background: #5151af;
+  background: #626262;
 }
 
 .class-90 {
-  background: #5252ae;
+  background: #606060;
 }
 
 .class-91 {
-  background: #5353ad;
+  background: #5f5f5f;
 }
 
 .class-92 {
-  background: #5454ac;
+  background: #5d5d5d;
 }
 
 .class-93 {
-  background: #5555ab;
+  background: #5b5b5b;
 }
 
 .class-94 {
-  background: #5656aa;
+  background: #595959;
 }
 
 .class-95 {
-  background: #5757a9;
+  background: #575757;
 }
 
 .class-96 {
-  background: #5757a8;
+  background: #565656;
 }
 
 .class-97 {
-  background: #5858a7;
+  background: #545454;
 }
 
 .class-98 {
-  background: #5959a6;
+  background: #525252;
 }
 
 .class-99 {
-  background: #5a5aa5;
+  background: #505050;
 }
 
 .class-100 {
-  background: #5b5ba5;
+  background: #4e4e4e;
 }
 
 .class-101 {
-  background: #5c5ca4;
+  background: #4d4d4d;
 }
 
 .class-102 {
-  background: #5d5da3;
+  background: #4b4b4b;
 }
 
 .class-103 {
-  background: #5e5ea2;
+  background: #494949;
 }
 
 .class-104 {
-  background: #5f5fa1;
+  background: #474747;
 }
 
 .class-105 {
-  background: #6060a0;
+  background: #464646;
 }
 
 .class-106 {
-  background: #61619f;
+  background: #444444;
 }
 
 .class-107 {
-  background: #62629e;
+  background: #424242;
 }
 
 .class-108 {
-  background: #63639d;
+  background: #404040;
 }
 
 .class-109 {
-  background: #63639c;
+  background: #3e3e3e;
 }
 
 .class-110 {
-  background: #64649b;
+  background: #3d3d3d;
 }
 
 .class-111 {
-  background: #65659a;
+  background: #3b3b3b;
 }
 
 .class-112 {
-  background: #66669a;
+  background: #393939;
 }
 
 .class-113 {
-  background: #676799;
+  background: #373737;
 }
 
 .class-114 {
-  background: #686898;
+  background: #353535;
 }
 
 .class-115 {
-  background: #696997;
+  background: #343434;
 }
 
 .class-116 {
-  background: #6a6a96;
+  background: #323232;
 }
 
 .class-117 {
-  background: #6b6b95;
+  background: #303030;
 }
 
 .class-118 {
-  background: #6c6c94;
+  background: #2e2e2e;
 }
 
 .class-119 {
-  background: #6d6d93;
+  background: #2d2d2d;
 }
 
 .class-120 {
-  background: #6e6e92;
+  background: #2b2b2b;
 }
 
 .class-121 {
-  background: #6f6f91;
+  background: #292929;
 }
 
 .class-122 {
-  background: #6f6f90;
+  background: #272727;
 }
 
 .class-123 {
-  background: #707090;
+  background: #252525;
 }
 
 .class-124 {
-  background: #71718f;
+  background: #242424;
 }
 
 .class-125 {
-  background: #72728e;
+  background: #222222;
 }
 
 .class-126 {
-  background: #73738d;
+  background: #202020;
 }
 
 .class-127 {
-  background: #74748c;
+  background: #1e1e1e;
 }
 
 .class-128 {
-  background: #75758b;
+  background: #1d1d1d;
 }
 
 .class-129 {
-  background: #76768a;
+  background: #1b1b1b;
 }
 
 .class-130 {
-  background: #777789;
+  background: #191919;
 }
 
 .class-131 {
-  background: #787888;
+  background: #171717;
 }
 
 .class-132 {
-  background: #797987;
+  background: #151515;
 }
 
 .class-133 {
-  background: #7a7a86;
+  background: #141414;
 }
 
 .class-134 {
-  background: #7a7a85;
+  background: #121212;
 }
 
 .class-135 {
-  background: #7b7b85;
+  background: #101010;
 }
 
 .class-136 {
-  background: #7c7c84;
+  background: #0e0e0e;
 }
 
 .class-137 {
-  background: #7d7d83;
+  background: #0c0c0c;
 }
 
 .class-138 {
-  background: #7e7e82;
+  background: #0b0b0b;
 }
 
 .class-139 {
-  background: #7f7f81;
+  background: #090909;
 }
 
 .class-140 {
-  background: gray;
+  background: #070707;
+}
+
+.class-141 {
+  background: #050505;
+}
+
+.class-142 {
+  background: #040404;
+}
+
+.class-143 {
+  background: #020202;
+}
+
+.class-144 {
+  background: black;
 }
 
 body {
