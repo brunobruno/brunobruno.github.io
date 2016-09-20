@@ -1,0 +1,17 @@
+$color-1: gray;
+$color-2: white;
+$steps: 100;
+$squareSize: 20;
+
+@for $i from 0 to $steps {
+    .class-#{$i + 1} {
+        background: mix($color-1, $color-2, percentage($i / ($steps - 1)));
+    }
+}
+div{
+  width:$squareSize + vw;
+  height:$squareSize + vh;
+  float:left;
+  //border-radius:50%;
+  //margin:1px;
+}
