@@ -1,7 +1,11 @@
-$color-1: gray;
-$color-2: blue;
-$steps: 300;
-$squareSize: 15;
+
+$mobile-screen-size : "980";
+$hd-screen-size : "1900";
+$mobile-media : ~"screen and (max-width: @{mobile-screen-size}px)";
+$hd-media : ~"screen and (min-width: @{hd-screen-size}px)";
+$color-1: black;
+$color-2: white;
+$steps: 144;
 
 @for $i from 0 to $steps {
     .class-#{$i + 1} {
@@ -12,7 +16,11 @@ body{
     margin:0;
 }
 div{
-  width:$squareSize + vw;
-  height:$squareSize + vh;
+  width: 10%;
+  height: 20%;
   float:left;
+}
+
+@media @mobile-media {
+    width: 25%;
 }
