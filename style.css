@@ -585,7 +585,7 @@ div {
   float: left;
 }
 
-@media screen and (max-width: 980) {
+@media screen and (max-width: 980px) {
   div {
     width: 25%;
   }
