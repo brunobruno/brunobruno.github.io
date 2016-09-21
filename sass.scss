@@ -1,8 +1,7 @@
-
 $mobile-screen-size : "980";
-$hd-screen-size : "1900";
-$mobile-media : ~"screen and (max-width: @{mobile-screen-size}px)";
-$hd-media : ~"screen and (min-width: @{hd-screen-size}px)";
+// $hd-screen-size : "1900";
+// $mobile-media : "screen and (max-width: ${mobile-screen-size}px)";
+// $hd-media : "screen and (min-width: ${hd-screen-size}px)";
 $color-1: black;
 $color-2: white;
 $steps: 144;
@@ -21,6 +20,8 @@ div{
   float:left;
 }
 
-@media @mobile-media {
+@media screen and (max-width: $mobile-screen-size ) {
+  div{
     width: 25%;
+  }
 }
