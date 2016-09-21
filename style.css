@@ -576,13 +576,13 @@
 
 body {
   margin: 0;
+  color:lime;
 }
 
 div {
   width: 10%;
   height: 20%;
   float: left;
-  color:lime;
 }
 
 @media screen and (max-width: 980) {
