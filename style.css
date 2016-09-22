@@ -1,193 +1,591 @@
-#container {
-  margin: 0 auto;
-  width: 400px;
-  min-height: 500px;
-  text-align: center;
-  padding-top: 100px;
+.class-1 {
+  background: white;
 }
 
-h1 {
-  font-size: 100px;
-  color: #fff;
-  font-family: arial;
-  text-shadow: 0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0, 0, 0, 0.1), 0 0 5px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.2), 0 5px 10px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2), 0 20px 20px rgba(0, 0, 0, 0.15);
+.class-2 {
+  background: #fdfdfd;
 }
 
-.text-form {
-  width: 95%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  font-size: 30px;
-  -ms-transform: rotate(7deg);
-  -webkit-transform: translateZ(1px);
-  -webkit-transform: rotate(7deg);
-  transform: rotate(45deg);
-  background: #ffffff;
-  background: -moz-linear-gradient(-45deg, #ffffff 79%, #464c4c 79%, #6e7774 82%, #0d151e 84%, #0a0809 100%);
-  background: -webkit-gradient(linear, left top, right bottom, color-stop(79%, #ffffff), color-stop(79%, #464c4c), color-stop(82%, #6e7774), color-stop(84%, #0d151e), color-stop(100%, #0a0809));
-  background: -webkit-linear-gradient(-45deg, #ffffff 79%, #464c4c 79%, #6e7774 82%, #0d151e 84%, #0a0809 100%);
-  background: -o-linear-gradient(-45deg, #ffffff 79%, #464c4c 79%, #6e7774 82%, #0d151e 84%, #0a0809 100%);
-  background: -ms-linear-gradient(-45deg, #ffffff 79%, #464c4c 79%, #6e7774 82%, #0d151e 84%, #0a0809 100%);
-  background: linear-gradient(135deg, #ffffff 79%, #464c4c 79%, #6e7774 82%, #0d151e 84%, #0a0809 100%);
-  -webkit-box-shadow: 0px 0px 13px 10px rgba(143, 143, 143, 0.27);
-  -moz-box-shadow: 0px 0px 13px 10px rgba(143, 143, 143, 0.27);
-  box-shadow: 0px 0px 13px 10px rgba(143, 143, 143, 0.27);
+.class-3 {
+  background: #fbfbfb;
 }
 
-#wet-wall {
-  width: 100%;
-  height: 110px;
-  bottom: 0px;
-  position: absolute;
-  background: #AEAEAE;
+.class-4 {
+  background: #fafafa;
 }
 
-#water {
-  width: 100%;
-  height: 100px;
-  bottom: 0px;
-  background: #000;
-  position: absolute;
+.class-5 {
+  background: #f8f8f8;
 }
 
-#water-dip {
-  width: 5px;
-  height: 5px;
-  border: none;
-  -webkit-border-radius: 80% 0 55% 50% / 55% 0 80% 50%;
-  border-radius: 80% 0 55% 50% / 55% 0 80% 50%;
-  background: #000;
-  margin: 135px 0 0 319px;
-  -ms-transform: rotate(-43deg);
-  -webkit-transform: rotate(-43deg);
-  transform: rotate(-43deg);
+.class-6 {
+  background: #f6f6f6;
 }
 
-#water-splash {
-  width: 50px;
-  height: 20px;
-  margin-left: 290px;
-  border-radius: 50%;
-  font-size: 60px;
-  text-align: center;
-  visibility: hidden;
+.class-7 {
+  background: #f4f4f4;
 }
 
-#wrapper {
-  width: 400px;
-  margin: 0 auto;
+.class-8 {
+  background: #f3f3f3;
 }
 
-.element-animation {
-  animation: animationFrames linear 1s;
-  animation-iteration-count: infinite;
-  transform-origin: 50% 50%;
-  -webkit-animation: animationFrames linear 1s;
-  -webkit-animation-iteration-count: infinite;
-  -webkit-transform-origin: 50% 50%;
-  -moz-animation: animationFrames linear 1s;
-  -moz-animation-iteration-count: infinite;
-  -moz-transform-origin: 50% 50%;
-  -o-animation: animationFrames linear 1s;
-  -o-animation-iteration-count: infinite;
-  -o-transform-origin: 50% 50%;
-  -ms-animation: animationFrames linear 1s;
-  -ms-animation-iteration-count: infinite;
-  -ms-transform-origin: 50% 50%;
+.class-9 {
+  background: #f1f1f1;
 }
 
-@keyframes animationFrames {
-  0% {
-    transform: translate(0px, 0px);
-  }
-  100% {
-    transform: translate(1px, 648px);
-  }
-}
-@-moz-keyframes animationFrames {
-  0% {
-    -moz-transform: translate(0px, 0px);
-  }
-  100% {
-    -moz-transform: translate(1px, 648px);
-  }
-}
-@-webkit-keyframes animationFrames {
-  0% {
-    -webkit-transform: translate(0px, 0px);
-  }
-  100% {
-    -webkit-transform: translate(1px, 648px);
-  }
-}
-@-o-keyframes animationFrames {
-  0% {
-    -o-transform: translate(0px, 0px);
-  }
-  100% {
-    -o-transform: translate(1px, 648px);
-  }
-}
-@-ms-keyframes animationFrames {
-  0% {
-    -ms-transform: translate(0px, 0px);
-  }
-  100% {
-    -ms-transform: translate(1px, 648px);
-  }
-}
-.animated {
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-  animation-iteration-count: infinite;
-  -webkit-animation-iteration-count: infinite;
+.class-10 {
+  background: #efefef;
 }
 
-@-webkit-keyframes pulse {
-  0% {
-    -webkit-transform: scale(1);
-  }
-  50% {
-    -webkit-transform: scale(1.1);
-  }
-  100% {
-    -webkit-transform: scale(1);
-  }
-}
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-.pulse {
-  -webkit-animation-name: pulse;
-  animation-name: pulse;
+.class-11 {
+  background: #ededed;
 }
 
-.blink {
-  animation: blink 1s steps(2, end) infinite;
-  -webkit-animation: blink 1s steps(2, end) infinite;
+.class-12 {
+  background: #ebebeb;
 }
 
-@keyframes blink {
-  to {
-    visibility: visible;
-    background-color: #303030;
-    color: #303030;
-  }
+.class-13 {
+  background: #eaeaea;
 }
-@-webkit-keyframes blink {
-  to {
-    visibility: visible;
-    background: #303030;
-    color: #303030;
+
+.class-14 {
+  background: #e8e8e8;
+}
+
+.class-15 {
+  background: #e6e6e6;
+}
+
+.class-16 {
+  background: #e4e4e4;
+}
+
+.class-17 {
+  background: #e2e2e2;
+}
+
+.class-18 {
+  background: #e1e1e1;
+}
+
+.class-19 {
+  background: #dfdfdf;
+}
+
+.class-20 {
+  background: #dddddd;
+}
+
+.class-21 {
+  background: #dbdbdb;
+}
+
+.class-22 {
+  background: #dadada;
+}
+
+.class-23 {
+  background: #d8d8d8;
+}
+
+.class-24 {
+  background: #d6d6d6;
+}
+
+.class-25 {
+  background: #d4d4d4;
+}
+
+.class-26 {
+  background: #d2d2d2;
+}
+
+.class-27 {
+  background: #d1d1d1;
+}
+
+.class-28 {
+  background: #cfcfcf;
+}
+
+.class-29 {
+  background: #cdcdcd;
+}
+
+.class-30 {
+  background: #cbcbcb;
+}
+
+.class-31 {
+  background: #cacaca;
+}
+
+.class-32 {
+  background: #c8c8c8;
+}
+
+.class-33 {
+  background: #c6c6c6;
+}
+
+.class-34 {
+  background: #c4c4c4;
+}
+
+.class-35 {
+  background: #c2c2c2;
+}
+
+.class-36 {
+  background: #c1c1c1;
+}
+
+.class-37 {
+  background: #bfbfbf;
+}
+
+.class-38 {
+  background: #bdbdbd;
+}
+
+.class-39 {
+  background: #bbbbbb;
+}
+
+.class-40 {
+  background: #b9b9b9;
+}
+
+.class-41 {
+  background: #b8b8b8;
+}
+
+.class-42 {
+  background: #b6b6b6;
+}
+
+.class-43 {
+  background: #b4b4b4;
+}
+
+.class-44 {
+  background: #b2b2b2;
+}
+
+.class-45 {
+  background: #b1b1b1;
+}
+
+.class-46 {
+  background: #afafaf;
+}
+
+.class-47 {
+  background: #adadad;
+}
+
+.class-48 {
+  background: #ababab;
+}
+
+.class-49 {
+  background: darkgray;
+}
+
+.class-50 {
+  background: #a8a8a8;
+}
+
+.class-51 {
+  background: #a6a6a6;
+}
+
+.class-52 {
+  background: #a4a4a4;
+}
+
+.class-53 {
+  background: #a2a2a2;
+}
+
+.class-54 {
+  background: #a0a0a0;
+}
+
+.class-55 {
+  background: #9f9f9f;
+}
+
+.class-56 {
+  background: #9d9d9d;
+}
+
+.class-57 {
+  background: #9b9b9b;
+}
+
+.class-58 {
+  background: #999999;
+}
+
+.class-59 {
+  background: #989898;
+}
+
+.class-60 {
+  background: #969696;
+}
+
+.class-61 {
+  background: #949494;
+}
+
+.class-62 {
+  background: #929292;
+}
+
+.class-63 {
+  background: #909090;
+}
+
+.class-64 {
+  background: #8f8f8f;
+}
+
+.class-65 {
+  background: #8d8d8d;
+}
+
+.class-66 {
+  background: #8b8b8b;
+}
+
+.class-67 {
+  background: #898989;
+}
+
+.class-68 {
+  background: #888888;
+}
+
+.class-69 {
+  background: #868686;
+}
+
+.class-70 {
+  background: #848484;
+}
+
+.class-71 {
+  background: #828282;
+}
+
+.class-72 {
+  background: gray;
+}
+
+.class-73 {
+  background: #7f7f7f;
+}
+
+.class-74 {
+  background: #7d7d7d;
+}
+
+.class-75 {
+  background: #7b7b7b;
+}
+
+.class-76 {
+  background: #797979;
+}
+
+.class-77 {
+  background: #777777;
+}
+
+.class-78 {
+  background: #767676;
+}
+
+.class-79 {
+  background: #747474;
+}
+
+.class-80 {
+  background: #727272;
+}
+
+.class-81 {
+  background: #707070;
+}
+
+.class-82 {
+  background: #6f6f6f;
+}
+
+.class-83 {
+  background: #6d6d6d;
+}
+
+.class-84 {
+  background: #6b6b6b;
+}
+
+.class-85 {
+  background: dimgray;
+}
+
+.class-86 {
+  background: #676767;
+}
+
+.class-87 {
+  background: #666666;
+}
+
+.class-88 {
+  background: #646464;
+}
+
+.class-89 {
+  background: #626262;
+}
+
+.class-90 {
+  background: #606060;
+}
+
+.class-91 {
+  background: #5f5f5f;
+}
+
+.class-92 {
+  background: #5d5d5d;
+}
+
+.class-93 {
+  background: #5b5b5b;
+}
+
+.class-94 {
+  background: #595959;
+}
+
+.class-95 {
+  background: #575757;
+}
+
+.class-96 {
+  background: #565656;
+}
+
+.class-97 {
+  background: #545454;
+}
+
+.class-98 {
+  background: #525252;
+}
+
+.class-99 {
+  background: #505050;
+}
+
+.class-100 {
+  background: #4e4e4e;
+}
+
+.class-101 {
+  background: #4d4d4d;
+}
+
+.class-102 {
+  background: #4b4b4b;
+}
+
+.class-103 {
+  background: #494949;
+}
+
+.class-104 {
+  background: #474747;
+}
+
+.class-105 {
+  background: #464646;
+}
+
+.class-106 {
+  background: #444444;
+}
+
+.class-107 {
+  background: #424242;
+}
+
+.class-108 {
+  background: #404040;
+}
+
+.class-109 {
+  background: #3e3e3e;
+}
+
+.class-110 {
+  background: #3d3d3d;
+}
+
+.class-111 {
+  background: #3b3b3b;
+}
+
+.class-112 {
+  background: #393939;
+}
+
+.class-113 {
+  background: #373737;
+}
+
+.class-114 {
+  background: #353535;
+}
+
+.class-115 {
+  background: #343434;
+}
+
+.class-116 {
+  background: #323232;
+}
+
+.class-117 {
+  background: #303030;
+}
+
+.class-118 {
+  background: #2e2e2e;
+}
+
+.class-119 {
+  background: #2d2d2d;
+}
+
+.class-120 {
+  background: #2b2b2b;
+}
+
+.class-121 {
+  background: #292929;
+}
+
+.class-122 {
+  background: #272727;
+}
+
+.class-123 {
+  background: #252525;
+}
+
+.class-124 {
+  background: #242424;
+}
+
+.class-125 {
+  background: #222222;
+}
+
+.class-126 {
+  background: #202020;
+}
+
+.class-127 {
+  background: #1e1e1e;
+}
+
+.class-128 {
+  background: #1d1d1d;
+}
+
+.class-129 {
+  background: #1b1b1b;
+}
+
+.class-130 {
+  background: #191919;
+}
+
+.class-131 {
+  background: #171717;
+}
+
+.class-132 {
+  background: #151515;
+}
+
+.class-133 {
+  background: #141414;
+}
+
+.class-134 {
+  background: #121212;
+}
+
+.class-135 {
+  background: #101010;
+}
+
+.class-136 {
+  background: #0e0e0e;
+}
+
+.class-137 {
+  background: #0c0c0c;
+}
+
+.class-138 {
+  background: #0b0b0b;
+}
+
+.class-139 {
+  background: #090909;
+}
+
+.class-140 {
+  background: #070707;
+}
+
+.class-141 {
+  background: #050505;
+}
+
+.class-142 {
+  background: #040404;
+}
+
+.class-143 {
+  background: #020202;
+}
+
+.class-144 {
+  background: black;
+}
+
+body {
+  margin: 0;
+}
+
+div {
+  width: 10%;
+  height: 20%;
+  float: left;
+}
+
+@media screen and (max-width: 980px) {
+  div {
+    width: 25%;
   }
 }
