@@ -578,10 +578,14 @@ body {
   margin: 0;
 }
 
+#board {
+  margin: 0;
+}
 #board li {
   width: 10%;
   height: 20%;
   float: left;
+  list-style-type: none;
 }
 
 @media screen and (max-width: 980px) {
