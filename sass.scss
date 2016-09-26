@@ -14,14 +14,14 @@ $steps: 144;
 body{
     margin:0;
 }
-div{
+#board li{
   width: 10%;
   height: 20%;
   float:left;
 }
 
 @media screen and (max-width: $mobile-screen-size ) {
-  div{
+  #board li{
     width: 25%;
   }
 }
