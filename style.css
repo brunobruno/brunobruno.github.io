@@ -588,6 +588,9 @@ body {
   float: left;
   list-style-type: none;
 }
+#board li:after {
+  content: '+';
+}
 
 @media screen and (max-width: 980px) {
   #board li {
