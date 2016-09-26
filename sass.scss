@@ -14,11 +14,25 @@ $steps: 144;
 body{
     margin:0;
 }
-#board li{
+#board{
+  margin:0;
+  padding:0;
+li{
   width: 10%;
   height: 20%;
   float:left;
+  list-style-type:none;
+  &:after{
+    content:'+';
+    font-size: 12px;
+    margin-left: -5px;
+    margin-top: -7px;
+    position: absolute;
+    color:#ccc;
+    }
+  }
 }
+
 
 @media screen and (max-width: $mobile-screen-size ) {
   #board li{
