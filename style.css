@@ -580,6 +580,7 @@ body {
 
 #board {
   margin: 0;
+  padding: 0;
 }
 #board li {
   width: 10%;
