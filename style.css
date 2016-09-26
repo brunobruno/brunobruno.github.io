@@ -590,6 +590,9 @@ body {
 }
 #board li:after {
   content: '+';
+  margin-left: -7px;
+  margin-top: -10px;
+  position: absolute;
 }
 
 @media screen and (max-width: 980px) {
