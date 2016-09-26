@@ -593,6 +593,7 @@ body {
   margin-left: -7px;
   margin-top: -10px;
   position: absolute;
+  color: #ccc;
 }
 
 @media screen and (max-width: 980px) {
