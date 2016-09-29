@@ -15,8 +15,10 @@ body{
     margin:0;
 }
 #letters{
-  opacity:0.3;
   overflow:hidden;
+  div{
+    opacity:0.3;
+  }
 }
 #board{
   margin:0;
