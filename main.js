@@ -9,6 +9,7 @@ $(document).ready(function() {
   var grayscale = (value << 16) | (value << 8) | value;
   var ColorRandom  = '#' + grayscale.toString(16);
   var div = document.createElement('div');
+  var letterWrapper =  $('#letters');
   var chars = "abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ";
   var randomChars = chars.substr( Math.floor(Math.random() * 30), 1);
   
@@ -24,7 +25,7 @@ $(document).ready(function() {
   div.style.transform       = 'rotate('+NumberRandomforRotate+'deg)'; 
  // div.style.background = ColorRandom;
  // div.style.color = ColorRandomText;
-  document.body.prepend(div);
+  document.letterWrapper.prepend(div);
 }
   
     for(var i = 1; i <= pageLimit; i++) {
