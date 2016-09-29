@@ -1,5 +1,7 @@
 var pageLimit=140;
-for( i=0; i < 1000; i++) {
+
+$(document).ready(function() {
+  for( i=0; i < 1000; i++) {
 
   var NumberRandom = Math.floor((Math.random() * 250) + 1); 
   var NumberRandomforRotate = Math.floor((Math.random() * 360) + 1); 
@@ -24,10 +26,7 @@ for( i=0; i < 1000; i++) {
  // div.style.color = ColorRandomText;
   document.body.appendChild(div);
 }
-
-
-
-  $(document).ready(function() {
+  
     for(var i = 1; i <= pageLimit; i++) {
     $('#board').append('<li class="class-'+i+'"></li>')
   }
