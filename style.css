@@ -578,6 +578,11 @@ body {
   margin: 0;
 }
 
+#letters {
+  opacity: 0.3;
+  overflow: hidden;
+}
+
 #board {
   margin: 0;
   padding: 0;
