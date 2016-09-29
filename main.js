@@ -24,7 +24,7 @@ $(document).ready(function() {
   div.style.transform       = 'rotate('+NumberRandomforRotate+'deg)'; 
  // div.style.background = ColorRandom;
  // div.style.color = ColorRandomText;
-  document.body.appendChild(div);
+  document.body.preppendChild(div);
 }
   
     for(var i = 1; i <= pageLimit; i++) {
