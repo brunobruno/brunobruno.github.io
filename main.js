@@ -25,11 +25,13 @@ $(document).ready(function() {
   div.style.oTransform      = 'rotate('+NumberRandomforRotate+'deg)'; 
   div.style.transform       = 'rotate('+NumberRandomforRotate+'deg)'; 
   $('#letters').append(div);
-}
-    function MoveThings() {
+    
+     function MoveThings() {
       console.log(NumberRandom);
    }
    setInterval(MoveThings, NumberRandom);
+}
+
    
     for(var i = 1; i <= pageLimit; i++) {
     $('#board').append('<li class="class-'+i+'"></li>')
