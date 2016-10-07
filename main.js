@@ -14,6 +14,7 @@ $(document).ready(function() {
   
   div.innerHTML = randomChars;
   div.style.height = 45 + 'px';
+  div.style.opacity = '0.'+ NumberRandom; 
   div.style.width = 45 + 'px';
   div.style.fontSize = NumberRandom + 'px';
   div.style.color = ColorRandom;
