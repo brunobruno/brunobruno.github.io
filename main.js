@@ -1,4 +1,8 @@
 var pageLimit=140;
+  setTimeout(function(){
+    console.log('sim');
+  }, 200);
+
 
 $(document).ready(function() {
   for( i=0; i < 1000; i++) {
@@ -26,10 +30,7 @@ $(document).ready(function() {
   div.style.transform       = 'rotate('+NumberRandomforRotate+'deg)'; 
   $('#letters').append(div);
 }
-    setTimeout(function(){
-    console.log('sim');
-  }, 200);
-  
+ 
     for(var i = 1; i <= pageLimit; i++) {
     $('#board').append('<li class="class-'+i+'"></li>')
   }
