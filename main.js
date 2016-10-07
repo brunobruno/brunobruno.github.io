@@ -1,7 +1,9 @@
 var pageLimit=140;
-  setTimeout(function(){
-    console.log('sim');
-  }, 200);
+
+function doStuff() {
+   console.log("hello!");
+}
+setInterval(doStuff, 5000);
 
 
 $(document).ready(function() {
