@@ -1,11 +1,5 @@
 var pageLimit=140;
 
-function doStuff() {
-   console.log("hello!");
-}
-setInterval(doStuff, 5000);
-
-
 $(document).ready(function() {
   for( i=0; i < 1000; i++) {
 
@@ -32,7 +26,11 @@ $(document).ready(function() {
   div.style.transform       = 'rotate('+NumberRandomforRotate+'deg)'; 
   $('#letters').append(div);
 }
- 
+    function MoveThings() {
+      console.log(NumberRandom);
+   }
+   setInterval(MoveThings, NumberRandom);
+   
     for(var i = 1; i <= pageLimit; i++) {
     $('#board').append('<li class="class-'+i+'"></li>')
   }
