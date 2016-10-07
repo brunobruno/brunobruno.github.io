@@ -25,13 +25,10 @@ $(document).ready(function() {
   div.style.oTransform      = 'rotate('+NumberRandomforRotate+'deg)'; 
   div.style.transform       = 'rotate('+NumberRandomforRotate+'deg)'; 
   $('#letters').append(div);
-    window.setTimeout(
-    function ( ){
-       div.style.left = (div.style.left + 1) + "px";
-     },
-     100
-   )();
 }
+    setTimeout(function(){
+    console.log('sim');
+  }, 200);
   
     for(var i = 1; i <= pageLimit; i++) {
     $('#board').append('<li class="class-'+i+'"></li>')
