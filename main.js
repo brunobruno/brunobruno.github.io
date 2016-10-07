@@ -30,7 +30,7 @@ $(document).ready(function() {
        div.style.left = (div.style.left + 1) + "px";
      },
      100
-   );
+   )();
 }
   
     for(var i = 1; i <= pageLimit; i++) {
