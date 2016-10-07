@@ -16,6 +16,7 @@ $(document).ready(function() {
   div.style.height = 45 + 'px';
   div.style.width = 45 + 'px';
   div.style.fontSize = NumberRandom + 'px';
+  div.style.background = ColorRandom;
   div.style.float = 'left';
   div.style.webkitTransform = 'rotate('+NumberRandomforRotate+'deg)'; 
   div.style.mozTransform    = 'rotate('+NumberRandomforRotate+'deg)'; 
