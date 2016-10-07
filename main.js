@@ -26,10 +26,7 @@ $(document).ready(function() {
   div.style.transform       = 'rotate('+NumberRandomforRotate+'deg)'; 
   $('#letters').append(div);
     
-     function MoveThings() {
-      console.log(NumberRandom);
-   }
-   setInterval(MoveThings, NumberRandom);
+   setInterval( div.style.opacity = '0.'+ NumberRandom; , NumberRandom);
 }
 
    
