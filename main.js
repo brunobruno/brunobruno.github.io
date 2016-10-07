@@ -24,7 +24,13 @@ $(document).ready(function() {
   div.style.msTransform     = 'rotate('+NumberRandomforRotate+'deg)'; 
   div.style.oTransform      = 'rotate('+NumberRandomforRotate+'deg)'; 
   div.style.transform       = 'rotate('+NumberRandomforRotate+'deg)'; 
-   $('#letters').append(div);
+  $('#letters').append(div);
+    window.setTimeout(
+    function ( ){
+       div.style.left = (div.style.left + 1) + "px";
+     },
+     100
+   );
 }
   
     for(var i = 1; i <= pageLimit; i++) {
