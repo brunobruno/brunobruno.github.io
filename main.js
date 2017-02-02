@@ -2,7 +2,7 @@ var pageLimit=140;
 
 
 function montaLetras() {
-  
+  $('#letters').empty();
    for( i=0; i < 1000; i++) {
 
       var NumberRandom = Math.floor((Math.random() * 250) + 1); 
@@ -32,7 +32,7 @@ function montaLetras() {
 }
 
 $(document).ready(function() {
-   
+    montaLetras();
     for(var i = 1; i <= pageLimit; i++) {
     $('#board').append('<li class="class-'+i+'"></li>')
   }
