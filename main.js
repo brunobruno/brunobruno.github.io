@@ -32,9 +32,7 @@ function montaLetras() {
 }
 
 $(document).ready(function() {
-        setTimeout(function() {
-          montaLetras();
-      }, 1000);
+    montaLetras();
     for(var i = 1; i <= pageLimit; i++) {
     $('#board').append('<li class="class-'+i+'"></li>')
   }
