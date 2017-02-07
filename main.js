@@ -41,7 +41,7 @@ $(document).ready(function() {
   for(var i = 1; i <= pageLimitVortex; i++) {
     var NumberRandomVortex = Math.floor((Math.random() * 250) + 1); 
 //      $('body').append('<div class="item" style="left:'+i+'px; top:'+i+'px; transform: rotate('+i+'deg);width:1'+i+'px;"></div>');
-    $('body').append('<div class="item" style="left:'+NumberRandomVortex+'px; top:'+NumberRandomVortex+'px; transform: rotate('+i+'deg);width:'+NumberRandomVortex+'px;"></div>');
+    $('body').append('<div class="item" style="left:'+NumberRandomVortex+'px; top:'+NumberRandomVortex+'px; transform: rotate('+NumberRandomVortex+'deg);width:1'+i+'px;"></div>');
   }
   
 });
