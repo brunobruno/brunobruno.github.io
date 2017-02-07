@@ -39,7 +39,8 @@ $(document).ready(function() {
       $('#board').append('<li class="class-'+i+'"></li>');
     }
   for(var i = 1; i <= pageLimitVortex; i++) {
-    $('body').append('<div class="item" style="left:'+i+'px; top:'+i+'px; transform: rotate('+i+'deg);width:1'+i+'px;"></div>');
+     var NumberRandomVortex = Math.floor((Math.random() * 250) + 1); 
+    $('body').append('<div class="item" style="left:'+i+'px; top:'+NumberRandomVortex+'px; transform: rotate('+i+'deg);width:1'+i+'px;"></div>');
   }
   
 });
