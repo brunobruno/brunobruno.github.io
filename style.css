@@ -601,6 +601,15 @@ body {
   color: #ccc;
 }
 
+.item{
+  width:40px;
+  height:40px;
+  background:black;
+  border:1px solid #fff;
+  position:absolute;
+  opacity:0.1
+}
+
 @media screen and (max-width: 980px) {
   #board li {
     width: 25%;
