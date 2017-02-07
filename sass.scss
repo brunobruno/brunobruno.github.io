@@ -38,6 +38,15 @@ li{
   }
 }
 
+.item{
+  width:40px;
+  height:40px;
+  background:black;
+  border:1px solid #fff;
+  position:absolute;
+  opacity:0.1
+}
+
 @media screen and (max-width: $mobile-screen-size ) {
   #board li{
     width: 25%;
