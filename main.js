@@ -31,10 +31,14 @@ function montaLetras() {
   }
 }
 
+
 $(document).ready(function() {
     montaLetras();
     for(var i = 1; i <= pageLimit; i++) {
-    $('#board').append('<li class="class-'+i+'"></li>')
-  }
+      
+    $('#board').append('<li class="class-'+i+'"></li>');
+    $('body').append('<div class="item" style="left:'+i+'px; top:'+i+'px; transform: rotate('+i+'deg);width:1'+i+'px;"></div>')
+  
+    }
   
 });
