@@ -1,5 +1,5 @@
 var pageLimit=140;
-var pageLimitVortex:540;
+var pageLimitVortex=540;
 
 
 function montaLetras() {
@@ -38,7 +38,7 @@ $(document).ready(function() {
     for(var i = 1; i <= pageLimit; i++) { 
       $('#board').append('<li class="class-'+i+'"></li>');
       )
-    };
+    }
   for(var i = 1; i <= pageLimitVortex; i++) {
     $('body').append('<div class="item" style="left:'+i+'px; top:'+i+'px; transform: rotate('+i+'deg);width:1'+i+'px;"></div>'
   }
