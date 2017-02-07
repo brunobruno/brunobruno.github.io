@@ -609,6 +609,9 @@ body {
   position:absolute;
   opacity:0.1
 }
+.item:hover{
+          background-color:red;
+}
 
 @media screen and (max-width: 980px) {
   #board li {
