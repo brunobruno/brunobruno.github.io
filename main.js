@@ -1,4 +1,4 @@
-var pageLimit=140;
+var pageLimit=240;
 
 
 function montaLetras() {
