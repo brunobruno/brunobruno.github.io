@@ -578,6 +578,7 @@ body {
   margin: 0;
   overflow-x:hidden;
 }
+header{
 width: 99%;
 height: 19px;
 background: -moz-linear-gradient(center top , #555 0%, #515151 18%, #373737 85%, #333 100%) repeat scroll 0% 0% #333;
