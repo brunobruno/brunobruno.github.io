@@ -630,12 +630,25 @@ body {
 }
 
 .complex_things{
-	color:white;
-	position:absolute;
-	top:50vh;
-	right:10vw;
-	font-size:5vw;
+color: white;
+position: absolute;
+top: 62vh;
+right: 10vw;
+font-size: 2vw;
+z-index: 999;
+width: 33vw;
 }
+
+.typo_things{
+color: black;
+position: absolute;
+top: 122vh;
+left: 10vw;
+font-size: 2vw;
+z-index: 999;
+width: 33vw;
+}
+
 @media screen and (max-width: 980px) {
   #board li {
     width: 25%;
