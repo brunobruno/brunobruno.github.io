@@ -629,6 +629,13 @@ body {
           background-color:red;
 }
 
+.complex_things{
+	color:white;
+	position:absolute;
+	top:50vh;
+	right:10vw;
+	font-size:5vw;
+}
 @media screen and (max-width: 980px) {
   #board li {
     width: 25%;
