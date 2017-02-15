@@ -578,12 +578,19 @@ body {
   margin: 0;
   overflow-x:hidden;
 }
-	header{
-        width:100%;
-        height:42px;
-        background:-moz-linear-gradient(center top , #555 0%, #515151 18%, #373737 85%, #333 100%) repeat scroll 0% 0% #333;
-        box-shadow: 0px 0px 10px #333;
-        position:fixed;
+width: 99%;
+height: 19px;
+background: -moz-linear-gradient(center top , #555 0%, #515151 18%, #373737 85%, #333 100%) repeat scroll 0% 0% #333;
+box-shadow: 0px 0px 10px #333;
+position: fixed;
+text-align: right;
+color: white;
+font-size: 1vw;
+padding-right: 11px;
+left: 0;
+font-family: arial;
+padding-top: 2px;
+padding-right: 4px;
 }
     header .bt{
         width:30px;
