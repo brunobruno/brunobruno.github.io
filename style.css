@@ -578,6 +578,7 @@ body {
   margin: 0;
   overflow-x:hidden;
 }
+
 header{
 width: 99%;
 height: 19px;
@@ -645,6 +646,12 @@ right: 10vw;
 font-size: 2vw;
 z-index: 999;
 width: 33vw;
+background:black;
+opacity:.8;
+padding:15px;
+}
+.complex_things h1{
+  margin:0;
 }
 
 .typo_things{
