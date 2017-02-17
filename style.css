@@ -662,6 +662,9 @@ left: 10vw;
 font-size: 2vw;
 z-index: 999;
 width: 33vw;
+background:white;
+opacity:.8;
+padding:15px;
 }
 
 @media screen and (max-width: 980px) {
