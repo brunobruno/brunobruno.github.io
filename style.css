@@ -593,7 +593,12 @@ left: 0;
 font-family: arial;
 padding-top: 2px;
 padding-right: 4px;
+z-index:99999999999999;
 }
+header a{
+color:white;
+}
+/*
     header .bt{
         width:30px;
         height:30px;
@@ -602,6 +607,7 @@ padding-right: 4px;
         margin:5px 0 0 10px;
         float:left
     }
+*/
 
 #letters {
   overflow: hidden;
@@ -638,6 +644,7 @@ padding-right: 4px;
 .item:hover{
           background-color:red;
 }
+
 .a_smartguy_name{
 color:white;
   opacity:.4;
