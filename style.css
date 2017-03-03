@@ -637,7 +637,14 @@ padding-right: 4px;
 .item:hover{
           background-color:red;
 }
-
+.a_smartguy_name{
+color:white;
+  opacity:.1rem;
+  font-size:10vw
+}
+.a_smartguy_name:hover{
+opacity:.5rem;
+}
 .complex_things{
 color: white;
 position: absolute;
