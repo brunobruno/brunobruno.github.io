@@ -581,13 +581,13 @@ body {
 
 header{
 width: 99%;
-height: 19px;
+height: 30px;
 background: -moz-linear-gradient(center top , #555 0%, #515151 18%, #373737 85%, #333 100%) repeat scroll 0% 0% #333;
 box-shadow: 0px 0px 10px #333;
 position: fixed;
 text-align: right;
 color: white;
-font-size: 1vw;
+font-size: 2vw;
 padding-right: 11px;
 left: 0;
 font-family: arial;
@@ -597,6 +597,9 @@ z-index:99999999999999;
 }
 header a{
 color:white;
+}
+h3{
+margin:0;
 }
 /*
     header .bt{
