@@ -597,7 +597,15 @@ padding-right: 4px;
 z-index:99999999999999;
 }
 header a{
-color:white;
+color: white;
+float: left;
+padding-left: 7px;
+text-decoration: none;
+color: #ececec;
+font-style: inherit;
+}
+header span{
+font-size:13px;
 }
 h3{
 margin:0;
