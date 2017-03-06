@@ -604,7 +604,9 @@ color: #ececec;
 font-style: inherit;
 }
 header span{
-font-size:13px;
+font-size: 13px;
+line-height: 25px;
+margin-right: 8px;
 }
 h3{
 margin:0;
