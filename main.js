@@ -1,6 +1,6 @@
 var pageLimit=140;
 var pageLimitVortex=740;
-
+var randomChars = chars.substr( Math.floor(Math.random() * 30), 1);
 
 function montaLetras() {
   $('#letters').empty();
@@ -13,7 +13,7 @@ function montaLetras() {
       var ColorRandom  = '#' + grayscale.toString(16);
       var div = document.createElement('div');
       var chars = "abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ1234567890";
-      var randomChars = chars.substr( Math.floor(Math.random() * 30), 1);
+     // var randomChars = chars.substr( Math.floor(Math.random() * 30), 1);
 
       div.innerHTML = randomChars;
       div.style.height = 45 + 'px';
