@@ -26,7 +26,8 @@ function montaLetras() {
       div.style.mozTransform    = 'rotate('+NumberRandomforRotate+'deg)'; 
       div.style.msTransform     = 'rotate('+NumberRandomforRotate+'deg)'; 
       div.style.oTransform      = 'rotate('+NumberRandomforRotate+'deg)'; 
-      div.style.transform       = 'rotate('+NumberRandomforRotate+'deg)'; 
+      div.style.transform       = 'rotate('+NumberRandomforRotate+'deg)';
+     
       $('#letters').append(div);
 
   }
@@ -34,7 +35,12 @@ function montaLetras() {
 
 
 $(document).ready(function() {
-    montaLetras();
+
+setTimeout(function(){
+  montaLetras();
+//     $(that).stop().animate({'height' : settings.heightx}, settings.speed);
+},500);
+    
     for(var i = 1; i <= pageLimit; i++) { 
       $('#board').append('<li class="class-'+i+'"></li>');
     }
