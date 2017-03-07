@@ -33,13 +33,18 @@ function montaLetras() {
   }
 }
 
+function interval(){
+     i = setInterval(function(){
+        montaLetras();
+    },2000);   
+}
 
 $(document).ready(function() {
 
-setTimeout(function(){
-  montaLetras();
-//     $(that).stop().animate({'height' : settings.heightx}, settings.speed);
-},500);
+// setTimeout(function(){
+//   montaLetras();
+// //     $(that).stop().animate({'height' : settings.heightx}, settings.speed);
+// },500);
     
     for(var i = 1; i <= pageLimit; i++) { 
       $('#board').append('<li class="class-'+i+'"></li>');
