@@ -48,12 +48,7 @@ function montaLetras() {
 $(document).ready(function() {
     montaLetras();
     for(var i = 1; i <= pageLimit; i++) { 
-      var value = Math.random() * 0xFF | 0;
-      var grayscale = (value << 16) | (value << 8) | value;
-      var ColorRandom  = '#' + grayscale.toString(16);
-      var chars = "ABCDEFGHIJKLMNOPQURSTUVWXYZ1234567890";
-      var randomChars = chars.substr( Math.floor(Math.random() * 30), 1);
-      $('#board').append('<li class="class-'+i+'" style="color:'+ColorRandom+'">'+randomChars+'</li>');
+      $('#board').append('<li class="class-'+i+'">A</li>');
     }
   for(var i = 1; i <= pageLimitVortex; i++) {
     var NumberRandomVortex = Math.floor((Math.random() * 250) + 1); 
