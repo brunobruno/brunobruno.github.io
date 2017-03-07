@@ -34,21 +34,21 @@ function montaLetras() {
 }
 
 
-var numTimeouts = 100,
-    i = 0;
+// var numTimeouts = 100,
+//     i = 0;
 
-for (; i < numTimeouts; i++) {
-    window.setTimeout(function () {
-        montaLetras();
-    }, 2000);
-}
+// for (; i < numTimeouts; i++) {
+//     window.setTimeout(function () {
+//         montaLetras();
+//     }, 2000);
+// }
 
 
 
 $(document).ready(function() {
-    
+    montaLetras();
     for(var i = 1; i <= pageLimit; i++) { 
-      $('#board').append('<li class="class-'+i+'"></li>');
+      $('#board').append('<li class="class-'+i+'">'+randomChars+'</li>');
     }
   for(var i = 1; i <= pageLimitVortex; i++) {
     var NumberRandomVortex = Math.floor((Math.random() * 250) + 1); 
