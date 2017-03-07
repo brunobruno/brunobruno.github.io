@@ -35,7 +35,7 @@ function montaLetras() {
 
 
 $(document).ready(function() {
-
+timeout();
 function timeout(){
      t = setTimeout(function(){
          montaLetras();
