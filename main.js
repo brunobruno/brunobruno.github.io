@@ -48,6 +48,7 @@ function montaLetras() {
 $(document).ready(function() {
     montaLetras();
     for(var i = 1; i <= pageLimit; i++) { 
+      var chars = "abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ1234567890";
       var randomChars = chars.substr( Math.floor(Math.random() * 30), 1);
       $('#board').append('<li class="class-'+i+'">'+randomChars+'</li>');
     }
