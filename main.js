@@ -34,18 +34,16 @@ function montaLetras() {
 }
 
 
-var numTimeouts = 1000,
+var numTimeouts = 100,
     i = 0;
 
 for (; i < numTimeouts; i++) {
     window.setTimeout(function () {
         montaLetras();
-    }, 2);
+    }, 2000);
 }
 
-window.setTimeout(function () {
-    console.log("0");
-}, 0);
+
 
 $(document).ready(function() {
     
