@@ -32,12 +32,18 @@ function montaLetras() {
 
   }
 }
-
-function interval(){
-     i = setInterval(function(){
-        montaLetras();
-    },2000);   
+function timeout(){
+     t = setTimeout(function(){
+         montaLetras();
+        timeout();
+    },2000);
 }
+
+// function interval(){
+//      i = setInterval(function(){
+//         montaLetras();
+//     },2000);   
+// }
 
 $(document).ready(function() {
 
