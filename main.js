@@ -48,6 +48,7 @@ function montaLetras() {
 $(document).ready(function() {
     montaLetras();
     for(var i = 1; i <= pageLimit; i++) { 
+      var value = Math.random() * 0xFF | 0;
       var grayscale = (value << 16) | (value << 8) | value;
       var ColorRandom  = '#' + grayscale.toString(16);
       var chars = "ABCDEFGHIJKLMNOPQURSTUVWXYZ1234567890";
