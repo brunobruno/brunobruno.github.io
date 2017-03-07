@@ -34,16 +34,20 @@ function montaLetras() {
 }
 
 
-$(document).ready(function() {
-timeout();
-function timeout(){
-     t = setTimeout(function(){
-         montaLetras();
-       console.log('console.');
-        timeout();
-    },2000);
+var numTimeouts = 1000,
+    i = 0;
+
+for (; i < numTimeouts; i++) {
+    window.setTimeout(function () {
+        montaLetras();
+    }, 2);
 }
 
+window.setTimeout(function () {
+    console.log("0");
+}, 0);
+
+$(document).ready(function() {
     
     for(var i = 1; i <= pageLimit; i++) { 
       $('#board').append('<li class="class-'+i+'"></li>');
