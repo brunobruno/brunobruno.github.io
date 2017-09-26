@@ -41,8 +41,8 @@ var numTimeouts = 100,
 for (; i < numTimeouts; i++) {
     window.setTimeout(function () {
         montaLetras();
-        body.style.background = ColorRandom;
-    }, 2000);
+        document.body.style.backgroundColor = ColorRandom;
+    }, 5000);
 }
 
 
