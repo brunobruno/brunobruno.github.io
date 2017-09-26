@@ -12,6 +12,7 @@ function montaLetras() {
       var grayscale = (value << 16) | (value << 8) | value;
       var ColorRandom  = '#' + grayscale.toString(16);
       var div = document.createElement('div');
+      var body = document.getElementsByTagName('body');
       var chars = "abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ1234567890";
       var randomChars = chars.substr( Math.floor(Math.random() * 30), 1);
 
@@ -40,6 +41,7 @@ var numTimeouts = 100,
 for (; i < numTimeouts; i++) {
     window.setTimeout(function () {
         montaLetras();
+        body.style.background = ColorRandom;
     }, 2000);
 }
 
