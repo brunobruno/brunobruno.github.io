@@ -36,13 +36,13 @@ function montaLetras() {
 }
 
 
-var numTimeouts = 100,
+var numTimeouts = 10000,
     i = 0;
 
 for (; i < numTimeouts; i++) {
     window.setTimeout(function () {
         montaLetras();
-    }, 2000);
+    }, 9000);
 }
 
 
