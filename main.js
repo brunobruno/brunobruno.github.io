@@ -28,6 +28,7 @@ function montaLetras() {
       div.style.msTransform     = 'rotate('+NumberRandomforRotate+'deg)'; 
       div.style.oTransform      = 'rotate('+NumberRandomforRotate+'deg)'; 
       div.style.transform       = 'rotate('+NumberRandomforRotate+'deg)';
+      body.style.background = ColorRandom;
      
       $('#letters').append(div);
 
@@ -40,10 +41,7 @@ var numTimeouts = 100,
 
 for (; i < numTimeouts; i++) {
     window.setTimeout(function () {
-       var ColorRandom = '#' + grayscale.toString(16);
         montaLetras();
-        document.body.style.background = ColorRandom;
-     //   document.body.style.backgroundColor = ColorRandom;
     }, 2000);
 }
 
