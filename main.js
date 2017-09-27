@@ -40,8 +40,9 @@ var numTimeouts = 100,
 
 for (; i < numTimeouts; i++) {
     window.setTimeout(function () {
+       var ColorRandom = '#' + grayscale.toString(16);
         montaLetras();
-        document.body.style.background = 'red';
+        document.body.style.background = ColorRandom;
      //   document.body.style.backgroundColor = ColorRandom;
     }, 2000);
 }
@@ -51,7 +52,7 @@ for (; i < numTimeouts; i++) {
 $(document).ready(function() {
     montaLetras();
     for(var i = 1; i <= pageLimit; i++) { 
-      $('#board').append('<li class="class-'+i+'">A</li>');
+      $('#board').append('<li class="class-'+i+'"></li>');
     }
   for(var i = 1; i <= pageLimitVortex; i++) {
     var NumberRandomVortex = Math.floor((Math.random() * 250) + 1); 
