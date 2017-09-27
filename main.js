@@ -28,7 +28,7 @@ function montaLetras() {
       div.style.msTransform     = 'rotate('+NumberRandomforRotate+'deg)'; 
       div.style.oTransform      = 'rotate('+NumberRandomforRotate+'deg)'; 
       div.style.transform       = 'rotate('+NumberRandomforRotate+'deg)';
-      body.style.background = ColorRandom;
+      document.body.style.backgroundColor = ColorRandom;
      
       $('#letters').append(div);
 
