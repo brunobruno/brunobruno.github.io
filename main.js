@@ -1,5 +1,5 @@
 var pageLimit=140;
-var pageLimitVortex=540;
+var pageLimitVortex=240;
 
 
 function montaLetras() {
@@ -36,14 +36,14 @@ function montaLetras() {
 }
 
 
-var numTimeouts = 10000,
-    i = 0;
+// var numTimeouts = 10000,
+//     i = 0;
 
-for (; i < numTimeouts; i++) {
-    window.setTimeout(function () {
-        montaLetras();
-    }, 9000);
-}
+// for (; i < numTimeouts; i++) {
+//     window.setTimeout(function () {
+//         montaLetras();
+//     }, 9000);
+// }
 
 
 
