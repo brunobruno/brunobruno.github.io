@@ -1,5 +1,5 @@
 var pageLimit=240;
-var pageLimitVortex=240;
+var pageLimitVortex=540;
 
 
 function montaLetras() {
