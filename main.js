@@ -1,7 +1,7 @@
 // just a experiment, the important here is that i accomplished what was on my head
 
-var pageLimit=240;
-var pageLimitVortex=340;
+var pageLimit=140;
+var pageLimitVortex=240;
 
 
 function montaLetras() {
