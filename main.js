@@ -5,7 +5,6 @@ var pageLimitVortex=240;
 
 
 function montaLetras() {
-  $('#letters').empty();
    for( i=0; i < 1000; i++) {
 
       var NumberRandom = Math.floor((Math.random() * 250) + 1); 
