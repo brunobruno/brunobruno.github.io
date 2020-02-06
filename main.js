@@ -46,11 +46,11 @@ window.onload = () => {
    for(let i = 0 ; i < pageLimitVortex ;i++){
       let NumberRandomVortex = Math.floor((Math.random() * 250) + 1)
       let brick = document.createElement('div')
-      brick.style.left = i + 'px'
+      brick.style.left = '0.'+ i +'px'
       brick.style.top = i + 'px'
       brick.style.fontSize = i + 'px'
-      brick.textContent = 'I'
-      brick.style.webkitTransform = 'rotate('+ i + NumberRandomVortex +'deg)'
+      brick.style.width = '1' + i +'px'
+      brick.style.transform = rotate3d(1,1,1,'+ i +'deg)
       brick.classList.add('item')
       vortex.appendChild(brick)
   }
