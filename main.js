@@ -1,8 +1,9 @@
 const pageLimit = 240
 const pageLimitVortex = 540
+const body = document.getElementsByTagName('body')
 
 function montaLetras() {
-  const body = document.getElementsByTagName('body')
+  
   const letters = document.getElementById('letters')
   const board = document.getElementById('board')
   letters.innerHTML = ''
