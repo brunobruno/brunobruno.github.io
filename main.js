@@ -51,7 +51,7 @@ window.onload = () => {
       brick.style.fontSize = i + 'px'
       brick.textContent = 'I'
       brick.style.webkitTransform = 'rotate('+ i + NumberRandomVortex +'deg)'
-      brick.classList.add('brick')
+      brick.classList.add('item')
       vortex.appendChild(brick)
   }
   
