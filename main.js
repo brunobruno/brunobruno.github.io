@@ -1,3 +1,5 @@
+const pageLimit = 240
+const pageLimitVortex = 540
   
 function montaLetras() {
   
@@ -36,8 +38,6 @@ function montaLetras() {
 window.onload = () => {
 
   montaLetras();
-  const pageLimit = 240
-  const pageLimitVortex = 540
   
   for(let i = 1; i <= pageLimit; i++) {
     document.getElementsByTagName('board').innerHTML = '<li class="class-'+i+'"></li>'
