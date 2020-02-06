@@ -45,12 +45,13 @@ window.onload = () => {
   
    for(let i = 0 ; i < pageLimitVortex ;i++){
      //let NumberRandomVortex = Math.floor((Math.random() * 250) + 1)
-      let Brick = document.createElement('div')
-      Brick.style.left = i + 'px'
-      Brick.style.top = i + 'px'
-      Brick.style.fontSize = i + 'px'
-      Brick.style.webkitTransform = 'rotate('+ i +'deg)'; 
-      document.body.appendChild(Brick)
+      let brick = document.createElement('div')
+      brick.style.left = i + 'px'
+      brick.style.top = i + 'px'
+      brick.style.fontSize = i + 'px'
+      brick.style.webkitTransform = 'rotate('+ i +'deg)'
+      brick.classList.add('brick')
+      document.body.appendChild(brick)
   }
   
 }
