@@ -36,7 +36,7 @@ function montaLetras() {
 }
 
 window.onload = () => {
-
+  const vortex = document.getElementById('vortex')
   montaLetras();
   
 //   for(let i = 1; i <= pageLimit; i++) {
@@ -51,7 +51,7 @@ window.onload = () => {
       brick.style.fontSize = i + 'px'
       brick.style.webkitTransform = 'rotate('+ i +'deg)'
       brick.classList.add('brick')
-      document.body.appendChild(brick)
+      vortex.appendChild(brick)
   }
   
 }
