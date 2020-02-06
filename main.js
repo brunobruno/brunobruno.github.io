@@ -3,18 +3,20 @@ var pageLimitVortex=540;
 
 
 function montaLetras() {
-  $('#letters').empty();
+  let letters = document.getElementById('letters');
+  letters.innerHTML = '';
+  //$('#letters').empty();
    for( i=0; i < 1000; i++) {
 
-      var NumberRandom = Math.floor((Math.random() * 250) + 1); 
-      var NumberRandomforRotate = Math.floor((Math.random() * 360) + 1); 
-      var value = Math.random() * 0xFF | 0;
-      var grayscale = (value << 16) | (value << 8) | value;
-      var ColorRandom  = '#' + grayscale.toString(16);
-      var div = document.createElement('div');
-      var body = document.getElementsByTagName('body');
-      var chars = "abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ1234567890";
-      var randomChars = chars.substr( Math.floor(Math.random() * 30), 1);
+      let NumberRandom = Math.floor((Math.random() * 250) + 1); 
+      let NumberRandomforRotate = Math.floor((Math.random() * 360) + 1); 
+      let value = Math.random() * 0xFF | 0;
+      let grayscale = (value << 16) | (value << 8) | value;
+      let ColorRandom  = '#' + grayscale.toString(16);
+      let div = document.createElement('div');
+      let body = document.getElementsByTagName('body');
+      let chars = "abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ1234567890";
+      let randomChars = chars.substr( Math.floor(Math.random() * 30), 1);
 
       div.innerHTML = randomChars;
       div.style.height = 45 + 'px';
@@ -29,22 +31,11 @@ function montaLetras() {
       div.style.oTransform      = 'rotate('+NumberRandomforRotate+'deg)'; 
       div.style.transform       = 'rotate('+NumberRandomforRotate+'deg)';
       document.body.style.backgroundColor = ColorRandom;
-     
-      $('#letters').append(div);
+      letters.appendChild(div);
+      //$('#letters').append(div);
 
   }
 }
-
-
-// var numTimeouts = 10000,
-//     i = 0;
-
-// for (; i < numTimeouts; i++) {
-//     window.setTimeout(function () {
-//         montaLetras();
-//     }, 9000);
-// }
-
 
 
 $(document).ready(function() {
