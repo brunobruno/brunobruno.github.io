@@ -36,15 +36,13 @@ function montaLetras() {
   }
 }
 
+montaLetras();
+for(var i = 1; i <= pageLimit; i++) {
+  board.innerHTML = '<li class="class-'+i+'"></li>'
+}
+for(var i = 1; i <= pageLimitVortex; i++) {
+  var NumberRandomVortex = Math.floor((Math.random() * 250) + 1)
+  body.innerHTML ='<div class="item" style="left:0.'+i+'px; top:'+i+'px; transform: rotate3d(1,1,1,'+i+'deg);width:1'+i+'px;"></div>')
+}
 
-$(document).ready(function() {
-    montaLetras();
-    for(var i = 1; i <= pageLimit; i++) {
-      board.innerHTML = '<li class="class-'+i+'"></li>'
-    }
-    for(var i = 1; i <= pageLimitVortex; i++) {
-      var NumberRandomVortex = Math.floor((Math.random() * 250) + 1)
-      body.innerHTML ='<div class="item" style="left:0.'+i+'px; top:'+i+'px; transform: rotate3d(1,1,1,'+i+'deg);width:1'+i+'px;"></div>')
-    }
 
-});
