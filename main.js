@@ -1,5 +1,3 @@
-const pageLimit = 240
-const pageLimitVortex = 540
   
 function montaLetras() {
   
@@ -29,7 +27,7 @@ function montaLetras() {
       div.style.msTransform     = 'rotate('+NumberRandomforRotate+'deg)' 
       div.style.oTransform      = 'rotate('+NumberRandomforRotate+'deg)' 
       div.style.transform       = 'rotate('+NumberRandomforRotate+'deg)'
-      //body.style.backgroundColor = ColorRandom
+      document.getElementsByTagName('body').style.backgroundColor = ColorRandom
       letters.appendChild(div)
 
   }
@@ -37,15 +35,16 @@ function montaLetras() {
 
 window.onload = () => {
 
-  const body = document.getElementsByTagName('body')
-  const board = document.getElementById('board')
-
   montaLetras();
-  for(var i = 1; i <= pageLimit; i++) {
+  const pageLimit = 240
+  const pageLimitVortex = 540
+  
+  for(let i = 1; i <= pageLimit; i++) {
     document.getElementsByTagName('board').innerHTML = '<li class="class-'+i+'"></li>'
   }
-  for(var i = 1; i <= pageLimitVortex; i++) {
-    var NumberRandomVortex = Math.floor((Math.random() * 250) + 1)
+  
+  for(let i = 1; i <= pageLimitVortex; i++) {
+    let NumberRandomVortex = Math.floor((Math.random() * 250) + 1)
     document.getElementsByTagName('body').innerHTML ='<div class="item" style="left:0.'+i+'px; top:'+i+'px; transform: rotate3d(1,1,1,'+i+'deg);width:1'+i+'px;"></div>'
   }
   
