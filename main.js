@@ -6,7 +6,7 @@ function montaLetras() {
   const letters = document.getElementById('letters')
   letters.innerHTML = ''
 
-   for( i=0; i < 1000; i++) {
+   for(i = 0; i < 1000; i++) {
 
       let NumberRandom = Math.floor((Math.random() * 250) + 1)
       let NumberRandomforRotate = Math.floor((Math.random() * 360) + 1) 
@@ -44,13 +44,13 @@ window.onload = () => {
 //   }
   
    for(let i = 0 ; i < pageLimitVortex ;i++){
-     //let NumberRandomVortex = Math.floor((Math.random() * 250) + 1)
+      let NumberRandomVortex = Math.floor((Math.random() * 250) + 1)
       let brick = document.createElement('div')
       brick.style.left = i + 'px'
       brick.style.top = i + 'px'
       brick.style.fontSize = i + 'px'
-      brick.textContent = 'galati'
-      brick.style.webkitTransform = 'rotate('+ i +'deg)'
+      brick.textContent = 'I'
+      brick.style.webkitTransform = 'rotate('+ i + NumberRandomVortex +'deg)'
       brick.classList.add('brick')
       vortex.appendChild(brick)
   }
