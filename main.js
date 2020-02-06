@@ -1,12 +1,9 @@
-window.onload = () => {
-  const pageLimit = 240
-  const pageLimitVortex = 540
-  const body = document.getElementsByTagName('body')
-
+const pageLimit = 240
+const pageLimitVortex = 540
+  
 function montaLetras() {
   
   const letters = document.getElementById('letters')
-  const board = document.getElementById('board')
   letters.innerHTML = ''
 
    for( i=0; i < 1000; i++) {
@@ -32,11 +29,16 @@ function montaLetras() {
       div.style.msTransform     = 'rotate('+NumberRandomforRotate+'deg)' 
       div.style.oTransform      = 'rotate('+NumberRandomforRotate+'deg)' 
       div.style.transform       = 'rotate('+NumberRandomforRotate+'deg)'
-      body.style.backgroundColor = ColorRandom
+      //body.style.backgroundColor = ColorRandom
       letters.appendChild(div)
 
   }
 }
+
+window.onload = () => {
+
+  const body = document.getElementsByTagName('body')
+  const board = document.getElementById('board')
 
   montaLetras();
   for(var i = 1; i <= pageLimit; i++) {
