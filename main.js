@@ -40,12 +40,12 @@ window.onload = () => {
   montaLetras();
   
   for(let i = 1; i <= pageLimit; i++) {
-    document.getElementsByTagName('board').innerHTML = '<li class="class-'+i+'"></li>'
+    document.getElementsByTagName('board').innerHTML += '<li class="class-'+i+'"></li>'
   }
   
   for(let i = 1; i <= pageLimitVortex; i++) {
     let NumberRandomVortex = Math.floor((Math.random() * 250) + 1)
-    document.getElementsByTagName('body').innerHTML ='<div class="item" style="left:0.'+i+'px; top:'+i+'px; transform: rotate3d(1,1,1,'+i+'deg);width:1'+i+'px;"></div>'
+    document.getElementsByTagName('body').innerHTML +='<div class="item" style="left:0.'+i+'px; top:'+i+'px; transform: rotate3d(1,1,1,'+i+'deg);width:1'+i+'px;"></div>'
   }
   
 }
