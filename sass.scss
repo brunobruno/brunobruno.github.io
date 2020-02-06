@@ -69,6 +69,13 @@ li{
           }
 }
 
+.brick{
+  background-color:gray;
+  opacity:.1;
+  height:2px;
+  width:200px;
+}
+
 @media screen and (max-width: $mobile-screen-size ) {
   #board li{
     width: 25%;
