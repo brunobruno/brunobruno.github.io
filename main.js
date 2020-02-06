@@ -50,7 +50,7 @@ window.onload = () => {
       brick.style.top = i + 'px'
       brick.style.fontSize = i + 'px'
       brick.style.width = '1' + i +'px'
-      brick.style.transform = rotate3d(1,1,1,'+ i +'deg)
+      brick.style.transform = 'rotate3d(1,1,1,'+ i +'deg'
       brick.classList.add('item')
       vortex.appendChild(brick)
   }
