@@ -707,6 +707,11 @@ padding:15px;
   width:200px;
 }
 
+#vortex{
+  position: absolute;
+  top: 30px;
+}
+
 @media screen and (max-width: 980px) {
   #board li {
     width: 25%;
