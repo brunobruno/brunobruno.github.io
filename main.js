@@ -29,7 +29,7 @@ function montaLetras() {
       div.style.msTransform     = 'rotate('+NumberRandomforRotate+'deg)' 
       div.style.oTransform      = 'rotate('+NumberRandomforRotate+'deg)' 
       div.style.transform       = 'rotate('+NumberRandomforRotate+'deg)'
-      document.getElementsByTagName('body').style.backgroundColor = ColorRandom
+      //document.getElementsByTagName('body').style.backgroundColor = ColorRandom
       letters.appendChild(div)
 
   }
