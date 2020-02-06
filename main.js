@@ -49,6 +49,7 @@ window.onload = () => {
       brick.style.left = i + 'px'
       brick.style.top = i + 'px'
       brick.style.fontSize = i + 'px'
+      brick.textContent = 'galati'
       brick.style.webkitTransform = 'rotate('+ i +'deg)'
       brick.classList.add('brick')
       vortex.appendChild(brick)
