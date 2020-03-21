@@ -1,40 +1,5 @@
 const pageLimit = 240
 const pageLimitVortex = 540
-  
-function montaLetras() {
-  
-  const letters = document.getElementById('letters')
-  letters.innerHTML = ''
-
-   for(i = 0; i < 1000; i++) {
-
-      let NumberRandom = Math.floor((Math.random() * 250) + 1)
-      let NumberRandomforRotate = Math.floor((Math.random() * 360) + 1) 
-      let value = Math.random() * 0xFF | 0
-      let grayscale = (value << 16) | (value << 8) | value
-      let ColorRandom  = '#' + grayscale.toString(16)
-      let div = document.createElement('div')
-      let chars = "abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ1234567890"
-      let randomChars = chars.substr( Math.floor(Math.random() * 30), 1)
-
-      div.innerHTML = randomChars
-      //div.style.height = 45 + 'px'
-      div.style.opacity = '0.'+ NumberRandom 
-      //div.style.width = 45 + 'px'
-      div.style.fontSize = NumberRandom + 'px'
-      div.style.color = ColorRandom
-      div.style.float = 'left'
-      div.style.webkitTransform = 'rotate('+NumberRandomforRotate+'deg)' 
-      div.style.mozTransform    = 'rotate('+NumberRandomforRotate+'deg)' 
-      div.style.msTransform     = 'rotate('+NumberRandomforRotate+'deg)' 
-      div.style.oTransform      = 'rotate('+NumberRandomforRotate+'deg)' 
-      div.style.transform       = 'rotate('+NumberRandomforRotate+'deg)'
-      div.classList.add('letter')
-      //document.getElementsByTagName('body').style.backgroundColor = ColorRandom
-      letters.appendChild(div)
-
-  }
-}
 
 window.onload = () => {
   const vortex = document.getElementById('vortex')
@@ -56,6 +21,39 @@ window.onload = () => {
       vortex.appendChild(brick)
   }
   
+}
+
+function montaLetras() {
+  
+  const letters = document.getElementById('letters')
+  letters.innerHTML = ''
+
+   for(i = 0; i < 1000; i++) {
+
+      let NumberRandom = Math.floor((Math.random() * 250) + 1)
+      let NumberRandomforRotate = Math.floor((Math.random() * 360) + 1) 
+      let value = Math.random() * 0xFF | 0
+      let grayscale = (value << 16) | (value << 8) | value
+      let ColorRandom  = '#' + grayscale.toString(16)
+      let div = document.createElement('div')
+      let chars = "abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ1234567890"
+      let randomChars = chars.substr( Math.floor(Math.random() * 30), 1)
+
+      div.innerHTML = randomChars
+      div.style.opacity = '0.'+ NumberRandom 
+      div.style.fontSize = NumberRandom + 'px'
+      div.style.color = ColorRandom
+      //div.style.webkitTransform = 'rotate('+NumberRandomforRotate+'deg)' 
+      //div.style.mozTransform    = 'rotate('+NumberRandomforRotate+'deg)' 
+      //div.style.msTransform     = 'rotate('+NumberRandomforRotate+'deg)' 
+      //div.style.oTransform      = 'rotate('+NumberRandomforRotate+'deg)'
+      div.style.filter = 'blur('+NumberRandomforRotate+'px)'
+      div.style.transform = 'rotate('+NumberRandomforRotate+'deg)'
+      div.classList.add('letter')
+      //document.getElementsByTagName('body').style.backgroundColor = ColorRandom
+      letters.appendChild(div)
+
+  }
 }
 
 
