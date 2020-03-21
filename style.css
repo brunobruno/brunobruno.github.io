@@ -691,7 +691,13 @@ padding:15px;
   height:2px;
   width:200px;
 }
-
+.letter{
+  width: 45px;
+  height: 45px;
+}
+.letter:hover{
+  color:red;
+}
 #vortex{
   position: absolute;
   top: 30px;
