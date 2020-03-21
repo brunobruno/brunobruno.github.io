@@ -694,6 +694,7 @@ padding:15px;
 .letter{
   width: 45px;
   height: 45px;
+  float:left;
 }
 .letter:hover{
   color:red;
