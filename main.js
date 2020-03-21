@@ -18,9 +18,9 @@ function montaLetras() {
       let randomChars = chars.substr( Math.floor(Math.random() * 30), 1)
 
       div.innerHTML = randomChars
-      div.style.height = 45 + 'px'
+      //div.style.height = 45 + 'px'
       div.style.opacity = '0.'+ NumberRandom 
-      div.style.width = 45 + 'px'
+      //div.style.width = 45 + 'px'
       div.style.fontSize = NumberRandom + 'px'
       div.style.color = ColorRandom
       div.style.float = 'left'
@@ -29,6 +29,7 @@ function montaLetras() {
       div.style.msTransform     = 'rotate('+NumberRandomforRotate+'deg)' 
       div.style.oTransform      = 'rotate('+NumberRandomforRotate+'deg)' 
       div.style.transform       = 'rotate('+NumberRandomforRotate+'deg)'
+      div.classList.add('letter')
       //document.getElementsByTagName('body').style.backgroundColor = ColorRandom
       letters.appendChild(div)
 
