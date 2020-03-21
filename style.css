@@ -594,7 +594,7 @@ padding-right: 11px;
 left: 0;
 font-family: arial;
 padding-top: 2px;
-z-index:99999999999999;
+z-index:9;
 }
 header a{
 color: white;
@@ -602,6 +602,7 @@ float: left;
 padding-left: 7px;
 text-decoration: none;
 color: #ececec;
+font-size:25px;
 }
 header span{
 font-size: 13px;
