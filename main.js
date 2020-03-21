@@ -43,14 +43,12 @@ function montaLetras() {
       div.style.opacity = '0.'+ NumberRandom 
       div.style.fontSize = NumberRandom + 'px'
       div.style.color = ColorRandom
-      //div.style.webkitTransform = 'rotate('+NumberRandomforRotate+'deg)' 
-      //div.style.mozTransform    = 'rotate('+NumberRandomforRotate+'deg)' 
-      //div.style.msTransform     = 'rotate('+NumberRandomforRotate+'deg)' 
-      //div.style.oTransform      = 'rotate('+NumberRandomforRotate+'deg)'
-      div.style.filter = 'blur('+NumberRandomforRotate+'px)'
+      div.style.webkitTransform = 'rotate('+NumberRandomforRotate+'deg)' 
+      div.style.mozTransform    = 'rotate('+NumberRandomforRotate+'deg)' 
+      div.style.msTransform     = 'rotate('+NumberRandomforRotate+'deg)' 
+      div.style.oTransform      = 'rotate('+NumberRandomforRotate+'deg)'
       div.style.transform = 'rotate('+NumberRandomforRotate+'deg)'
       div.classList.add('letter')
-      //document.getElementsByTagName('body').style.backgroundColor = ColorRandom
       letters.appendChild(div)
 
   }
