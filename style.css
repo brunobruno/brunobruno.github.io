@@ -25,9 +25,7 @@ opacity:.9;
 }
 header a{
   color: white;
-  float: left;
   padding-left: 7px;
-  text-decoration: none;
   color: #ececec;
   font-size:2rem;
 }
@@ -39,6 +37,12 @@ header span{
 h3{
 margin:0;
 font-size:1.8rem;
+  color:red;
+}
+a{
+  text-decoration:none;
+  color:#88dcf5;
+  font-size: 1.5rem;
 }
 p{
 font-size:1.1rem;
