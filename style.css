@@ -36,7 +36,7 @@ header span{
 }
 h3{
 margin:0;
-font-size:1.8rem;
+font-size:1.5rem;
   color:red;
 }
 a{
@@ -62,14 +62,6 @@ width: 10%;
     text-align: center;
     list-style-type: none;
     line-height: 80px;
-}
-#board li:after {
-  content: '+';
-  font-size: 12px;
-  margin-left: -5px;
-  margin-top: -7px;
-  position: absolute;
-  color: #ccc;
 }
 
 .item{
