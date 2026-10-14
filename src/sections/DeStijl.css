@@ -1,0 +1,50 @@
+.destijl {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.destijl__canvas {
+  position: absolute;
+  inset: -10vh -4vw;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: 1.2vw;
+  background: var(--ink);
+  z-index: 0;
+  opacity: 0.95;
+}
+
+.destijl__cell {
+  will-change: transform;
+  filter: blur(14px);
+  opacity: 0.92;
+}
+
+.destijl__cell--red { background: var(--blood); }
+.destijl__cell--blue { background: var(--cobalt); }
+.destijl__cell--yellow { background: var(--yolk); }
+.destijl__cell--white { background: var(--paper); }
+.destijl__cell--black { background: var(--ink); }
+
+.destijl__content {
+  padding: 16vh 0;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.destijl__content > * {
+  background: var(--paper);
+  padding: 1.4rem 1.8rem;
+  width: fit-content;
+  max-width: 100%;
+  border: 3px solid var(--ink);
+}
+
+.destijl__title {
+  font-size: clamp(4.5rem, 13vw, 14rem);
+}
+
+

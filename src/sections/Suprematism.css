@@ -1,0 +1,223 @@
+.supre {
+  background: radial-gradient(90% 70% at 70% 10%, #1b1d2a 0%, #0c0d14 55%, #07070b 100%);
+  color: var(--paper);
+}
+
+.supre__circle,
+.supre__wedge,
+.supre__bar,
+.supre__square {
+  position: absolute;
+  pointer-events: none;
+}
+
+.supre__circle {
+  width: 60vw;
+  height: 60vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(243, 238, 228, 0.22), rgba(243, 238, 228, 0.04) 60%, transparent 72%);
+  filter: blur(30px);
+  right: -18vw;
+  top: 4vh;
+  z-index: 0;
+}
+
+.supre__wedge {
+  width: 0;
+  height: 0;
+  left: 8vw;
+  top: 18vh;
+  border-top: 10vw solid transparent;
+  border-bottom: 10vw solid transparent;
+  border-left: 70vw solid var(--suprematist-red);
+  filter: blur(34px);
+  opacity: 0.8;
+  z-index: 1;
+  transform-origin: left center;
+  will-change: transform;
+}
+
+.supre__bar {
+  background: var(--neon);
+  filter: blur(22px);
+  opacity: 0.5;
+  z-index: 1;
+}
+
+.supre__bar--a {
+  width: 2vw;
+  height: 60vh;
+  left: 18vw;
+  top: 40%;
+}
+
+.supre__bar--b {
+  width: 40vw;
+  height: 1.4vw;
+  right: 4vw;
+  bottom: 18vh;
+  background: var(--cobalt);
+  opacity: 0.8;
+}
+
+.supre__square {
+  width: 14vw;
+  height: 14vw;
+  background: var(--cobalt);
+  filter: blur(40px);
+  opacity: 0.7;
+  left: 55vw;
+  bottom: 30vh;
+  z-index: 1;
+}
+
+.supre__content {
+  padding: 16vh 0 20vh;
+  z-index: 3;
+}
+
+.supre__head {
+  max-width: 1100px;
+}
+
+.supre__title {
+  font-size: clamp(4rem, 11vw, 12rem);
+  margin: 1.5rem 0 4vh;
+  max-width: 10ch;
+}
+
+.supre__title-red {
+  color: var(--suprematist-red);
+  text-shadow: 0 0 40px rgba(227, 43, 31, 0.6);
+}
+
+.supre__title-outline {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--paper);
+}
+
+.supre__timeline {
+  list-style: none;
+  margin: 14vh 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4vh;
+  position: relative;
+}
+
+.supre__timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, var(--neon) 15%, var(--cobalt) 60%, var(--suprematist-red) 90%, transparent);
+  box-shadow: 0 0 18px rgba(198, 255, 63, 0.45);
+  opacity: 0.8;
+}
+
+.supre__item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4vw;
+  align-items: center;
+}
+
+.supre__item--left .supre__year {
+  text-align: right;
+  justify-self: end;
+}
+
+.supre__item--right .supre__card {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.supre__item--right .supre__year {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.supre__year {
+  font-size: clamp(4rem, 9vw, 9rem);
+  line-height: 0.8;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(243, 238, 228, 0.7);
+  text-shadow: 0 0 30px rgba(198, 255, 63, 0.25);
+}
+
+.supre__card {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  padding: 1.6rem 1.8rem;
+  max-width: 520px;
+  background: rgba(20, 22, 34, 0.82);
+  box-shadow:
+    0 30px 60px -30px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.supre__card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(198, 255, 63, 0.12), transparent 40%, rgba(31, 63, 191, 0.14));
+  pointer-events: none;
+}
+
+.supre__card:hover {
+  border-color: rgba(198, 255, 63, 0.55);
+  box-shadow:
+    0 30px 60px -30px rgba(0, 0, 0, 0.8),
+    0 0 40px -10px rgba(198, 255, 63, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.supre__org {
+  font-family: var(--font-wide);
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.supre__place {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  opacity: 0.55;
+}
+
+.supre__what {
+  margin-top: 0.6rem;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  opacity: 0.85;
+}
+
+.supre .chip {
+  border-color: rgba(243, 238, 228, 0.3);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+@media (max-width: 820px) {
+  .supre__item,
+  .supre__item--right .supre__card,
+  .supre__item--right .supre__year {
+    grid-template-columns: 1fr;
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .supre__item--left .supre__year {
+    text-align: left;
+    justify-self: start;
+  }
+  .supre__timeline::before {
+    left: 0;
+  }
+  .supre__timeline {
+    padding-left: 1.5rem;
+  }
+}

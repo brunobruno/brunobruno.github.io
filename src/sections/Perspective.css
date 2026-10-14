@@ -1,0 +1,95 @@
+.persp .pinned__stage {
+  background: radial-gradient(60% 60% at 50% 50%, #0f1020 0%, #07070b 70%);
+  color: var(--paper);
+  display: grid;
+  place-items: center;
+  perspective: 900px;
+}
+
+.persp__glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(28% 28% at 50% 50%, rgba(198, 255, 63, 0.35), rgba(25, 195, 230, 0.12) 40%, transparent 70%);
+  filter: blur(20px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.persp__rays {
+  position: absolute;
+  width: 140vmax;
+  height: 140vmax;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  z-index: 1;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.persp__tunnel {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.persp__frame {
+  position: absolute;
+  width: 34vmin;
+  height: 34vmin;
+  border-style: solid;
+  border-radius: 2px;
+  will-change: transform, opacity;
+}
+
+.persp__title-wrap {
+  position: absolute;
+  z-index: 3;
+  text-align: center;
+  pointer-events: none;
+  padding: 0 4vw;
+}
+
+.persp__title {
+  font-size: clamp(4rem, 14vw, 16rem);
+  margin-top: 1.2rem;
+}
+
+.persp__title-sub {
+  display: block;
+  font-family: var(--font-italic);
+  font-style: italic;
+  font-weight: 300;
+  text-transform: none;
+  font-size: 0.22em;
+  letter-spacing: 0.02em;
+  margin-top: 0.3em;
+  opacity: 0.85;
+}
+
+.persp__copy {
+  position: absolute;
+  bottom: 8vh;
+  left: 50%;
+  translate: -50% 0;
+  z-index: 4;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: end;
+  padding: 1.6rem 2rem;
+  background: rgba(7, 7, 11, 0.78);
+  border: 1px solid rgba(243, 238, 228, 0.12);
+  border-radius: 14px;
+}
+
+@media (max-width: 860px) {
+  .persp__copy {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    bottom: 4vh;
+  }
+}

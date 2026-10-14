@@ -1,0 +1,62 @@
+.chrome__progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--blood);
+  transform-origin: left;
+  z-index: 1000;
+  mix-blend-mode: difference;
+}
+
+.chrome__nav {
+  position: fixed;
+  right: 1.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  z-index: 1000;
+  mix-blend-mode: difference;
+  color: #fff;
+}
+
+.chrome__dot {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.chrome__dot:hover {
+  opacity: 1;
+}
+
+.chrome__label {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: max-width 0.35s ease;
+}
+
+.chrome__dot:hover .chrome__label {
+  max-width: 140px;
+}
+
+.chrome__num {
+  font-family: var(--font-wide);
+  font-weight: 700;
+}
+
+@media (max-width: 760px) {
+  .chrome__nav {
+    display: none;
+  }
+}

@@ -1,0 +1,161 @@
+.hero {
+  background: var(--paper);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero__content {
+  padding: 14vh 0 16vh;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.hero__eyebrow {
+  margin-bottom: 3vh;
+}
+
+.hero__title {
+  font-size: clamp(3.6rem, 13vw, 15rem);
+  line-height: 0.9;
+  display: flex;
+  justify-content: center;
+  gap: 0.22em;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+.hero__title-first,
+.hero__title-accent {
+  display: inline-block;
+}
+
+.hero__tagline {
+  margin-top: 5vh;
+  font-size: clamp(1.5rem, 3vw, 3rem);
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.hero__tagline em {
+  font-family: var(--font-italic);
+  font-weight: 500;
+  font-size: 1.1em;
+  color: var(--cobalt);
+}
+
+.hero__lede {
+  margin-top: 2.5vh;
+  max-width: 62ch;
+  font-size: clamp(0.95rem, 1.15vw, 1.15rem);
+  line-height: 1.65;
+  opacity: 0.78;
+}
+
+.hero__quote {
+  margin-top: 4vh;
+  font-size: clamp(1.1rem, 1.6vw, 1.6rem);
+  opacity: 0.7;
+}
+
+/* --- Bauhaus geometry, dissolved --- */
+.hero__circle,
+.hero__triangle,
+.hero__bar,
+.hero__small-circle,
+.hero__grid {
+  position: absolute;
+  pointer-events: none;
+}
+
+.hero__circle {
+  width: 52vw;
+  height: 52vw;
+  right: -14vw;
+  top: -12vw;
+  border-radius: 50%;
+  background: var(--yolk);
+  filter: blur(28px);
+  opacity: 0.9;
+  z-index: 1;
+}
+
+.hero__triangle {
+  width: 0;
+  height: 0;
+  left: -8vw;
+  bottom: -10vw;
+  border-left: 32vw solid transparent;
+  border-right: 32vw solid transparent;
+  border-bottom: 48vw solid var(--cobalt);
+  filter: blur(26px);
+  opacity: 0.85;
+  z-index: 2;
+  mix-blend-mode: multiply;
+}
+
+.hero__bar {
+  width: 120vw;
+  height: 4vw;
+  left: -10vw;
+  top: 58%;
+  background: var(--ink);
+  filter: blur(14px);
+  opacity: 0.55;
+  transform-origin: left;
+  z-index: 2;
+}
+
+.hero__small-circle {
+  width: 14vw;
+  height: 14vw;
+  right: 20vw;
+  bottom: 10vh;
+  border-radius: 50%;
+  background: var(--blood);
+  filter: blur(20px);
+  opacity: 0.85;
+  z-index: 2;
+}
+
+.hero__grid {
+  inset: 0;
+  background-image: linear-gradient(var(--ink) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ink) 1px, transparent 1px);
+  background-size: 8vw 8vw;
+  opacity: 0.05;
+  z-index: 0;
+}
+
+.hero__scroll {
+  position: absolute;
+  bottom: 3vh;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  z-index: 4;
+}
+
+.hero__scroll-line {
+  width: 1px;
+  height: 56px;
+  background: var(--ink);
+  animation: pulse-line 1.8s ease-in-out infinite;
+  transform-origin: top;
+}
+
+@keyframes pulse-line {
+  0% { transform: scaleY(0); opacity: 0; }
+  40% { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(1) translateY(20px); opacity: 0; }
+}

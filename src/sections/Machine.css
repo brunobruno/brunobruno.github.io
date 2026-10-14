@@ -1,0 +1,98 @@
+.machine {
+  background: var(--ink);
+  color: var(--paper);
+  min-height: 130vh;
+  display: flex;
+  align-items: center;
+}
+
+.machine__brush {
+  position: absolute;
+  height: 1.6vw;
+  border-radius: 999px;
+  opacity: 0.85;
+  mix-blend-mode: screen;
+  filter: blur(0.5px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.machine__brush:nth-child(3n) {
+  height: 0.5vw;
+}
+
+.machine__brush:nth-child(4n) {
+  height: 3.4vw;
+  opacity: 0.6;
+  filter: blur(6px);
+}
+
+.machine__net {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.machine__content {
+  padding: 18vh 0;
+  z-index: 2;
+}
+
+.machine__title {
+  font-size: clamp(4.5rem, 13vw, 14rem);
+  margin: 1.5rem 0 5vh;
+}
+
+.machine__title-neon {
+  color: var(--neon);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 900;
+  text-transform: none;
+  font-size: 0.85em;
+}
+
+.machine__grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1fr;
+  gap: 3rem;
+  max-width: 1300px;
+}
+
+.machine__grid strong {
+  color: var(--neon);
+  font-weight: 500;
+}
+
+.machine__principles {
+  list-style: none;
+  padding: 0;
+  margin: 10vh 0 0;
+  border-top: 1px solid rgba(243, 238, 228, 0.25);
+  max-width: 900px;
+}
+
+.machine__principles li {
+  display: flex;
+  gap: 2rem;
+  align-items: baseline;
+  padding: 1.4rem 0;
+  border-bottom: 1px solid rgba(243, 238, 228, 0.25);
+  font-family: var(--font-serif);
+  font-size: clamp(1.1rem, 1.8vw, 1.7rem);
+}
+
+.machine__principles .wide {
+  font-size: 0.7rem;
+  color: var(--neon);
+  letter-spacing: 0.2em;
+}
+
+@media (max-width: 960px) {
+  .machine__grid {
+    grid-template-columns: 1fr;
+  }
+}
