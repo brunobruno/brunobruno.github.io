@@ -10,11 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.8.2",
     "framer-motion": "^12.23.12",
     "motion-dom": "^12.23.12",
     "motion-utils": "^12.23.6",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "react-globe.gl": "^2.38.0",
+    "three": "^0.186.1"
   },
   "devDependencies": {
     "@types/react": "^19.2.18",

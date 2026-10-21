@@ -1,0 +1,246 @@
+.evo .pinned__stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.evo__sun {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 70vmin;
+  height: 70vmin;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(25, 195, 230, 0.35) 0%, rgba(139, 92, 246, 0.18) 35%, transparent 70%);
+  filter: blur(30px);
+  pointer-events: none;
+  animation: evo-breathe 7s ease-in-out infinite;
+}
+
+@keyframes evo-breathe {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.12);
+  }
+}
+
+.evo__rings {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.evo__ring {
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+}
+
+.evo__ring--1 {
+  width: 60vmin;
+  height: 60vmin;
+  animation: evo-spin 60s linear infinite;
+}
+.evo__ring--2 {
+  width: 92vmin;
+  height: 92vmin;
+  border-style: dashed;
+  animation: evo-spin 90s linear infinite reverse;
+}
+.evo__ring--2::after {
+  background: var(--lime);
+  box-shadow: 0 0 14px var(--lime);
+}
+.evo__ring--3 {
+  width: 130vmin;
+  height: 130vmin;
+  opacity: 0.6;
+  animation: evo-spin 140s linear infinite;
+}
+.evo__ring--3::after {
+  background: #fff;
+  box-shadow: 0 0 10px #fff;
+}
+
+@keyframes evo-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.evo__title-wrap {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.2rem;
+  padding-top: 8vh;
+}
+
+.evo__title {
+  font-size: clamp(4.2rem, 15vw, 16rem);
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.6rem;
+}
+
+.evo__title-accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 900;
+  text-transform: none;
+  font-size: 0.78em;
+  line-height: 1;
+  padding-right: 0.1em;
+}
+
+.evo__tagline {
+  font-size: clamp(1.4rem, 2.6vw, 2.4rem);
+}
+
+.evo__tagline em {
+  font-family: var(--font-italic);
+  color: var(--lime);
+  font-size: 1.1em;
+}
+
+.evo__lede {
+  max-width: 62ch;
+  font-size: clamp(0.95rem, 1.15vw, 1.15rem);
+  line-height: 1.65;
+  opacity: 0.85;
+}
+
+.evo__quote {
+  font-size: clamp(1.1rem, 1.6vw, 1.5rem);
+  color: var(--cyan);
+}
+
+.evo__scroll {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2vh;
+  font-size: 0.6rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.evo__scroll-line {
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--paper), transparent);
+  animation: evo-line 1.8s ease-in-out infinite;
+}
+
+@keyframes evo-line {
+  0%,
+  100% {
+    transform: scaleX(0.4);
+    transform-origin: left;
+  }
+  50% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* act 2 — the rail */
+.evo__rail {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.evo__beam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan) 20%, var(--lime) 80%, transparent);
+  transform-origin: left;
+  box-shadow: 0 0 18px rgba(25, 195, 230, 0.6);
+}
+
+.evo__eras {
+  position: absolute;
+  left: 50%;
+  display: flex;
+  gap: clamp(2rem, 6vw, 7rem);
+  will-change: transform;
+}
+
+.evo__era {
+  position: relative;
+  width: clamp(200px, 22vw, 300px);
+  padding: 2.4rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.evo__era-dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 0 6px rgba(198, 255, 63, 0.15), 0 0 24px var(--lime);
+  translate: -50% -50%;
+}
+
+.evo__era-name {
+  font-size: clamp(1.8rem, 3.4vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1;
+  margin: 0;
+}
+
+.evo__era-note {
+  font-family: var(--font-serif);
+  font-size: clamp(0.95rem, 1.2vw, 1.2rem);
+  line-height: 1.35;
+  opacity: 0.8;
+}
+
+/* act 3 */
+.evo__outro {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  align-items: center;
+  text-align: center;
+}
+
+.evo__outro-phrase {
+  font-size: clamp(2rem, 4.4vw, 4.6rem);
+  max-width: 18ch;
+}
+
+.evo__outro .body {
+  max-width: 60ch;
+}
+
+@media (max-width: 760px) {
+  .evo__title-wrap {
+    padding-top: 4vh;
+  }
+  .evo__era {
+    width: 70vw;
+  }
+}

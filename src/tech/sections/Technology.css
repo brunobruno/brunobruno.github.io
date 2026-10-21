@@ -1,0 +1,202 @@
+.techno {
+  min-height: 160vh;
+  display: flex;
+  align-items: center;
+  padding: 14vh 0;
+}
+
+/* a synthwave floor: perspective grid that scrolls forever */
+.techno__floor-wrap {
+  position: absolute;
+  inset: 0;
+  perspective: 600px;
+  perspective-origin: 50% 40%;
+  pointer-events: none;
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 45%, #000 100%);
+}
+
+.techno__floor {
+  position: absolute;
+  left: -50%;
+  right: -50%;
+  top: 48%;
+  height: 120%;
+  transform-origin: top;
+  transform: rotateX(72deg);
+  background-image:
+    linear-gradient(rgba(25, 195, 230, 0.35) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(25, 195, 230, 0.35) 1px, transparent 1px);
+  background-size: 80px 80px;
+  animation: techno-floor 3s linear infinite;
+}
+
+@keyframes techno-floor {
+  to {
+    background-position: 0 80px, 0 0;
+  }
+}
+
+.techno__horizon {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan), var(--lime), transparent);
+  filter: blur(1px);
+  box-shadow: 0 0 40px var(--cyan);
+  opacity: 0.6;
+}
+
+/* falling data columns */
+.techno__col {
+  position: absolute;
+  top: -20vh;
+  width: 1px;
+  height: var(--h);
+  background: linear-gradient(to bottom, transparent, rgba(198, 255, 63, 0.7), transparent);
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+.techno__col::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  animation: techno-fall var(--dur) linear infinite;
+  animation-delay: var(--delay);
+}
+
+@keyframes techno-fall {
+  from {
+    transform: translateY(-40vh);
+  }
+  to {
+    transform: translateY(140vh);
+  }
+}
+
+.techno__content {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(2rem, 5vw, 6rem);
+  align-items: start;
+  z-index: 2;
+}
+
+.techno__lead {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  position: sticky;
+  top: 12vh;
+}
+
+.techno__title {
+  font-size: clamp(3.4rem, 8vw, 8.6rem);
+}
+
+.techno__title-accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 900;
+  text-transform: none;
+  font-size: 0.78em;
+}
+
+.techno__side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding-top: 6vh;
+}
+
+.techno__chart {
+  padding: 1.6rem 1.6rem 1.2rem;
+}
+
+.techno__chart ul {
+  list-style: none;
+  margin: 1.2rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.techno__chart li {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr 5rem;
+  align-items: center;
+  gap: 0.9rem;
+  font-size: 0.85rem;
+}
+
+.techno__chart-track {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(207, 232, 255, 0.08);
+  overflow: hidden;
+}
+
+.techno__chart-track i {
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform-origin: left;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--violet), var(--cyan), var(--lime));
+  box-shadow: 0 0 12px rgba(25, 195, 230, 0.5);
+}
+
+.techno__chart-val {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.75rem;
+  text-align: right;
+  opacity: 0.8;
+}
+
+.techno__stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.techno__stat {
+  padding: 1.4rem 1.6rem;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  gap: 0.35rem;
+  align-items: baseline;
+}
+
+.techno__stat-value {
+  font-size: clamp(1.9rem, 3.2vw, 2.9rem);
+  color: var(--lime);
+}
+
+.techno__stat-label {
+  font-family: var(--font-serif);
+  font-size: clamp(0.95rem, 1.15vw, 1.1rem);
+  line-height: 1.35;
+}
+
+.techno__note {
+  font-size: clamp(1.15rem, 1.6vw, 1.5rem);
+  color: var(--cyan);
+  max-width: 30ch;
+}
+
+@media (max-width: 960px) {
+  .techno__content {
+    grid-template-columns: 1fr;
+  }
+  .techno__lead {
+    position: static;
+  }
+  .techno__chart li {
+    grid-template-columns: 5rem 1fr 4.5rem;
+  }
+}

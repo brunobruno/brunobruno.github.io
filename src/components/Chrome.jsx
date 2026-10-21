@@ -1,21 +1,7 @@
 import { motion, useScroll, useSpring } from 'framer-motion'
 import './Chrome.css'
 
-const chapters = [
-  ['hero', 'Manifesto'],
-  ['cave', 'Origins'],
-  ['perspective', 'Depth'],
-  ['destijl', 'Structure'],
-  ['opart', 'Perception'],
-  ['suprematism', 'Direction'],
-  ['velocity', 'Speed'],
-  ['pop', 'Repetition'],
-  ['rothko', 'Reflection'],
-  ['machine', 'Intelligence'],
-  ['contact', 'Contact'],
-]
-
-export default function Chrome() {
+export default function Chrome({ chapters }) {
   const { scrollYProgress } = useScroll()
   const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30 })
   return (

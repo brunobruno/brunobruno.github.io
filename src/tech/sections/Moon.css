@@ -1,0 +1,152 @@
+.moon .pinned__stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.moon__dust {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 120%, rgba(207, 232, 255, 0.12), transparent 55%),
+    radial-gradient(ellipse at 50% 50%, rgba(139, 92, 246, 0.08), transparent 60%);
+}
+
+.moon__stage {
+  position: relative;
+  width: min(80vmin, 760px);
+  aspect-ratio: 1;
+  will-change: transform;
+  z-index: 1;
+}
+
+/* R3F's wrapper clips by default; let marker labels hang past the canvas edge */
+.moon__stage > div {
+  overflow: visible !important;
+}
+
+.moon__stage canvas {
+  cursor: grab;
+}
+
+.moon__stage canvas:active {
+  cursor: grabbing;
+}
+
+.moon__glow {
+  position: absolute;
+  inset: -12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(207, 232, 255, 0.16) 30%, rgba(74, 111, 168, 0.12) 50%, transparent 70%);
+  filter: blur(14px);
+  pointer-events: none;
+}
+
+.moon__label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: 8px;
+  background: rgba(3, 4, 10, 0.72);
+  border: 1px solid rgba(198, 255, 63, 0.35);
+  color: #f3eee4;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  transform: translate(14px, -50%);
+  backdrop-filter: blur(6px);
+}
+
+.moon__label strong {
+  color: #c6ff3f;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+}
+
+.moon__copy {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.moon__copy--intro {
+  top: 9vh;
+  align-items: flex-start;
+}
+
+.moon__copy--intro .phrase {
+  max-width: 24ch;
+}
+
+.moon__copy--mid {
+  left: 4vw;
+  width: min(560px, 40vw);
+  align-items: flex-start;
+}
+
+.moon__copy--outro {
+  bottom: 9vh;
+  align-items: center;
+  text-align: center;
+}
+
+.moon__outro-phrase {
+  max-width: 26ch;
+}
+
+.moon__title {
+  font-size: clamp(3.4rem, 9vw, 9.5rem);
+}
+
+.moon__title-accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 900;
+  text-transform: none;
+  font-size: 0.8em;
+}
+
+.moon__toast {
+  position: absolute;
+  left: 50%;
+  bottom: 4vh;
+  translate: -50% 0;
+  padding: 0.9rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: center;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.moon__toast strong {
+  font-family: var(--font-wide);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.moon__toast span:last-child {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  opacity: 0.75;
+}
+
+@media (max-width: 960px) {
+  .moon__copy--mid {
+    width: 92vw;
+    left: 4vw;
+    bottom: 6vh;
+  }
+  .moon__stage {
+    width: 88vw;
+  }
+}

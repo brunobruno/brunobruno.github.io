@@ -1,0 +1,271 @@
+# Bruno Galati — Portfolio: Technical Documentation
+
+> Written for humans **and** for future AI prompts. If you are an AI asked to change this
+> site, read this file first, then the specific section/slide file. Keep this document updated
+> when you add, remove or re-choreograph a slide.
+
+Live: https://brunobruno.github.io · Repo root: this folder · Stack: React 19 + Vite 8 + Framer Motion 12
+(+ three.js / react-globe.gl / @react-three/fiber for the Tech view only).
+
+---
+
+## 1. One-paragraph summary
+
+A single-page, scroll-driven portfolio with **two independent parallax "worlds"** selected by a fixed pill
+switcher at the top of the page:
+
+| View | URL | Theme | Entry file |
+|---|---|---|---|
+| **Design** (default) | `/` | A walk through art history (Lascaux → Rothko → AI) on paper/ink colours | `src/App.jsx` → `DesignView()` |
+| **Tech** | `/?view=tech` | Outer space: evolution of tools → interactive Earth with live World Bank data → capital → technology → people → interactive Moon | `src/tech/TechView.jsx` (lazy) |
+
+Both views share the chrome (progress bar, right-hand chapter nav, switcher), the Footer, the global type
+system and the parallax primitives in `src/components/Parallax.jsx`.
+
+---
+
+## 2. Commands
+
+```bash
+npm install
+npm run dev       # http://localhost:5173  (add ?view=tech for the Tech view)
+npm run build     # outputs dist/ (two JS chunks: main + TechView)
+npm run preview
+npm run lint      # oxlint; 3 known harmless warnings (new Date() in render, unused `profile` import in Hero)
+```
+
+Deployment: `.github/workflows/deploy.yml` builds and publishes `dist/` to GitHub Pages on every push to `main`.
+`vite.config.js` uses `base: '/'` (user site). `public/404.html` + `.nojekyll` keep Pages happy.
+
+---
+
+## 3. Repository map
+
+```
+index.html                     fonts (Google Fonts: Bebas Neue, Playfair, Unbounded, Space Grotesk, Cormorant), meta
+public/
+  data/countries.geojson       Natural Earth 110m admin-0 (vendored, 488 KB) – used by the Tech globe
+src/
+  main.jsx                     React root (StrictMode)
+  App.jsx                      view state (?view=), AnimatePresence swap, lazy TechView, ViewSwitcher + Chrome
+  views.js                     VIEWS registry: label + chapter list (ids must match section ids) + readView()
+  styles/global.css            CSS variables (palette + fonts), .section/.pinned primitives, type utilities
+  components/
+    Parallax.jsx               ParallaxSection, PinnedSection, Layer, Reveal, SplitWords  (shared by both views)
+    Chrome.jsx/.css            scroll progress bar + chapter dots (receives `chapters` prop)
+    ViewSwitcher.jsx/.css      fixed "Design | Tech" pill (framer layoutId pill)
+    FlowField.jsx              canvas flow field used by Design › Velocity
+  data/content.js              profile + career timeline (Design view copy)
+  sections/                    DESIGN VIEW slides (Hero, Cave, Perspective, DeStijl, OpArt, Suprematism,
+                               Velocity, Pop, Rothko, Machine, Footer) – one .jsx + one .css each
+  tech/                        TECH VIEW
+    TechView.jsx               fetches World Bank data once, provides WorldContext, renders Starfield + slides
+    world.js                   WorldContext / useWorld()  (separate file to avoid circular imports)
+    tech.css                   Tech tokens (--space, --cyan, --lime, --violet, glass panels, .hud, .stat …)
+    data/worldbank.js          World Bank API client + sessionStorage cache + money()/people() formatters
+    data/companies.js          curated "largest company per country" dataset (ISO3 → {name, cap $B, sector})
+    components/
+      Starfield.jsx            fixed full-screen canvas: 3 parallax star layers, nebula, comets, scroll warp
+      Counter.jsx              Counter (count-up on view) + LiveCounter (keeps ticking, e.g. population clock)
+      MoonScene.jsx            R3F <Canvas>: procedural GLSL moon, OrbitControls, click-to-land markers
+    sections/                  TECH slides – Evolution, Earth, Money, Technology, Population, Moon (+ .css)
+```
+
+---
+
+## 4. Shared architecture
+
+### 4.1 Parallax primitives (`src/components/Parallax.jsx`)
+
+| Primitive | What it does | Progress semantics |
+|---|---|---|
+| `ParallaxSection` | `<section class="section">`, min-height 100vh, render-prop `children(progress)` | 0 when the section's top enters the bottom of the viewport → 1 when its bottom leaves the top |
+| `PinnedSection` | tall section (`height` prop, e.g. `320vh`) whose `.pinned__stage` is `position: sticky; height: 100vh` | 0 when the stage pins → 1 when it unpins. **Use this to "play a scene"** |
+| `Layer` | drifts a child vertically at `speed` (+ optional rotate/scale/x) | — |
+| `Reveal` | fade+rise once when scrolled into view (`whileInView`) | — |
+| `SplitWords` | masked word-by-word headline reveal | — |
+
+Progress values are already spring-smoothed (`useSpring`). Every slide follows the same recipe:
+
+```jsx
+export default function Slide() {
+  return <PinnedSection id="money" className="money" height="320vh">{(p) => <Scene p={p} />}</PinnedSection>
+}
+function Scene({ p }) {
+  const opacity = useTransform(p, [0, 0.3, 0.38], [1, 1, 0])   // keyframes on scroll progress
+  return <motion.div style={{ opacity }} />
+}
+```
+
+**Rule:** the first act of a pinned slide must be visible at `p = 0` (start keyframes at opacity 1),
+otherwise the visitor sees an empty screen for the first few hundred pixels.
+
+### 4.2 View switching (`App.jsx`, `views.js`, `ViewSwitcher.jsx`)
+
+* View is read from `?view=tech` (anything else → `design`). `setView` pushes history, clears the hash and
+  scrolls to top instantly; `popstate` is handled so back/forward works.
+* `document.documentElement.dataset.view` is set (`:root[data-view='tech']` is used to recolour the pill).
+* `AnimatePresence mode="wait"` swaps the whole view with **opacity + y only**. Do **not** animate `filter`
+  or `scale` on that wrapper: a non-`none` filter/transform turns it into a containing block and breaks the
+  `position: fixed` starfield and the sticky stages inside.
+* `TechView` is `React.lazy` → three.js/globe.gl (≈665 KB gzip) are only downloaded when the switch is used.
+  The Design bundle stays ≈120 KB gzip.
+* Chapter nav: `Chrome` receives `VIEWS[view].chapters`; ids must match the rendered section ids.
+
+### 4.3 Type & colour system (`global.css`, `tech.css`)
+
+Utilities used everywhere: `.display` (Bebas, uppercase), `.serif` (Playfair), `.italic` (Cormorant),
+`.wide` (Unbounded), `.eyebrow`, `.phrase` (+ `em` accent), `.body`, `.outline`, `.chips/.chip`.
+Tech adds `.hud` (tiny tracked caps, cyan; `.hud--lime`), `.stat` (big thin tabular numbers),
+`.gradient-text` (white→cyan→lime), `.glass` (blurred panel), `.beam`, `.orbit`.
+
+Design palette lives in `:root` (`--ink`, `--paper`, `--yolk`, `--klein`, …). Tech palette is scoped under
+`.tech` (`--space`, `--cyan #19c3e6`, `--lime #c6ff3f`, `--violet`, `--gold`, `--glass`, `--glass-border`).
+
+**Class-name namespaces matter** – both views' CSS is global. Each slide owns a BEM block
+(`.hero__`, `.cave__`, `.evo__`, `.earth__`, `.money__`, `.techno__`, `.people__`, `.moon__`).
+`Population` deliberately uses `.people` because `.pop` is already taken by Design › Pop (yellow background).
+Before adding a block name, grep `src/**/*.css` for it.
+
+---
+
+## 5. Design view (art history) — slide by slide
+
+| # | id | File | Idea | Mechanic |
+|---|---|---|---|---|
+| 01 | `hero` | `sections/Hero.jsx` | Manifesto; Bauhaus primitives | `ParallaxSection`; blurred circle/triangle/bar `Layer`s, entrance animations, fade-out on scroll |
+| 02 | `cave` | `Cave.jsx` | Lascaux – origins of mark-making | ochre layers, hand stencils |
+| 03 | `perspective` | `Perspective.jsx` | Brunelleschi – perspective as first UI | **Pinned** tunnel of frames flying toward the camera, rotating rays |
+| 04 | `destijl` | `DeStijl.jsx` | Mondrian – structure/grids | sliding colour blocks |
+| 05 | `opart` | `OpArt.jsx` | Riley/Vasarely – perception | moiré stripes driven by scroll |
+| 06 | `suprematism` | `Suprematism.jsx` | Malevich – direction/CV timeline | flying rectangles + career timeline from `data/content.js` |
+| 07 | `velocity` | `Velocity.jsx` | Futurism – speed | `FlowField` canvas (particles follow a curl-ish field, cursor bends it) |
+| 08 | `pop` | `Pop.jsx` | Warhol – repetition/stack chips | halftone grid, repeated tiles (yellow bg → `.pop`) |
+| 09 | `rothko` | `Rothko.jsx` | Reflection | breathing colour fields |
+| 10 | `machine` | `Machine.jsx` | AI as "the camera of our century" | neon brush strokes + self-drawing neural lattice |
+| 11 | `contact` | `Footer.jsx` | Klein-blue contact footer (shared by both views) | — |
+
+Copy for the Design view is inline in each section; profile/timeline data is in `src/data/content.js`.
+
+---
+
+## 6. Tech view (space) — slide by slide
+
+Global backdrop: `components/Starfield.jsx` — one `position: fixed` canvas behind every slide.
+Always alive (twinkle, slow drift, comets every 3–9 s, two breathing nebula gradients), reacts to scroll
+(3 depth layers at different parallax rates; scroll *velocity* stretches stars into warp lines) and to the
+pointer (gentle tilt). Respects `prefers-reduced-motion`. Pauses on hidden tabs.
+
+Data: `TechView` calls `loadWorldData()` once and exposes `{ data, error }` via `useWorld()`:
+
+```js
+data = {
+  gdp:        { USA: { value, year, name }, ... },   // NY.GDP.MKTP.CD, current US$
+  population: { USA: { value, year, name }, ... },   // SP.POP.TOTL
+  world:      { gdp, population, year },             // WLD aggregate (falls back to the sum)
+}
+```
+
+| # | id | File | Height | Choreography (p = pinned progress) |
+|---|---|---|---|---|
+| 01 | `evolution` | `tech/sections/Evolution.jsx` | pinned 380vh | **Act 1 (0–0.3)** title "Nothing stays built." + personal copy about rebuilding the toolkit; breathing sun glow + three rotating orbit rings (CSS spin + scroll rotate). **Act 2 (0.3–0.82)** a horizontal rail of 7 eras (Stone → Press → Transistor → Web → Touch → Models → You) flies right-to-left over a glowing beam; each era brightens/lifts as it crosses the centre. **Act 3 (0.84–1)** "Frameworks expire. Curiosity compounds." |
+| 02 | `earth` | `Earth.jsx` | section 150vh | `react-globe.gl` globe (no texture: dark Phong sphere, cyan atmosphere). Countries = **hex-dot polygons** coloured by log-GDP (dim → cyan → lime) and slightly extruded by GDP. Labels on the top-12 economies: `"$29.2T · NVIDIA"`. **Interactions:** auto-rotates; drag to orbit; hover shows a flag+name chip; **click a country** → fly-to, white highlight, pulsing lime rings, animated arcs from the top-8 economies into it, and the glass panel shows GDP, population, GDP/capita and the largest company (name, ≈market cap, sector). Click empty space or × → back to World. Right column: title, panel, clickable top-8 bar list. Globe scales/rises in with section progress and is paused via IntersectionObserver when off-screen. |
+| 03 | `money` | `Money.jsx` | pinned 320vh | "Money is the oldest software." Continuous **capital streams** (light packets crossing the screen). A **donut ring** of the top-10 economies as a share of gross world product draws itself with scroll (`strokeDashoffset`), the remaining ~180 countries as a dim grey arc; centre shows a counting `$xxx.xT` total. Ring sits right during the intro, slides left for the mid copy (legend appears), centres for the outro facts: $7.5T FX/day (BIS 2022), output per human (computed), ~65 ms transatlantic round trip. |
+| 04 | `technology` | `Technology.jsx` | section 160vh | "Every curve is getting steeper." Synthwave perspective floor (CSS 3D grid, animated), falling data columns as `Layer`s, sticky left copy. Right: **time-to-100M-users chart** (Telephone 75y … ChatGPT 2 months; bars animate via variants) + a 2×2 stat grid: 5.5B online / 2.6B offline (ITU 2024), 8.9B mobile connections (GSMA 2024), 6h 40m daily screen time (DataReportal 2024), Moore 2×. |
+| 05 | `population` | `Population.jsx` | pinned 300vh | "Eight billion reasons to care." A **1,000-dot canvas matrix** (each dot ≈ 8.2M people) lights up with scroll with an organic jittered front and breathing pulses. Mid: glass **live population clock** = World Bank mid-year total + 2.2 people/s since 1 July of that year (UN WPP 2024 net rate), with births/deaths rates. Outro: accessibility message. |
+| 06 | `moon` | `Moon.jsx` + `components/MoonScene.jsx` | pinned 340vh | **Fully procedural GLSL moon** (no textures): multi-octave cell-noise craters with bowls and rims, fbm maria, regolith grain, vertex displacement, finite-difference bump normals, Lambert + wrap lighting, blue earthshine on the dark side. **Scroll sweeps the sun** (thin crescent on arrival → full moon at the finale). **Interactions:** drag to orbit (OrbitControls, damping, auto-rotate, zoom disabled so the wheel still scrolls the page), **click the surface to drop a landing marker** (pulsing lime ring + HTML label with lat/lng; "Touchdown confirmed" toast). Tranquility Base (Apollo 11) is pre-placed. Moon enters small from the right, parks right for the mid copy, centres and lifts for the outro. `frameloop` switches to `never` when off-screen. |
+| 07 | `contact` | `../sections/Footer.jsx` | — | shared footer |
+
+Copy tone for the Tech view: inspiring, first person, short "HUD" eyebrows (`Transmission 0N · Name`),
+one italic lime accent word per phrase.
+
+---
+
+## 7. Data sources & how to refresh them
+
+| Data | Source | Where | Notes |
+|---|---|---|---|
+| GDP (current US$), population per country, world totals | **World Bank Indicators API** (public, no key) `https://api.worldbank.org/v2/country/{all|WLD}/indicator/{NY.GDP.MKTP.CD|SP.POP.TOTL}?format=json&mrv=1&per_page=400` | `tech/data/worldbank.js` | `mrv=1` = most recent value. Aggregates (regions/income groups) are filtered by the `AGGREGATES` set. Cached in `sessionStorage`. A per-day `&d=YYYY-MM-DD` cache-buster is appended because Cloudflare occasionally serves a cached copy **without CORS headers**. Fetches use `Promise.allSettled`, so one failing indicator doesn't kill the view. |
+| Country shapes, ISO codes, fallback POP_EST / GDP_MD_EST | Natural Earth 110m (public domain), vendored from the react-globe.gl examples | `public/data/countries.geojson` | Use `ISO_A3`, falling back to `ADM0_A3` when it is `-99` (France, Norway, Kosovo…); same for `ISO_A2` → `WB_A2`. Antarctica is dropped. Centroids are computed from the **largest ring** so France isn't placed in the Atlantic by French Guiana. |
+| Largest company per country (≈ market cap, sector) | **Hand-curated** — there is no free public API for this | `tech/data/companies.js` | Values are rounded 2025 snapshots in USD billions, labelled "~2025" in the UI. Update `asOf` and the numbers together. Missing countries show "Not in the index yet." |
+| Static facts | BIS Triennial Survey 2022 ($7.5T FX/day), ITU 2024 (5.5B online / 2.6B offline), GSMA 2024 (8.9B mobile connections), DataReportal 2024 (6h 40m screen time/day), UN WPP 2024 (+2.2 people/s), Moore 1965, time-to-100M-users (commonly cited figures), Apollo Guidance Computer specs | inline in `Money.jsx`, `Technology.jsx`, `Population.jsx`, `Moon.jsx` | Each fact shows its source in a `.hud` line. Keep that habit. |
+
+---
+
+## 8. Dependencies added for the Tech view
+
+| Package | Version | Why |
+|---|---|---|
+| `three` | 0.186.1 | WebGL; shared by globe.gl and R3F (one copy) |
+| `react-globe.gl` | 2.38.0 | Earth globe (hex polygons, labels, arcs, rings, controls) |
+| `@react-three/fiber` | 9.8.2 | React renderer for three (Moon) — React 19 compatible |
+| `@react-three/drei` | 10.7.9 | `OrbitControls`, `Html` (marker labels) |
+
+All are published > 7 days before adoption. Don't add textures/CDN assets: the whole Tech view is
+self-contained except for the World Bank calls.
+
+---
+
+## 9. How to add a slide (either view)
+
+1. Create `src/<sections|tech/sections>/Name.jsx` + `Name.css` with a unique BEM block (grep first).
+2. Wrap in `ParallaxSection` (flowing content) or `PinnedSection` (a scene). Use `useTransform(p, …)` for
+   scroll choreography; keep act 1 visible at `p = 0`; fade the last act in before `p = 0.95`.
+3. Add idle motion too (CSS keyframes or a canvas loop) — every slide should breathe when the user stops.
+4. Render it in `App.jsx › DesignView` or `tech/TechView.jsx`, and add `[id, label]` to `src/views.js`.
+5. For canvases/WebGL: size with `ResizeObserver`, pause with `IntersectionObserver`/`document.hidden`,
+   cap `devicePixelRatio` at 1.5–2, respect `prefers-reduced-motion`.
+6. Run `npm run lint && npm run build`, then eyeball both views in the browser at several scroll stops.
+
+---
+
+## 10. Gotchas learned the hard way (read before debugging)
+
+* **`.pop` collision** – Design's `Pop.css` paints `.pop` yellow; Tech's population slide is `.people`.
+* **Fixed/sticky inside an animated wrapper** – never leave `filter`/`scale` on the AnimatePresence wrapper.
+* **`whileInView` on a `scaleX(0)` element never fires** (zero-size box → IntersectionObserver never
+  intersects). Put `whileInView` on a parent and propagate via `variants` (see `Technology.jsx` chart).
+* **Framer `Counter` + inline `format` fns** – the formatter is read through a ref; don't add it to effect deps
+  or the count-up restarts every render.
+* **GLSL in three.js**: `modelMatrix`/`normalMatrix` exist only in the **vertex** stage. The Moon passes a
+  `uNormalMatrix` (mat3) uniform updated each frame for world-space normals in the fragment shader.
+* **Moon framing**: the sphere's apparent radius is `asin(1/cameraZ)`; camera at z = 3.7 with fov 38 leaves
+  ~15 % margin so displacement and markers aren't clipped. R3F's wrapper is `overflow: hidden`; `Moon.css`
+  overrides it so marker labels can hang outside.
+* **World Bank CORS** – intermittent missing `Access-Control-Allow-Origin` on CDN cache hits; handled by the
+  daily cache-buster + `allSettled` + Natural Earth fallbacks (`live: false` → the panel says "estimate").
+* **`useWorld` lives in `tech/world.js`**, not `TechView.jsx`, to avoid a circular import with the slides.
+* Console noise that is expected in dev: framer's "container has a non-static position" (fires while
+  Suspense hides the tree), drei/React 19 "Attempted to synchronously unmount a root", `THREE.Clock`
+  deprecation from drei. None affect the build.
+* Flags are **images, not emoji** — Windows has no flag emoji font. `Earth.jsx` › `Flag` uses
+  `flagcdn.com` (the open-source `flag-icons` set) at `w80`/`w160`, with a `◍` fallback glyph via `onError`.
+  Add country flags anywhere else through the same component.
+
+---
+
+## 11. Verification checklist
+
+```bash
+npm run lint && npm run build
+npm run dev   # then check:
+#  /            Design view unchanged (hero, pinned perspective tunnel, footer)
+#  /?view=tech  stars + comets move while idle; Evolution rail; globe loads (hex dots) and the panel shows
+#               "World Bank · <year>"; click a country → fly-to + arcs + company; Money ring draws;
+#               chart bars animate; dot matrix lights; population clock ticks; Moon phase sweeps with scroll,
+#               drag orbits, click drops a marker; footer; switcher returns to Design and resets scroll.
+```
+
+For a quick headless pass, Chrome's DevTools protocol can be driven from Node 22 (built-in `WebSocket`):
+launch `chrome --headless=new --remote-debugging-port=9333`, `Page.navigate`, `Runtime.evaluate(scrollTo)`,
+`Page.captureScreenshot`, and collect `Runtime.consoleAPICalled`/`exceptionThrown` to catch shader
+compile errors — that is how the `modelMatrix` and `.pop` bugs above were found.
+
+---
+
+## 12. Prompt template for future AI changes
+
+> "This repo is the two-view portfolio described in DOCUMENTATION.md. Change **<view> › <slide id>**:
+> <what>. Keep the existing progress keyframe style (`useTransform(p, …)`), the slide's BEM block,
+> idle + scroll animation, reduced-motion respect, and update DOCUMENTATION.md §5/§6 and `src/views.js`
+> if ids or chapters change. Run `npm run lint && npm run build` before finishing."

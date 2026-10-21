@@ -1,0 +1,116 @@
+/* Shared tokens + primitives for the Tech view. Sections keep their own files. */
+.tech {
+  --space: #03040a;
+  --space-2: #070a16;
+  --cyan: #19c3e6;
+  --lime: #c6ff3f;
+  --violet: #8b5cf6;
+  --gold: #ffd166;
+  --glass: rgba(10, 14, 28, 0.55);
+  --glass-border: rgba(207, 232, 255, 0.14);
+  --mono: 'Space Grotesk', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  position: relative;
+  background: var(--space);
+  color: var(--paper);
+  isolation: isolate;
+}
+
+.starfield {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.tech__main {
+  position: relative;
+  z-index: 1;
+}
+
+.tech .section,
+.tech .pinned__stage {
+  background: transparent;
+}
+
+.tech .footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* glass panels used across slides */
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  backdrop-filter: blur(16px) saturate(130%);
+  -webkit-backdrop-filter: blur(16px) saturate(130%);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* small HUD labels */
+.hud {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  opacity: 0.9;
+}
+
+.hud--lime {
+  color: var(--lime);
+}
+
+/* giant numbers */
+.stat {
+  font-family: var(--font-wide);
+  font-weight: 200;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.gradient-text {
+  background: linear-gradient(120deg, #ffffff 0%, var(--cyan) 45%, var(--lime) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.tech .phrase em {
+  color: var(--lime);
+}
+
+/* reusable horizontal rule glow */
+.beam {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  opacity: 0.6;
+}
+
+/* orbit rings used as decorative layers */
+.orbit {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(207, 232, 255, 0.12);
+  pointer-events: none;
+}
+
+.orbit::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 12px var(--cyan);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .starfield {
+    opacity: 0.6;
+  }
+}
