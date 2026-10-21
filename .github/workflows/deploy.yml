@@ -6,16 +6,17 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages
   cancel-in-progress: true
 
+# Pages for this user site serves the repository root of the `master` branch
+# (legacy branch deploy). `main` holds the source; this job builds it and
+# force-pushes the compiled bundle to `master`.
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,17 +26,15 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Publish dist/ to master
+        run: |
+          cd dist
+          git init
+          git checkout -b master
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Deploy ${GITHUB_SHA:0:8}"
+          git push -f "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git" master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
