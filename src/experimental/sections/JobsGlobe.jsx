@@ -9,7 +9,7 @@ import { loadJobs, groupByCity, ago, clip } from '../data/jobs'
 import './JobsGlobe.css'
 
 const GEO_URL = `${import.meta.env.BASE_URL}data/countries.geojson`
-const EURO_POV = { lat: 50, lng: 10, altitude: 1.5 } // zoomed on central Europe
+const WORLD_POV = { lat: 22, lng: 5, altitude: 2.3 } // whole-planet view (≠ init default 2.5 for the watchdog)
 
 export default function JobsGlobe() {
   return (
@@ -43,10 +43,14 @@ function Inner({ p }) {
   const flyTo = useCallback((c) => {
     setSelected(c)
     globeRef.current?.pointOfView({ lat: c.lat, lng: c.lng, altitude: 1.0 }, 1000)
+    if (globeRef.current) globeRef.current.controls().autoRotate = false
   }, [])
   const reset = useCallback(() => {
     setSelected(null)
-    globeRef.current?.pointOfView(EURO_POV, 1000)
+    if (globeRef.current) {
+      globeRef.current.pointOfView(WORLD_POV, 1000)
+      globeRef.current.controls().autoRotate = true
+    }
   }, [])
   // Keep this idempotent — onGlobeReady re-fires every time the kapsule
   // re-initializes (react-kapsule can re-invoke comp(domEl) when React replays
@@ -58,10 +62,11 @@ function Inner({ p }) {
     const g = globeRef.current
     if (!g) return
     const c = g.controls()
-    c.autoRotate = false // keep Europe in view
+    c.autoRotate = true // slow world tour — pins cover every continent
+    c.autoRotateSpeed = 0.4
     c.enableZoom = false
     c.enablePan = false
-    g.pointOfView(EURO_POV, 0)
+    g.pointOfView(WORLD_POV, 0)
     g.resumeAnimation() // IO may have paused it before the first frame landed
     register(g)
   }, [register])
@@ -114,7 +119,7 @@ function Inner({ p }) {
               hexPolygonResolution={3}
               hexPolygonMargin={0.55}
               hexPolygonUseDots
-              hexPolygonColor={(f) => (f.properties.CONTINENT === 'Europe' ? 'rgba(139,92,246,0.55)' : 'rgba(139,92,246,0.14)')}
+              hexPolygonColor={() => 'rgba(139,92,246,0.5)'}
               pointsData={cities}
               pointLat="lat"
               pointLng="lng"
@@ -160,7 +165,7 @@ function Inner({ p }) {
         </Reveal>
         <Reveal delay={0.2}>
           <p className="phrase">
-            Live frontend openings from the last <em>six months</em> — all of Europe. Click a pin.
+            Live frontend openings from the last <em>six months</em> — every continent. Click a pin.
           </p>
         </Reveal>
 
@@ -215,7 +220,7 @@ function Inner({ p }) {
                   <>
                     <h3 className="wide jobs__city">{error ? 'Board offline' : jobs ? `${jobs.length} openings` : 'Scanning…'}</h3>
                     <p className="hud">
-                      {error ? 'Try again later' : jobs ? `${cities.length} European cities · last 6 months` : 'Arbeitnow job board'}
+                      {error ? 'Try again later' : jobs ? `${cities.length} cities · ${new Set(cities.map((c) => c.cc)).size} countries · last 6 months` : 'Arbeitnow job board'}
                     </p>
                     {jobs && (
                       <ul className="jobs__cities">
@@ -236,8 +241,8 @@ function Inner({ p }) {
                       </ul>
                     )}
                     <p className="jobs__hint">
-                      LinkedIn exposes no public jobs API, so pins come from the open Arbeitnow + Adzuna boards; each
-                      posting links to the matching LinkedIn search.
+                      LinkedIn exposes no public jobs API, so pins come from open boards (Arbeitnow, Adzuna,
+                      RemoteOK, Jobicy, Remotive); each posting links to the matching LinkedIn search.
                     </p>
                   </>
                 )}

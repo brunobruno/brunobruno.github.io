@@ -80,16 +80,18 @@ src/
     components/VortexScene.jsx R3F kaleidoscope tunnel (rings of drei <Text> glyphs + primitives, FUTURE finale)
     components/FogScene.jsx    R3F fullscreen shader quad: domain-warped FBM smoke + embers
     components/FireScene.jsx   R3F fullscreen shader quad: procedural burn front + flame ramp
-    data/cities.js             city → lat/lng + ISO-3166 alpha-2 cc table, country-name→capital fallbacks,
-                               geocode(location), EUROPE set
+    data/cities.js             place → lat/lng + ISO-3166 alpha-2 cc table (~80 countries worldwide,
+                               incl. country-name→capital/hub fallbacks and a LABELS map for acronyms),
+                               geocode(location)
     data/jobs.js               snapshot-first client (public/data/jobs.json ← CI) with live Arbeitnow
-                               fallback (frontend-ish filter, Europe-only, last 6 months), groupByCity,
+                               fallback (frontend-ish filter, worldwide, last 6 months), groupByCity,
                                LinkedIn search URL
     data/memes.js              CoinGecko client (meme-token markets + /global), placeCoin() geo hash,
                                cap/price/pct formatters
     sections/                  Vortex, JobsGlobe, Gears, Fog, Fire, Memes (+ .css)
 scripts/
-  fetch-jobs.mjs             nightly snapshot builder: Arbeitnow + Adzuna → public/data/jobs.json
+  fetch-jobs.mjs             nightly snapshot builder: Arbeitnow + Adzuna (20 world markets) +
+                             RemoteOK + Jobicy + Remotive → public/data/jobs.json
                              (ADZUNA_APP_ID/KEY env; run by .github/workflows/jobs.yml or by hand)
 ```
 
@@ -214,7 +216,7 @@ yellow / violet on near-black (`experimental.css`).
 | # | id | File | Height | What it does |
 |---|---|---|---|---|
 | 01 | `vortex` | `sections/Vortex.jsx` + `components/VortexScene.jsx` | pinned 620vh | **Kaleidoscopic tunnel** in R3F: 30 rings, 12 slots each (4 drei `<Text>` glyphs in 3-fold symmetry + 8 primitives: torus/octa/box/cone/ring, some wireframe), counter-rotating with time *and* scroll; two wireframe tubes, 1,500 dust points, fog. Scroll flies the camera down the tube with a full 360° barrel roll (ends upright) and a pointer-driven sway. **Finale (p 0.78→0.97):** the six letters of **FUTURE** fly in from the walls, un-tumble and lock into a line lit by a magenta point light. Font: Unbounded 900 woff from Google Fonts (`FONT` const; troika needs woff/ttf, not woff2). HTML copy: intro top-left, mid line, outro at the bottom. |
-| 02 | `jobs` | `sections/JobsGlobe.jsx` | section 150vh | **Globe of live frontend-ish openings — all of Europe, last 6 months.** Data: `public/data/jobs.json` snapshot (Arbeitnow + Adzuna via `jobs.yml` cron) with a live Arbeitnow fallback. `react-globe.gl`, dark sphere, magenta atmosphere; European hex land bright violet, rest of world dimmed. Camera parked zoomed on central Europe (`EURO_POV`, altitude 1.5), **autoRotate off** so Europe stays in view; click → fly-to altitude 1.0. Pins = `pointsData` per city (height ∝ count). **Hover tooltip on the planet shows only the first 10 characters of the first title + "…" (and `+N`)** — `clip()` in `data/jobs.js`. **Click a pin** (or a city in the list) → fly-to, white pin, acid rings, and the right-hand glass panel lists that city's openings: country flag + city in the header, then title, company, posted-ago, tags, remote flag, "View posting" and "Search on LinkedIn" (pre-filled search, `f_TPR=r15552000` = last 6 months). The unselected panel lists the top cities with a flag before each name. `waitForGlobeReady={false}` + per-instance init effect + `useGlobeLifecycle` keep it alive across view switches; pauses off-screen. |
+| 02 | `jobs` | `sections/JobsGlobe.jsx` | section 150vh | **Globe of live frontend-ish openings — worldwide, last 6 months** ("every continent has frontend positions — the area is far from end"). Data: `public/data/jobs.json` snapshot (5 sources via `jobs.yml` cron) with a live Arbeitnow fallback. `react-globe.gl`, dark sphere, magenta atmosphere; all hex land uniform bright violet. Camera on a whole-planet POV (`WORLD_POV` lat 22 / alt 2.3), **slow autoRotate (0.4)** so every continent tours past; click → fly-to altitude 1.0 and rotation pauses; reset resumes it. Pins = `pointsData` per city (height ∝ count). **Hover tooltip on the planet shows only the first 10 characters of the first title + "…" (and `+N`)** — `clip()` in `data/jobs.js`. **Click a pin** (or a city in the list) → fly-to, white pin, acid rings, and the right-hand glass panel lists that city's openings: country flag + city in the header, then title, company, posted-ago, tags, remote flag, "View posting" and "Search on LinkedIn" (pre-filled search, `f_TPR=r15552000` = last 6 months). The unselected panel lists the top cities with a flag before each name + "N cities · M countries". `waitForGlobeReady={false}` + per-instance init effect + `useGlobeLifecycle`/`useGlobeWatchdog` keep it alive across view switches; pauses off-screen. |
 | 03 | `gears` | `sections/Gears.jsx` | pinned 480vh | **Procedural SVG gear train.** `gearPath(n, m)` draws trapezoid teeth + hub + spoke windows (evenodd). `buildTrain()` chains 12 gears (teeth in `TEETH`, heading angles in `ANGLES`) with one shared module so pitch circles touch, alternates direction, and solves each gear's **phase** so a tooth meets a gap at the contact point. One shared `drive` MotionValue = scroll × 4 turns + idle spin (`useAnimationFrame`, 14°/s); each gear's angle is `drive × ratio × dir + phase`, written **imperatively** to the SVG `transform` attribute via `useMotionValueEvent` (see gotchas). The SVG is taller than the viewport and pans down with scroll. A glass "drive shaft" dial shows the current angle. Finishes: brass / steel / copper gradients + drop shadow. |
 | 04 | `fog` | `sections/Fog.jsx` + `components/FogScene.jsx` | pinned 460vh | **Procedural fog chamber.** One fullscreen shader quad in R3F (`FogScene.jsx`): double domain-warped FBM smoke that churns while idle, drifts sideways and thickens to white-out with scroll, then **parts at p ≈ 0.8** to reveal the word **EMERGE**. Pointer steers the warp field; sparse ember specks drift upward. Uniforms: `uTime`, `uProgress`, `uPointer`, `uRes`. Copy acts: intro top-left, mid corridor line, outro word centered. |
 | 05 | `fire` | `sections/Fire.jsx` + `components/FireScene.jsx` | pinned 460vh | **Combustion chamber.** Same one-quad shader recipe, different physics: a charred FBM surface with glowing crack veins, a pulsing ember eye pre-ignition, and scroll grows a **ragged burn front** (`front = r + fbm-warp`, radius vs `burnR`) that eats outward — inside the hole a rising-turbulence flame field is graded black→deep red→orange→yellow→white. White-hot rim band at the active edge, sparks drift up; `die = smoothstep(0.8,1)` burns it down to embers for the **IGNITE** finale (fire-gradient text). All copy acts are stage-centred (`top/left 50% + translate`). |
@@ -223,22 +225,26 @@ yellow / violet on near-black (`experimental.css`).
 
 ### Jobs data (`experimental/data/jobs.js`)
 
-* **Why not LinkedIn?** LinkedIn's Jobs API is partner-only and scraping breaks its ToS. We use the free,
-  CORS-enabled **Arbeitnow job board** (`https://www.arbeitnow.com/api/job-board-api?page=N`, 300/page,
-  newest first, mostly DACH/NL/UK). Every card still links to an equivalent **LinkedIn search**
-  (`linkedinSearch(title, city)` → `f_TPR=r604800` = past week).
+* **Why not LinkedIn?** LinkedIn's Jobs API is partner-only and scraping breaks its ToS. Every card links
+  to an equivalent **LinkedIn search** (`linkedinSearch(title, city)` → `f_TPR=r15552000` = 6 months).
 * **Snapshot path (primary):** `.github/workflows/jobs.yml` runs `scripts/fetch-jobs.mjs` daily →
-  Arbeitnow (16 pages) + **Adzuna** (one newest page of "frontend developer" per supported European market:
-  gb fr de nl ch at be es it pl ru — needs the `ADZUNA_APP_ID` / `ADZUNA_APP_KEY` repo secrets, free at
-  developer.adzuna.com) → normalised, geocoded, deduped → `public/data/jobs.json` → committed to main →
-  deploy workflow republishes. `loadJobs()` reads the snapshot first (`sessionStorage` 1 h, `xp:jobs:v4`).
-* **Live fallback:** if the snapshot is missing/empty, fetch Arbeitnow pages 1–16 client-side — same filter.
+  Arbeitnow (16 pages, CORS-free DACH/NL/UK board) + **Adzuna** (one newest page of "frontend developer"
+  across its **20 world markets**: gb us au at be br ca fr de in it mx nl nz pl sg es ch za ru —
+  needs the `ADZUNA_APP_ID` / `ADZUNA_APP_KEY` repo secrets, free at developer.adzuna.com) +
+  **RemoteOK** + **Jobicy** + **Remotive** (free worldwide remote boards, no key) → normalised, geocoded,
+  deduped (title+company+city), newest 300 → `public/data/jobs.json` → committed to main → the deploy
+  workflow republishes. `loadJobs()` reads the snapshot first (`sessionStorage` 1 h, `xp:jobs:v5`).
+* **Live fallback:** if the snapshot is missing/empty, fetch Arbeitnow pages 1–16 client-side — same
+  filter (the only public board with CORS headers, so the fallback skews DACH/Europe).
 * Pipeline: title matches the `FRONTEND` regex (incl. `full.?stack`) → `geocode()` via `data/cities.js`
-  (~90 cities across ~40 European countries plus country-name→capital fallbacks like `united kingdom`→London
-  coords; remote/unknown locations are dropped; each hit yields `cc` from `CITY_CC`) →
-  **posted ≤ 180 days AND `EUROPE.has(cc)`** → newest 150. Bump the cache key if the job shape changes.
-  Reality check: without Adzuna secrets the snapshot is Arbeitnow-only (~85 jobs, CH·DE·GB·NL·FR).
-* To add a city, add a key to `CITIES` (include German/local spellings, e.g. `muenchen`, `koeln`).
+  (~700 places across ~80 countries: city keys, country-name→capital/hub fallbacks like `usa`→NYC coords,
+  region fallbacks `europe`/`emea`→central Europe; `LABELS` fixes display names like `usa`→"USA";
+  remote/unknown locations are dropped; each hit yields `cc` from `CITY_CC`) → **posted ≤ 180 days** →
+  newest 300. Bump the cache key if the job shape changes. Reality check: without Adzuna secrets the
+  snapshot is still Europe-heavy (~100 jobs, ~13 countries — the remote boards add US/CA/LATAM); with
+  secrets the 20 Adzuna markets fill in the rest of the world.
+* To add a city/country, add a key to `CITIES` (include local spellings) and to its `CITY_CC` row; add a
+  `LABELS` entry when title-casing the key isn't the right display name.
 
 ---
 
@@ -313,13 +319,14 @@ self-contained except for the World Bank calls.
   mount layout-effect (Suspense reveal, dev fast-refresh, effect cleanup+re-run on the same fiber)
   makes react-kapsule call `comp(domEl)` *again* on the same instance. globe.gl's `init` has no guard:
   it wipes the DOM, rebuilds renderer + OrbitControls, and resets the camera to the default POV
-  (`{lat≈10.84, lng≈1.60, altitude:2.5}`). Nothing re-fires `onGlobeReady` afterwards, so a
-  once-per-mount setup effect leaves the camera staring at the dimmed non-Europe hemisphere — which
-  looks exactly like "the globe is not appearing" (canvas alive, scene populated, wrong hemisphere).
+  (`pointOfView({altitude:2.5})`). Nothing re-fires `onGlobeReady` afterwards, so a
+  once-per-mount setup effect leaves the camera at the default view — which
+  looks exactly like "the globe is not appearing" (canvas alive, scene populated, wrong place).
   Every section's `onReady` is therefore guard-free, *and* `useGlobeWatchdog(globeRef, onReady)`
-  (`src/components/useGlobeLifecycle.js`) polls ~every 700ms: if the camera sits at that exact
-  init-default signature it re-runs `onReady`. Our home POVs use altitude ≠ 2.5 so the signature
-  can't false-positive on a user-driven view.
+  (`src/components/useGlobeLifecycle.js`) polls ~every 700ms: **altitude ≈ 2.5 is the signature** —
+  lat/lng read back differently depending on when the reset struck (observed 7–11° lat), and altitude
+  is the invariant: every home/fly POV we use stays ≤ 2.3 and camera tweens never overshoot their
+  target, so 2.5 can't false-positive on a user-driven view.
 * **With `waitForGlobeReady={false}`, `onGlobeReady` does NOT fire before mount** — it runs during
   `new ThreeGlobe()` construction, before react-kapsule forwards the prop. The mount-effect
   `onReady()` covers that first pass; the watchdog covers every later re-init.

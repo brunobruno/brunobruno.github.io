@@ -83,6 +83,41 @@ export const CITIES = {
   // small towns seen in job locations
   frechen: [50.915, 6.81], rijswijk: [52.036, 4.325], zoetermeer: [52.057, 4.493], nuth: [50.917, 5.886],
   hague: [52.07, 4.3],
+  // --- worldwide coverage: the globe is a world map, not just Europe ---
+  'los angeles': [34.052, -118.244], 'san diego': [32.716, -117.161], 'san jose': [37.339, -121.895],
+  'palo alto': [37.441, -122.143], 'mountain view': [37.386, -122.084], cupertino: [37.323, -122.032],
+  'menlo park': [37.453, -122.182], sunnyvale: [37.369, -122.036], redmond: [47.674, -122.122],
+  portland: [45.515, -122.679], chicago: [41.878, -87.63], denver: [39.739, -104.99],
+  miami: [25.762, -80.192], atlanta: [33.749, -84.388], dallas: [32.777, -96.797],
+  houston: [29.76, -95.37], phoenix: [33.448, -112.074], minneapolis: [44.978, -93.265],
+  detroit: [42.331, -83.046], philadelphia: [39.953, -75.165], washington: [38.907, -77.037],
+  'washington dc': [38.907, -77.037], raleigh: [35.78, -78.638], charlotte: [35.227, -80.843],
+  nashville: [36.163, -86.782], 'salt lake city': [40.761, -111.891], columbus: [39.961, -82.999],
+  pittsburgh: [40.441, -79.996], baltimore: [39.29, -76.612],
+  montreal: [45.502, -73.567], ottawa: [45.421, -75.697], calgary: [51.045, -114.057],
+  waterloo: [43.464, -80.52], edmonton: [53.546, -113.494],
+  'rio de janeiro': [-22.907, -43.173], 'belo horizonte': [-19.917, -43.934], curitiba: [-25.428, -49.273],
+  'porto alegre': [-30.035, -51.218], florianopolis: [-27.595, -48.548], campinas: [-22.906, -47.061],
+  guadalajara: [20.66, -103.35], monterrey: [25.675, -100.318], santiago: [-33.449, -70.669],
+  bogota: [4.711, -74.072], medellin: [6.244, -75.581], lima: [-12.046, -77.043],
+  montevideo: [-34.901, -56.165], quito: [-0.181, -78.468],
+  auckland: [-36.851, 174.764], wellington: [-41.287, 174.776], brisbane: [-27.47, 153.026],
+  perth: [-31.95, 115.861], adelaide: [-34.928, 138.6],
+  mumbai: [19.076, 72.878], delhi: [28.704, 77.102], 'new delhi': [28.614, 77.209],
+  hyderabad: [17.385, 78.487], pune: [18.52, 73.856], chennai: [13.083, 80.27],
+  gurgaon: [28.459, 77.027], gurugram: [28.459, 77.027], noida: [28.535, 77.391], kolkata: [22.573, 88.364],
+  seoul: [37.566, 126.978], 'hong kong': [22.319, 114.169], beijing: [39.904, 116.407],
+  shanghai: [31.23, 121.474], shenzhen: [22.543, 114.058], hangzhou: [30.274, 120.155],
+  taipei: [25.033, 121.565], osaka: [34.694, 135.502], fukuoka: [33.59, 130.402],
+  jakarta: [-6.209, 106.846], manila: [14.6, 120.984], bangkok: [13.756, 100.502],
+  'kuala lumpur': [3.139, 101.687], 'ho chi minh': [10.823, 106.63], 'ho chi minh city': [10.823, 106.63],
+  hanoi: [21.028, 105.854],
+  haifa: [32.794, 34.99], jerusalem: [31.768, 35.214], 'abu dhabi': [24.454, 54.377],
+  riyadh: [24.714, 46.675], doha: [25.285, 51.531], cairo: [30.044, 31.236],
+  'cape town': [-33.925, 18.424], johannesburg: [-26.204, 28.047], nairobi: [-1.292, 36.822],
+  lagos: [6.524, 3.379], casablanca: [33.589, -7.59],
+  // region-only locations pin at a representative hub
+  europe: [47.0, 9.0], emea: [47.0, 9.0],
   // country-only locations pin at the capital, labelled with the country name
   germany: [52.52, 13.405], 'united kingdom': [51.507, -0.128], uk: [51.507, -0.128], england: [51.507, -0.128],
   france: [48.857, 2.352], netherlands: [52.37, 4.895], holland: [52.37, 4.895], austria: [48.208, 16.374],
@@ -94,9 +129,23 @@ export const CITIES = {
   slovakia: [48.148, 17.107], slovenia: [46.056, 14.508], croatia: [45.815, 15.982], serbia: [44.787, 20.457],
   estonia: [59.437, 24.754], latvia: [56.95, 24.105], lithuania: [54.687, 25.28], iceland: [64.147, -21.943],
   malta: [35.899, 14.515], cyprus: [35.185, 33.382],
+  // worldwide country-only fallbacks (pin at the biggest job hub)
+  'united states': [40.713, -74.006], usa: [40.713, -74.006], 'united states of america': [40.713, -74.006],
+  canada: [43.653, -79.383], brazil: [-23.551, -46.633], brasil: [-23.551, -46.633],
+  mexico: [19.433, -99.133], argentina: [-34.604, -58.382], chile: [-33.449, -70.669],
+  colombia: [4.711, -74.072], peru: [-12.046, -77.043], uruguay: [-34.901, -56.165],
+  'costa rica': [9.928, -84.09], australia: [-33.869, 151.209], 'new zealand': [-36.851, 174.764],
+  india: [12.972, 77.594], japan: [35.676, 139.65], 'south korea': [37.566, 126.978], korea: [37.566, 126.978],
+  china: [31.23, 121.474], taiwan: [25.033, 121.565], indonesia: [-6.209, 106.846],
+  philippines: [14.6, 120.984], thailand: [13.756, 100.502], vietnam: [10.823, 106.63],
+  malaysia: [3.139, 101.687], pakistan: [24.861, 67.01], karachi: [24.861, 67.01],
+  lahore: [31.55, 74.34], islamabad: [33.684, 73.048], israel: [32.085, 34.782],
+  'united arab emirates': [25.205, 55.271], uae: [25.205, 55.271], 'saudi arabia': [24.714, 46.675],
+  qatar: [25.285, 51.531], egypt: [30.044, 31.236], 'south africa': [-33.925, 18.424],
+  nigeria: [6.524, 3.379], kenya: [-1.292, 36.822], morocco: [33.589, -7.59],
 }
 
-/** Every CITIES key → ISO 3166-1 alpha-2 country code (flag display + Europe filter). */
+/** Every CITIES key → ISO 3166-1 alpha-2 country code (flag display). */
 const CITY_CC = Object.fromEntries(
   [
     ['de', ['berlin', 'munich', 'muenchen', 'munchen', 'hamburg', 'frankfurt', 'frankfurt am main', 'cologne', 'koeln', 'koln', 'stuttgart', 'duesseldorf', 'dusseldorf', 'nuremberg', 'nuernberg', 'nurnberg', 'darmstadt', 'leipzig', 'dresden', 'hannover', 'karlsruhe', 'bremen', 'bonn', 'mannheim', 'heidelberg', 'essen', 'dortmund', 'mainz', 'wiesbaden', 'regensburg', 'augsburg', 'freiburg', 'aachen', 'bochum', 'wuppertal', 'bielefeld', 'muenster', 'munster', 'ulm', 'erlangen', 'jena', 'wolfsburg', 'ingolstadt', 'potsdam', 'kassel', 'kiel', 'magdeburg', 'rostock', 'frechen', 'germany']],
@@ -140,26 +189,55 @@ const CITY_CC = Object.fromEntries(
     ['md', ['chisinau']],
     ['by', ['minsk']],
     ['ru', ['moscow', 'saint petersburg', 'st. petersburg']],
-    ['us', ['new york', 'san francisco', 'boston', 'austin', 'seattle']],
-    ['ca', ['toronto', 'vancouver']],
-    ['br', ['sao paulo']],
-    ['mx', ['mexico city']],
-    ['ar', ['buenos aires']],
-    ['au', ['sydney', 'melbourne']],
+    ['us', ['new york', 'san francisco', 'boston', 'austin', 'seattle', 'los angeles', 'san diego', 'san jose', 'palo alto', 'mountain view', 'cupertino', 'menlo park', 'sunnyvale', 'redmond', 'portland', 'chicago', 'denver', 'miami', 'atlanta', 'dallas', 'houston', 'phoenix', 'minneapolis', 'detroit', 'philadelphia', 'washington', 'washington dc', 'raleigh', 'charlotte', 'nashville', 'salt lake city', 'columbus', 'pittsburgh', 'baltimore', 'united states', 'usa', 'united states of america']],
+    ['ca', ['toronto', 'vancouver', 'montreal', 'ottawa', 'calgary', 'waterloo', 'edmonton', 'canada']],
+    ['br', ['sao paulo', 'rio de janeiro', 'belo horizonte', 'curitiba', 'porto alegre', 'florianopolis', 'campinas', 'brazil', 'brasil']],
+    ['mx', ['mexico city', 'guadalajara', 'monterrey', 'mexico']],
+    ['ar', ['buenos aires', 'argentina']],
+    ['cl', ['santiago', 'chile']],
+    ['co', ['bogota', 'medellin', 'colombia']],
+    ['pe', ['lima', 'peru']],
+    ['uy', ['montevideo', 'uruguay']],
+    ['ec', ['quito']],
+    ['cr', ['costa rica']],
+    ['au', ['sydney', 'melbourne', 'brisbane', 'perth', 'adelaide', 'australia']],
+    ['nz', ['auckland', 'wellington', 'new zealand']],
     ['sg', ['singapore']],
-    ['jp', ['tokyo']],
-    ['in', ['bangalore', 'bengaluru']],
-    ['il', ['tel aviv']],
-    ['ae', ['dubai']],
+    ['jp', ['tokyo', 'osaka', 'fukuoka', 'japan']],
+    ['in', ['bangalore', 'bengaluru', 'mumbai', 'delhi', 'new delhi', 'hyderabad', 'pune', 'chennai', 'gurgaon', 'gurugram', 'noida', 'kolkata', 'india']],
+    ['pk', ['karachi', 'lahore', 'islamabad', 'pakistan']],
+    ['kr', ['seoul', 'south korea', 'korea']],
+    ['hk', ['hong kong']],
+    ['cn', ['beijing', 'shanghai', 'shenzhen', 'hangzhou', 'china']],
+    ['tw', ['taipei', 'taiwan']],
+    ['id', ['jakarta', 'indonesia']],
+    ['ph', ['manila', 'philippines']],
+    ['th', ['bangkok', 'thailand']],
+    ['vn', ['ho chi minh', 'ho chi minh city', 'hanoi', 'vietnam']],
+    ['my', ['kuala lumpur', 'malaysia']],
+    ['il', ['tel aviv', 'haifa', 'jerusalem', 'israel']],
+    ['ae', ['dubai', 'abu dhabi', 'united arab emirates', 'uae']],
+    ['sa', ['riyadh', 'saudi arabia']],
+    ['qa', ['doha', 'qatar']],
+    ['eg', ['cairo', 'egypt']],
+    ['za', ['cape town', 'johannesburg', 'south africa']],
+    ['ng', ['lagos', 'nigeria']],
+    ['ke', ['nairobi', 'kenya']],
+    ['ma', ['casablanca', 'morocco']],
+    ['eu', ['europe', 'emea']],
   ].flatMap(([cc, keys]) => keys.map((k) => [k, cc])),
 )
 
-/** Country codes we show on the globe — the lab covers all of Europe. */
-export const EUROPE = new Set(['de', 'ch', 'at', 'nl', 'gb', 'ie', 'fr', 'es', 'pt', 'it', 'be', 'lu', 'dk', 'se', 'no', 'fi', 'pl', 'cz', 'hu', 'ro', 'gr', 'ee', 'lv', 'lt', 'hr', 'rs', 'tr', 'bg', 'sk', 'si', 'ua', 'is', 'mt', 'cy', 'al', 'mk', 'ba', 'me', 'md', 'by', 'ru', 'li', 'mc', 'ad', 'sm'])
-
 const strip = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
 
-/** Returns { city, lat, lng } for a free-text location, or null if no known city matches. */
+/** Display-name overrides for keys that title-case badly (acronyms, regions). */
+const LABELS = {
+  usa: 'USA', 'united states': 'USA', 'united states of america': 'USA',
+  uk: 'UK', 'united kingdom': 'UK', uae: 'UAE', 'united arab emirates': 'UAE',
+  emea: 'EMEA', 'ho chi minh': 'Ho Chi Minh City',
+}
+
+/** Returns { city, lat, lng, cc } for a free-text location, or null if no known place matches. */
 export function geocode(location = '') {
   const tokens = strip(location)
     .split(/[,/|()\-–]+| bei | near /)
@@ -169,7 +247,7 @@ export function geocode(location = '') {
     const key = Object.keys(CITIES).find((c) => t === c || t.startsWith(`${c} `) || t.endsWith(` ${c}`))
     if (key) {
       const [lat, lng] = CITIES[key]
-      return { city: key.replace(/\b\w/g, (m) => m.toUpperCase()), lat, lng, cc: CITY_CC[key] }
+      return { city: LABELS[key] ?? key.replace(/\b\w/g, (m) => m.toUpperCase()), lat, lng, cc: CITY_CC[key] }
     }
   }
   return null
