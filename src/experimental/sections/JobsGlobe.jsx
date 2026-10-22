@@ -158,7 +158,7 @@ function Inner({ p }) {
         </Reveal>
         <Reveal delay={0.2}>
           <p className="phrase">
-            Live frontend openings from the last <em>month</em> — Europe only. Click a pin.
+            Live frontend openings from the last <em>six months</em> — all of Europe. Click a pin.
           </p>
         </Reveal>
 
@@ -213,7 +213,7 @@ function Inner({ p }) {
                   <>
                     <h3 className="wide jobs__city">{error ? 'Board offline' : jobs ? `${jobs.length} openings` : 'Scanning…'}</h3>
                     <p className="hud">
-                      {error ? 'Try again later' : jobs ? `${cities.length} European cities · last 30 days` : 'Arbeitnow job board'}
+                      {error ? 'Try again later' : jobs ? `${cities.length} European cities · last 6 months` : 'Arbeitnow job board'}
                     </p>
                     {jobs && (
                       <ul className="jobs__cities">

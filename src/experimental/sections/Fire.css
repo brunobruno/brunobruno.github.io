@@ -1,0 +1,76 @@
+.fire .pinned__stage {
+  display: block;
+}
+
+.fire__canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.fire__copy {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.fire__copy--intro {
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  align-items: center;
+  text-align: center;
+}
+
+.fire__copy--intro .phrase,
+.fire__copy--mid .phrase {
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.95);
+}
+
+.fire__copy--mid {
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  align-items: center;
+  text-align: center;
+  width: min(620px, 88vw);
+}
+
+.fire__copy--outro {
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  align-items: center;
+  text-align: center;
+  gap: 0.6rem;
+}
+
+.fire__title {
+  font-size: clamp(3.6rem, 10vw, 11rem);
+  text-shadow: 0 10px 60px rgba(0, 0, 0, 0.9);
+}
+
+.fire__title-accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 900;
+  text-transform: none;
+  font-size: 0.82em;
+}
+
+.fire__word {
+  font-size: clamp(4rem, 16vw, 15rem);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  background: linear-gradient(120deg, #fff 15%, #ffd23f 45%, #ff6a00 75%, #c1121f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+}
+
+.fire__copy--outro .body {
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.9);
+}

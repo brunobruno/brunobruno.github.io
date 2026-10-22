@@ -9,17 +9,18 @@ import { geocode, EUROPE } from './cities'
  * European listings, 300 per page, newest first). Each job links to the
  * original posting and to an equivalent LinkedIn search for the same role/city.
  *
- * Filter: frontend-ish titles, posted within the last 30 days, located in a
- * European city we can geocode. Cached for one hour.
+ * Filter: frontend-ish titles, posted within the last 6 months, located in a
+ * European city we can geocode (data/cities.js covers ~40 countries).
+ * Cached for one hour.
  */
 const API = 'https://www.arbeitnow.com/api/job-board-api'
-const PAGES = 8
-const FRONTEND = /front.?end|react|angular|vue|svelte|next\.?js|typescript|javascript|web ?developer|ui ?engineer|ui ?developer/i
-const CACHE_KEY = 'xp:jobs:v2'
+const PAGES = 16 // newest-first; more pages = deeper history for the 6-month window
+const FRONTEND = /front.?end|full.?stack|react|angular|vue|svelte|next\.?js|typescript|javascript|web ?developer|ui ?engineer|ui ?developer/i
+const CACHE_KEY = 'xp:jobs:v3'
 const TTL = 60 * 60 * 1000
 
 export const linkedinSearch = (title, city) =>
-  `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(title)}&location=${encodeURIComponent(city)}&f_TPR=r2592000`
+  `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(title)}&location=${encodeURIComponent(city)}&f_TPR=r15552000`
 
 const normalise = (j) => {
   const geo = geocode(j.location)
@@ -55,9 +56,9 @@ export async function loadJobs() {
   if (!raw.length) throw new Error('Arbeitnow unavailable')
 
   const all = raw.filter((j) => FRONTEND.test(j.title)).map(normalise).filter(Boolean)
-  let jobs = all.filter((j) => j.posted > Date.now() - 30 * 86400000 && EUROPE.has(j.cc))
+  let jobs = all.filter((j) => j.posted > Date.now() - 180 * 86400000 && EUROPE.has(j.cc))
   jobs.sort((a, b) => b.posted - a.posted)
-  jobs = jobs.slice(0, 80)
+  jobs = jobs.slice(0, 100)
   sessionStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), jobs }))
   return jobs
 }

@@ -38,6 +38,7 @@ export const VIEWS = {
       ['jobs', 'Openings'],
       ['gears', 'Gears'],
       ['fog', 'Fog'],
+      ['fire', 'Fire'],
       ['contact', 'Contact'],
     ],
   },

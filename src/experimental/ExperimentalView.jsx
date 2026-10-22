@@ -2,6 +2,7 @@ import Vortex from './sections/Vortex'
 import JobsGlobe from './sections/JobsGlobe'
 import Gears from './sections/Gears'
 import Fog from './sections/Fog'
+import Fire from './sections/Fire'
 import Footer from '../sections/Footer'
 import './experimental.css'
 
@@ -17,6 +18,7 @@ export default function ExperimentalView() {
         <JobsGlobe />
         <Gears />
         <Fog />
+        <Fire />
       </main>
       <Footer />
     </div>
