@@ -25,3 +25,9 @@ dist-ssr
 
 # Personal files
 *.pdf
+
+# Headless debug/probe artifacts
+.probe*.mjs
+.shots.mjs
+.switch.mjs
+.shot-*.jpg
