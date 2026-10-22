@@ -18,7 +18,7 @@ switcher at the top of the page:
 |---|---|---|---|
 | **Design** (default) | `/` | A walk through art history (Lascaux → Rothko → AI) on paper/ink colours | `src/App.jsx` → `DesignView()` |
 | **Tech** | `/?view=tech` | Outer space: evolution of tools → interactive Earth with live World Bank data → capital → technology → people → interactive Moon | `src/tech/TechView.jsx` (lazy) |
-| **Experimental** | `/?view=experimental` | Playground, pure entertainment: kaleidoscopic 3D vortex → globe of live frontend job openings → meshing gear train | `src/experimental/ExperimentalView.jsx` (lazy) |
+| **Experimental** | `/?view=experimental` | Playground, pure entertainment: kaleidoscopic 3D vortex → globe of live frontend job openings → meshing gear train → animated fog chamber | `src/experimental/ExperimentalView.jsx` (lazy) |
 
 Both views share the chrome (progress bar, right-hand chapter nav, switcher), the Footer, the global type
 system and the parallax primitives in `src/components/Parallax.jsx`.
@@ -47,14 +47,17 @@ index.html                     fonts (Google Fonts: Bebas Neue, Playfair, Unboun
 public/
   data/countries.geojson       Natural Earth 110m admin-0 (vendored, 488 KB) – used by the Tech globe
 src/
-  main.jsx                     React root (StrictMode)
+  main.jsx                     React root (NO StrictMode — see gotchas §10)
   App.jsx                      view state (?view=), AnimatePresence swap, lazy TechView, ViewSwitcher + Chrome
   views.js                     VIEWS registry: label + chapter list (ids must match section ids) + readView()
   styles/global.css            CSS variables (palette + fonts), .section/.pinned primitives, type utilities
   components/
-    Parallax.jsx               ParallaxSection, PinnedSection, Layer, Reveal, SplitWords  (shared by both views)
+    Parallax.jsx               ParallaxSection, PinnedSection, Layer, Reveal, SplitWords  (shared by all views)
     Chrome.jsx/.css            scroll progress bar + chapter dots (receives `chapters` prop)
-    ViewSwitcher.jsx/.css      fixed "Design | Tech" pill (framer layoutId pill)
+    ViewSwitcher.jsx/.css      centered "Design | Tech | Experimental" pill (framer layoutId pill)
+    ErrorBoundary.jsx          view-level crash boundary (keyed by view in App)
+    useGlobeLifecycle.js       globe instance registry: pause/resume on visibility, context loss on unmount,
+                               remount key on webglcontextlost
     FlowField.jsx              canvas flow field used by Design › Velocity
   data/content.js              profile + career timeline (Design view copy)
   sections/                    DESIGN VIEW slides (Hero, Cave, Perspective, DeStijl, OpArt, Suprematism,
@@ -71,12 +74,13 @@ src/
       MoonScene.jsx            R3F <Canvas>: procedural GLSL moon, OrbitControls, click-to-land markers
     sections/                  TECH slides – Evolution, Earth, Money, Technology, Population, Moon (+ .css)
   experimental/                EXPERIMENTAL VIEW
-    ExperimentalView.jsx       renders the three labs + Footer (no shared data layer)
+    ExperimentalView.jsx       renders the four labs + Footer (no shared data layer)
     experimental.css           tokens (--void, --magenta, --acid, glass, .hud)
     components/VortexScene.jsx R3F kaleidoscope tunnel (rings of drei <Text> glyphs + primitives, FUTURE finale)
+    components/FogScene.jsx    R3F fullscreen shader quad: domain-warped FBM smoke + embers
     data/cities.js             city → lat/lng table + geocode(location)
     data/jobs.js               Arbeitnow client (frontend filter, last 7/30 days), groupByCity, LinkedIn search URL
-    sections/                  Vortex, JobsGlobe, Gears (+ .css)
+    sections/                  Vortex, JobsGlobe, Gears, Fog (+ .css)
 ```
 
 ---
@@ -200,9 +204,10 @@ yellow / violet on near-black (`experimental.css`).
 | # | id | File | Height | What it does |
 |---|---|---|---|---|
 | 01 | `vortex` | `sections/Vortex.jsx` + `components/VortexScene.jsx` | pinned 620vh | **Kaleidoscopic tunnel** in R3F: 30 rings, 12 slots each (4 drei `<Text>` glyphs in 3-fold symmetry + 8 primitives: torus/octa/box/cone/ring, some wireframe), counter-rotating with time *and* scroll; two wireframe tubes, 1,500 dust points, fog. Scroll flies the camera down the tube with a full 360° barrel roll (ends upright) and a pointer-driven sway. **Finale (p 0.78→0.97):** the six letters of **FUTURE** fly in from the walls, un-tumble and lock into a line lit by a magenta point light. Font: Unbounded 900 woff from Google Fonts (`FONT` const; troika needs woff/ttf, not woff2). HTML copy: intro top-left, mid line, outro at the bottom. |
-| 02 | `jobs` | `sections/JobsGlobe.jsx` | section 150vh | **Globe of live frontend openings.** `react-globe.gl`, dark sphere, dim violet hex land, magenta atmosphere. Pins = `pointsData` per city (height ∝ count). **Hover tooltip on the planet shows only the first 10 characters of the first title + "…" (and `+N`)** — `clip()` in `data/jobs.js`. **Click a pin** (or a city in the list) → fly-to, white pin, acid rings, and the right-hand glass panel lists that city's openings: title, company, posted-ago, tags, remote flag, "View posting" (original URL) and "Search on LinkedIn" (pre-filled LinkedIn jobs search for title + city, last 7 days). Click empty globe / × to reset. Globe pauses off-screen. |
-| 03 | `gears` | `sections/Gears.jsx` | pinned 480vh | **Procedural SVG gear train.** `gearPath(n, m)` draws trapezoid teeth + hub + spoke windows (evenodd). `buildTrain()` chains 12 gears (teeth in `TEETH`, heading angles in `ANGLES`) with one shared module so pitch circles touch, alternates direction, and solves each gear's **phase** so a tooth meets a gap at the contact point. One shared `drive` MotionValue = scroll × 2.5 turns + slow idle (`useAnimationFrame`); each gear rotates `drive × ratio × dir + phase`. The SVG is taller than the viewport and pans down with scroll. A glass "drive shaft" dial shows the current angle. Finishes: brass / steel / copper gradients + drop shadow. |
-| 04 | `contact` | `../sections/Footer.jsx` | — | shared footer |
+| 02 | `jobs` | `sections/JobsGlobe.jsx` | section 150vh | **Globe of live frontend openings.** `react-globe.gl`, dark sphere, dim violet hex land, magenta atmosphere. Pins = `pointsData` per city (height ∝ count). **Hover tooltip on the planet shows only the first 10 characters of the first title + "…" (and `+N`)** — `clip()` in `data/jobs.js`. **Click a pin** (or a city in the list) → fly-to, white pin, acid rings, and the right-hand glass panel lists that city's openings: title, company, posted-ago, tags, remote flag, "View posting" (original URL) and "Search on LinkedIn" (pre-filled LinkedIn jobs search for title + city, last 7 days). Click empty globe / × to reset. `waitForGlobeReady={false}` + per-instance init effect + `useGlobeLifecycle` keep it alive across view switches; pauses off-screen. |
+| 03 | `gears` | `sections/Gears.jsx` | pinned 480vh | **Procedural SVG gear train.** `gearPath(n, m)` draws trapezoid teeth + hub + spoke windows (evenodd). `buildTrain()` chains 12 gears (teeth in `TEETH`, heading angles in `ANGLES`) with one shared module so pitch circles touch, alternates direction, and solves each gear's **phase** so a tooth meets a gap at the contact point. One shared `drive` MotionValue = scroll × 4 turns + idle spin (`useAnimationFrame`, 14°/s); each gear's angle is `drive × ratio × dir + phase`, written **imperatively** to the SVG `transform` attribute via `useMotionValueEvent` (see gotchas). The SVG is taller than the viewport and pans down with scroll. A glass "drive shaft" dial shows the current angle. Finishes: brass / steel / copper gradients + drop shadow. |
+| 04 | `fog` | `sections/Fog.jsx` + `components/FogScene.jsx` | pinned 460vh | **Procedural fog chamber.** One fullscreen shader quad in R3F (`FogScene.jsx`): double domain-warped FBM smoke that churns while idle, drifts sideways and thickens to white-out with scroll, then **parts at p ≈ 0.8** to reveal the word **EMERGE**. Pointer steers the warp field; sparse ember specks drift upward. Uniforms: `uTime`, `uProgress`, `uPointer`, `uRes`. Copy acts: intro top-left, mid corridor line, outro word centered. |
+| 05 | `contact` | `../sections/Footer.jsx` | — | shared footer |
 
 ### Jobs data (`experimental/data/jobs.js`)
 
@@ -234,8 +239,8 @@ yellow / violet on near-black (`experimental.css`).
 |---|---|---|
 | `three` | 0.186.1 | WebGL; shared by globe.gl and R3F (one copy) |
 | `react-globe.gl` | 2.38.0 | Earth globe (hex polygons, labels, arcs, rings, controls) |
-| `@react-three/fiber` | 9.8.2 | React renderer for three (Moon) — React 19 compatible |
-| `@react-three/drei` | 10.7.9 | `OrbitControls`, `Html` (marker labels) |
+| `@react-three/fiber` | 9.8.2 | React renderer for three (Moon, Vortex, Fog) — React 19 compatible |
+| `@react-three/drei` | 10.7.9 | `OrbitControls` (Moon), `Text` (Vortex glyphs). **Do not use `Html`** — see gotchas. |
 
 All are published > 7 days before adoption. Don't add textures/CDN assets: the whole Tech view is
 self-contained except for the World Bank calls.
@@ -271,12 +276,37 @@ self-contained except for the World Bank calls.
 * **World Bank CORS** – intermittent missing `Access-Control-Allow-Origin` on CDN cache hits; handled by the
   daily cache-buster + `allSettled` + Natural Earth fallbacks (`live: false` → the panel says "estimate").
 * **`useWorld` lives in `tech/world.js`**, not `TechView.jsx`, to avoid a circular import with the slides.
-* **Rotating SVG groups with framer**: `style={{ rotate }}` on a `motion.g` rotates around the *viewBox*
-  origin (gears orbited instead of spinning). Use the attribute instead:
-  `transform={useMotionTemplate\`rotate(${rotate})\`}` inside a plain `<g transform="translate(x y)">`.
+* **Rotating SVG groups with framer**: CSS `style={{ rotate }}` on a `motion.g` rotates around the *viewBox*
+  origin (gears orbit instead of spinning), and a MotionValue passed to `motion.g`'s `transform` **prop** is
+  not reliably applied as an SVG attribute (gears went fully static). The robust way is imperative: keep a
+  `<g>` ref and `useMotionValueEvent(drive, 'change', d => el.setAttribute('transform', \`rotate(${…})\`))`
+  inside a plain `<g transform="translate(x y)">` — `rotate()` then spins around the gear's own centre.
 * **Panning a tall SVG**: percentage `y` is relative to the element's own height — compute the pan in px from
   the rendered width × viewBox aspect (see `Gears.jsx` › `trainY`).
 * **R3F camera roll**: `camera.lookAt()` resets roll every frame; set `camera.rotation.z` *after* it.
+* **react-globe.gl needs `waitForGlobeReady={false}` when there is no texture**: the default `true` keeps
+  `scene.visible = false` in *two* places — the three-globe group (until `globeLayer.onReady` fires) and the
+  three-render-objects scene (until `finishLoad`, which only runs on a `backgroundImageUrl` change). With a
+  procedural `globeMaterial` and no image props there is nothing to wait for, so the flag must be `false`.
+  Symptom otherwise: canvas exists, context is fine, zero pixels — `window.scene.children` is your check.
+* **With `waitForGlobeReady={false}`, `onGlobeReady` does NOT fire** — it runs during `new ThreeGlobe()`
+  construction, before react-kapsule forwards the prop. Do globe setup (controls, `pointOfView`,
+  `resumeAnimation`, lifecycle `register`) once per instance in an effect keyed on the lifecycle key,
+  guarded by a ref (see `JobsGlobe.jsx` › `onReady` / `initedFor`).
+* **`<StrictMode>` is removed** (`main.jsx`): its simulated unmount runs react-kapsule's `comp._destructor()`
+  → `emptyObject(state.scene)` + `renderer.dispose()` on the *same* mounted globe → permanently blank canvas
+  in dev (prod unaffected). Verified: production build renders the globe, dev with StrictMode doesn't.
+  Don't re-add StrictMode without re-testing both globes.
+* **`useGlobeLifecycle`** (`src/components/useGlobeLifecycle.js`) registers each globe's renderer on ready,
+  pauses/resumes with visibility, and on unmount `forceContextLoss()`es the WebGL context (globe.gl only
+  calls `renderer.dispose()`, leaving the context alive; Chrome caps ~16 contexts and silently kills the
+  oldest canvases on repeated view switches). On a real `webglcontextlost` it bumps `key` to remount.
+* **drei `<Html>` caused the intermittent `NotFoundError: removeChild` crash** that could blank the whole
+  page: it mounts a React portal into the canvas parent, and React 19's unmount order races drei's own DOM
+  removal. Moon marker labels are now plain DOM elements positioned every frame by `LabelProjector`
+  (`MoonScene.jsx`) — project marker → screen px, hide when facing away. Avoid `<Html>` entirely.
+* **`ErrorBoundary`** (`src/components/ErrorBoundary.jsx`) wraps the active view in `App.jsx` keyed by view,
+  so a WebGL/third-party crash shows a fallback instead of unmounting the whole site.
 * Console noise that is expected in dev: framer's "container has a non-static position" (fires while
   Suspense hides the tree), drei/React 19 "Attempted to synchronously unmount a root", `THREE.Clock`
   deprecation from drei. None affect the build.
@@ -296,6 +326,9 @@ npm run dev   # then check:
 #               "World Bank · <year>"; click a country → fly-to + arcs + company; Money ring draws;
 #               chart bars animate; dot matrix lights; population clock ticks; Moon phase sweeps with scroll,
 #               drag orbits, click drops a marker; footer; switcher returns to Design and resets scroll.
+#  /?view=experimental  vortex tunnel flies to FUTURE; jobs globe renders hex dots + pins, click → panel;
+#               gears visibly rotate AND pan down on scroll; fog thickens then parts to EMERGE.
+#               Also cycle Design → Tech → Experimental a few times: no console exceptions, globe alive.
 ```
 
 For a quick headless pass, Chrome's DevTools protocol can be driven from Node 22 (built-in `WebSocket`):

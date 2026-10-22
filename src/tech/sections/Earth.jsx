@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useTransform } from 'framer-motion'
 import Globe from 'react-globe.gl'
 import { MeshPhongMaterial, Color } from 'three'
 import { ParallaxSection, Reveal } from '../../components/Parallax'
+import { useGlobeLifecycle } from '../../components/useGlobeLifecycle'
 import { useWorld } from '../world'
 import { companyFor, asOf } from '../data/companies'
 import { money, people } from '../data/worldbank'
@@ -76,6 +77,7 @@ function Inner({ p }) {
   const [ready, setReady] = useState(false)
   const globeRef = useRef(null)
   const frameRef = useRef(null)
+  const { key: globeKey, register } = useGlobeLifecycle()
 
   useEffect(() => {
     fetch(GEO_URL)
@@ -170,17 +172,26 @@ function Inner({ p }) {
     }
   }, [])
 
+  // `waitForGlobeReady={false}` makes the scene visible immediately but means
+  // onGlobeReady can fire before React forwards the callback — so setup runs
+  // once per mounted globe instance from an effect instead.
+  const initedFor = useRef(-1)
   const onReady = useCallback(() => {
     const g = globeRef.current
-    if (!g) return
+    if (!g || initedFor.current === globeKey) return
+    initedFor.current = globeKey
     const c = g.controls()
     c.autoRotate = true
     c.autoRotateSpeed = 0.55
     c.enableZoom = false
     c.enablePan = false
     g.pointOfView({ lat: 22, lng: 10, altitude: 2.3 }, 0)
+    g.resumeAnimation()
+    register(g)
     setReady(true)
-  }, [])
+  }, [globeKey, register])
+
+  useEffect(() => onReady(), [onReady])
 
   // keep the WebGL canvas sized to its frame, and asleep when offscreen
   useEffect(() => {
@@ -222,6 +233,7 @@ function Inner({ p }) {
           <div ref={frameRef} className="earth__frame">
             {features.length > 0 && (
               <Globe
+                key={globeKey}
                 ref={globeRef}
                 width={size.w}
                 height={size.h}
@@ -265,6 +277,7 @@ function Inner({ p }) {
                 onGlobeReady={onReady}
                 onGlobeClick={reset}
                 animateIn={false}
+                waitForGlobeReady={false}
               />
             )}
             {!ready && (

@@ -1,5 +1,5 @@
-import { useMemo } from 'react'
-import { motion, useAnimationFrame, useMotionTemplate, useMotionValue, useTransform } from 'framer-motion'
+import { useMemo, useRef } from 'react'
+import { motion, useAnimationFrame, useMotionValue, useMotionValueEvent, useTransform } from 'framer-motion'
 import { PinnedSection } from '../../components/Parallax'
 import './Gears.css'
 
@@ -7,7 +7,7 @@ const MODULE = 16 // px per tooth of pitch diameter — shared by all gears so t
 const TEETH = [26, 12, 34, 16, 44, 10, 24, 38, 14, 30, 20, 48]
 const ANGLES = [70, 118, 55, 125, 80, 110, 48, 132, 72, 105, 95] // direction (deg, y-down) to the next gear
 const FINISH = ['brass', 'steel', 'brass', 'copper', 'steel', 'brass', 'steel', 'copper', 'brass', 'steel', 'copper', 'brass']
-const DRIVE_TURNS = 2.5 // revolutions of the first gear across the whole scroll
+const DRIVE_TURNS = 4 // revolutions of the first gear across the whole scroll
 
 /** Gear outline: trapezoid teeth around the pitch circle, plus spoke cut-outs (evenodd). */
 function gearPath(n, m) {
@@ -81,7 +81,7 @@ function Scene({ p }) {
   // one shared drive angle: scroll adds torque, time adds a lazy idle turn
   const t = useMotionValue(0)
   useAnimationFrame((ms) => t.set(ms / 1000))
-  const drive = useTransform([p, t], ([pv, tv]) => pv * 360 * DRIVE_TURNS + tv * 6)
+  const drive = useTransform([p, t], ([pv, tv]) => pv * 360 * DRIVE_TURNS + tv * 14)
 
   // the train is taller than the viewport: scroll pans down along it (px, from the rendered width)
   const trainY = useTransform(p, (v) => {
@@ -150,15 +150,20 @@ function Scene({ p }) {
 }
 
 function Gear({ g, drive }) {
-  const rotate = useTransform(drive, (d) => d * g.ratio * g.dir + g.phase)
-  // SVG `rotate()` spins around the local origin (the gear's centre) — no transform-origin games
-  const transform = useMotionTemplate`rotate(${rotate})`
+  const ref = useRef(null)
+  // Write the SVG transform attribute imperatively: rotate() around the local
+  // origin (= the gear's centre after the parent's translate). Passing a
+  // MotionValue through motion.g's `transform` prop is not reliably applied
+  // as an SVG attribute, which left the gears static.
+  useMotionValueEvent(drive, 'change', (d) => {
+    ref.current?.setAttribute('transform', `rotate(${(d * g.ratio * g.dir + g.phase).toFixed(2)})`)
+  })
   return (
     <g transform={`translate(${g.x.toFixed(1)} ${g.y.toFixed(1)})`} className={`gears__gear gears__gear--${g.finish}`}>
-      <motion.g transform={transform}>
+      <g ref={ref} transform={`rotate(${g.phase.toFixed(2)})`}>
         <path d={g.path} fill={`url(#g-${g.finish})`} fillRule="evenodd" stroke="rgba(0,0,0,0.5)" strokeWidth="1.5" filter="url(#g-shadow)" />
         <circle r={Math.max(MODULE * 0.9, g.r * 0.14) + MODULE * 0.55} fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="2" strokeDasharray="4 6" />
-      </motion.g>
+      </g>
       <circle r={MODULE * 0.3} fill="#0b0b0d" />
     </g>
   )

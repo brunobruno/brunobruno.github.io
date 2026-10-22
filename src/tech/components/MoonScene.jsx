@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Html, OrbitControls } from '@react-three/drei'
+import { OrbitControls } from '@react-three/drei'
 import { Color, Matrix3, Vector3 } from 'three'
 
 /**
@@ -179,13 +179,13 @@ function MoonMesh({ sunRef, onLand, markers, meshRef }) {
         <shaderMaterial ref={material} uniforms={uniforms} {...shaders} />
       </mesh>
       {markers.map((m) => (
-        <Marker key={m.id} m={m} occlude={meshRef} />
+        <Marker key={m.id} m={m} />
       ))}
     </group>
   )
 }
 
-function Marker({ m, occlude }) {
+function Marker({ m }) {
   const pos = toVec(m.lat, m.lng, 1.045)
   const ring = useRef()
   useFrame(({ clock }) => {
@@ -204,19 +204,45 @@ function Marker({ m, occlude }) {
         <ringGeometry args={[0.025, 0.03, 32]} />
         <meshBasicMaterial color="#c6ff3f" transparent opacity={0.8} />
       </mesh>
-      <Html distanceFactor={2.6} occlude={[occlude]} position={[0, 0, -0.02]} style={{ pointerEvents: 'none' }} zIndexRange={[20, 0]}>
-        <div className="moon__label">
-          <strong>{m.label}</strong>
-          <span>{m.sub}</span>
-        </div>
-      </Html>
     </group>
   )
+}
+
+/**
+ * Projects each marker to screen space every frame and positions plain DOM
+ * labels (rendered by MoonScene outside the Canvas). Labels on the far side
+ * of the Moon are hidden. This replaces drei's <Html>, which mounts its own
+ * React root and can throw `removeChild` errors when the view unmounts.
+ */
+function LabelProjector({ markers, labelRefs, meshRef }) {
+  const v = useMemo(() => new Vector3(), [])
+  const n = useMemo(() => new Vector3(), [])
+  const wp = useMemo(() => new Vector3(), [])
+  useFrame(({ camera, size }) => {
+    const mesh = meshRef.current
+    if (!mesh) return
+    mesh.getWorldPosition(wp)
+    markers.forEach((m) => {
+      const el = labelRefs.current[m.id]
+      if (!el) return
+      v.copy(toVec(m.lat, m.lng, 1.06))
+      mesh.localToWorld(v)
+      n.copy(v).sub(wp).normalize() // outward normal at the marker
+      const facing = n.dot(wp.copy(camera.position).sub(v).normalize()) > 0.08
+      v.project(camera)
+      const x = ((v.x + 1) / 2) * size.width
+      const y = ((1 - v.y) / 2) * size.height
+      el.style.transform = `translate(${(x + 14).toFixed(1)}px, ${y.toFixed(1)}px) translateY(-50%)`
+      el.style.opacity = facing ? '1' : '0'
+    })
+  })
+  return null
 }
 
 export default function MoonScene({ sunRef, active, onLanding }) {
   const [markers, setMarkers] = useState(MARKERS)
   const meshRef = useRef()
+  const labelRefs = useRef({})
 
   const land = (local) => {
     const { lat, lng } = toLatLng(local)
@@ -233,15 +259,24 @@ export default function MoonScene({ sunRef, active, onLanding }) {
   }
 
   return (
-    <Canvas
-      camera={{ position: [0, 0, 3.7], fov: 38 }}
-      dpr={[1, 1.5]}
-      gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-      frameloop={active ? 'always' : 'never'}
-      style={{ background: 'transparent' }}
-    >
-      <MoonMesh sunRef={sunRef} onLand={land} markers={markers} meshRef={meshRef} />
-      <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5} rotateSpeed={0.6} dampingFactor={0.08} enableDamping />
-    </Canvas>
+    <div className="moon__scene">
+      <Canvas
+        camera={{ position: [0, 0, 3.7], fov: 38 }}
+        dpr={[1, 1.5]}
+        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+        frameloop={active ? 'always' : 'never'}
+        style={{ background: 'transparent' }}
+      >
+        <MoonMesh sunRef={sunRef} onLand={land} markers={markers} meshRef={meshRef} />
+        <LabelProjector markers={markers} labelRefs={labelRefs} meshRef={meshRef} />
+        <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5} rotateSpeed={0.6} dampingFactor={0.08} enableDamping />
+      </Canvas>
+      {markers.map((m) => (
+        <div key={m.id} ref={(el) => (labelRefs.current[m.id] = el)} className="moon__label">
+          <strong>{m.label}</strong>
+          <span>{m.sub}</span>
+        </div>
+      ))}
+    </div>
   )
 }

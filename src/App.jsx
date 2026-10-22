@@ -1,6 +1,7 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Chrome from './components/Chrome'
+import ErrorBoundary from './components/ErrorBoundary'
 import ViewSwitcher from './components/ViewSwitcher'
 import Hero from './sections/Hero'
 import Cave from './sections/Cave'
@@ -82,13 +83,15 @@ export default function App() {
       <Chrome chapters={VIEWS[view].chapters} />
       <AnimatePresence mode="wait">
         <motion.div key={view} variants={swap} initial="initial" animate="animate" exit="exit">
-          {view === 'design' ? (
-            <DesignView />
-          ) : (
-            <Suspense fallback={<div className="view-loading" aria-busy="true"><span>Loading…</span></div>}>
-              <Lazy />
-            </Suspense>
-          )}
+          <ErrorBoundary key={view}>
+            {view === 'design' ? (
+              <DesignView />
+            ) : (
+              <Suspense fallback={<div className="view-loading" aria-busy="true"><span>Loading…</span></div>}>
+                <Lazy />
+              </Suspense>
+            )}
+          </ErrorBoundary>
         </motion.div>
       </AnimatePresence>
     </>

@@ -37,6 +37,7 @@ export const VIEWS = {
       ['vortex', 'Vortex'],
       ['jobs', 'Openings'],
       ['gears', 'Gears'],
+      ['fog', 'Fog'],
       ['contact', 'Contact'],
     ],
   },

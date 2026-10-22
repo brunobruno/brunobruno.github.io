@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useTransform } from 'framer-motion'
 import Globe from 'react-globe.gl'
 import { MeshPhongMaterial } from 'three'
 import { ParallaxSection, Reveal } from '../../components/Parallax'
+import { useGlobeLifecycle } from '../../components/useGlobeLifecycle'
 import { loadJobs, groupByCity, ago, clip } from '../data/jobs'
 import './JobsGlobe.css'
 
@@ -25,6 +26,7 @@ function Inner({ p }) {
   const [size, setSize] = useState({ w: 600, h: 600 })
   const globeRef = useRef(null)
   const frameRef = useRef(null)
+  const { key: globeKey, register } = useGlobeLifecycle()
 
   useEffect(() => {
     fetch(GEO_URL).then((r) => r.json()).then((g) => setLand(g.features.filter((f) => f.properties.ISO_A3 !== 'ATA')))
@@ -48,16 +50,25 @@ function Inner({ p }) {
       globeRef.current.controls().autoRotate = true
     }
   }, [])
+  // `waitForGlobeReady={false}` makes the scene visible immediately but means
+  // onGlobeReady can fire before React forwards the callback — so setup runs
+  // once per mounted globe instance from an effect instead.
+  const initedFor = useRef(-1)
   const onReady = useCallback(() => {
     const g = globeRef.current
-    if (!g) return
+    if (!g || initedFor.current === globeKey) return
+    initedFor.current = globeKey
     const c = g.controls()
     c.autoRotate = true
     c.autoRotateSpeed = 0.4
     c.enableZoom = false
     c.enablePan = false
     g.pointOfView({ lat: 48, lng: 8, altitude: 2.1 }, 0)
-  }, [])
+    g.resumeAnimation() // IO may have paused it before the first frame landed
+    register(g)
+  }, [globeKey, register])
+
+  useEffect(() => onReady(), [onReady])
 
   useEffect(() => {
     const el = frameRef.current
@@ -92,8 +103,8 @@ function Inner({ p }) {
     <div className="container jobs__layout">
       <motion.div className="jobs__globe-wrap" style={{ y: rise, scale, opacity: fade }}>
         <div ref={frameRef} className="jobs__frame">
-          {land.length > 0 && (
-            <Globe
+          <Globe
+              key={globeKey}
               ref={globeRef}
               width={size.w}
               height={size.h}
@@ -128,8 +139,8 @@ function Inner({ p }) {
               onGlobeReady={onReady}
               onGlobeClick={reset}
               animateIn={false}
+              waitForGlobeReady={false}
             />
-          )}
           {!jobs && !error && (
             <div className="jobs__loading hud">
               <span className="jobs__loading-ring" />

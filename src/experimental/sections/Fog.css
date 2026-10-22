@@ -1,0 +1,73 @@
+.fog .pinned__stage {
+  display: block;
+}
+
+.fog__canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.fog__copy {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.fog__copy--intro {
+  top: 14vh;
+  align-items: flex-start;
+}
+
+.fog__copy--intro .phrase,
+.fog__copy--mid .phrase {
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.9);
+}
+
+.fog__copy--mid {
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  align-items: center;
+  text-align: center;
+  width: min(620px, 88vw);
+}
+
+.fog__copy--outro {
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  align-items: center;
+  text-align: center;
+  gap: 0.6rem;
+}
+
+.fog__title {
+  font-size: clamp(3.6rem, 10vw, 11rem);
+  text-shadow: 0 10px 60px rgba(0, 0, 0, 0.9);
+}
+
+.fog__title-accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 900;
+  text-transform: none;
+  font-size: 0.82em;
+}
+
+.fog__word {
+  font-size: clamp(4rem, 16vw, 15rem);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  background: linear-gradient(120deg, #fff 20%, #9fb4d8 60%, #ff3fa4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+}
+
+.fog__copy--outro .body {
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.9);
+}
