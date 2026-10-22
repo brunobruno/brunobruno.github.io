@@ -3,7 +3,7 @@ import { AnimatePresence, motion, useTransform } from 'framer-motion'
 import Globe from 'react-globe.gl'
 import { MeshPhongMaterial } from 'three'
 import { ParallaxSection, Reveal } from '../../components/Parallax'
-import { useGlobeLifecycle } from '../../components/useGlobeLifecycle'
+import { useGlobeLifecycle, useGlobeWatchdog } from '../../components/useGlobeLifecycle'
 import Flag from '../../components/Flag'
 import { loadJobs, groupByCity, ago, clip } from '../data/jobs'
 import './JobsGlobe.css'
@@ -48,14 +48,15 @@ function Inner({ p }) {
     setSelected(null)
     globeRef.current?.pointOfView(EURO_POV, 1000)
   }, [])
-  // `waitForGlobeReady={false}` makes the scene visible immediately but means
-  // onGlobeReady can fire before React forwards the callback — so setup runs
-  // once per mounted globe instance from an effect instead.
-  const initedFor = useRef(-1)
+  // Keep this idempotent — onGlobeReady re-fires every time the kapsule
+  // re-initializes (react-kapsule can re-invoke comp(domEl) when React replays
+  // the mount effect, e.g. Suspense reveals or dev fast-refresh), which resets
+  // the camera to the default POV. Each (re-)init must re-apply our setup.
+  // The mount effect covers the case where readiness fired before React
+  // forwarded the onGlobeReady prop.
   const onReady = useCallback(() => {
     const g = globeRef.current
-    if (!g || initedFor.current === globeKey) return
-    initedFor.current = globeKey
+    if (!g) return
     const c = g.controls()
     c.autoRotate = false // keep Europe in view
     c.enableZoom = false
@@ -63,9 +64,10 @@ function Inner({ p }) {
     g.pointOfView(EURO_POV, 0)
     g.resumeAnimation() // IO may have paused it before the first frame landed
     register(g)
-  }, [globeKey, register])
+  }, [register])
 
   useEffect(() => onReady(), [onReady])
+  useGlobeWatchdog(globeRef, onReady)
 
   useEffect(() => {
     const el = frameRef.current

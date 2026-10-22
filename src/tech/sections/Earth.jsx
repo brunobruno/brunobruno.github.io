@@ -3,7 +3,7 @@ import { AnimatePresence, motion, useTransform } from 'framer-motion'
 import Globe from 'react-globe.gl'
 import { MeshPhongMaterial, Color } from 'three'
 import { ParallaxSection, Reveal } from '../../components/Parallax'
-import { useGlobeLifecycle } from '../../components/useGlobeLifecycle'
+import { useGlobeLifecycle, useGlobeWatchdog } from '../../components/useGlobeLifecycle'
 import Flag from '../../components/Flag'
 import { useWorld } from '../world'
 import { companyFor, asOf } from '../data/companies'
@@ -152,14 +152,12 @@ function Inner({ p }) {
     }
   }, [])
 
-  // `waitForGlobeReady={false}` makes the scene visible immediately but means
-  // onGlobeReady can fire before React forwards the callback — so setup runs
-  // once per mounted globe instance from an effect instead.
-  const initedFor = useRef(-1)
+  // Idempotent on purpose — onGlobeReady re-fires if the kapsule re-initializes
+  // (React replaying the mount effect re-invokes comp(domEl), resetting the
+  // camera to the default POV), so each init must re-apply our setup.
   const onReady = useCallback(() => {
     const g = globeRef.current
-    if (!g || initedFor.current === globeKey) return
-    initedFor.current = globeKey
+    if (!g) return
     const c = g.controls()
     c.autoRotate = true
     c.autoRotateSpeed = 0.55
@@ -169,9 +167,10 @@ function Inner({ p }) {
     g.resumeAnimation()
     register(g)
     setReady(true)
-  }, [globeKey, register])
+  }, [register])
 
   useEffect(() => onReady(), [onReady])
+  useGlobeWatchdog(globeRef, onReady)
 
   // keep the WebGL canvas sized to its frame, and asleep when offscreen
   useEffect(() => {

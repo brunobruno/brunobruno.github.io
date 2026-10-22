@@ -3,7 +3,7 @@ import { AnimatePresence, motion, useTransform } from 'framer-motion'
 import Globe from 'react-globe.gl'
 import { MeshPhongMaterial } from 'three'
 import { ParallaxSection, Reveal } from '../../components/Parallax'
-import { useGlobeLifecycle } from '../../components/useGlobeLifecycle'
+import { useGlobeLifecycle, useGlobeWatchdog } from '../../components/useGlobeLifecycle'
 import { loadMemes, cap, price, pct, coinPage } from '../data/memes'
 import './Memes.css'
 
@@ -50,11 +50,12 @@ function Inner({ p }) {
       globeRef.current.controls().autoRotate = true
     }
   }, [])
-  const initedFor = useRef(-1)
+  // Idempotent on purpose — onGlobeReady re-fires if the kapsule re-initializes
+  // (React replaying the mount effect re-invokes comp(domEl), resetting the
+  // camera to the default POV), so each init must re-apply our setup.
   const onReady = useCallback(() => {
     const g = globeRef.current
-    if (!g || initedFor.current === globeKey) return
-    initedFor.current = globeKey
+    if (!g) return
     const c = g.controls()
     c.autoRotate = true
     c.autoRotateSpeed = 0.5
@@ -63,8 +64,9 @@ function Inner({ p }) {
     g.pointOfView(HOME_POV, 0)
     g.resumeAnimation()
     register(g)
-  }, [globeKey, register])
+  }, [register])
   useEffect(() => onReady(), [onReady])
+  useGlobeWatchdog(globeRef, onReady)
 
   useEffect(() => {
     const el = frameRef.current

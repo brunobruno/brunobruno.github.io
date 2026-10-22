@@ -309,10 +309,20 @@ self-contained except for the World Bank calls.
   three-render-objects scene (until `finishLoad`, which only runs on a `backgroundImageUrl` change). With a
   procedural `globeMaterial` and no image props there is nothing to wait for, so the flag must be `false`.
   Symptom otherwise: canvas exists, context is fine, zero pixels — `window.scene.children` is your check.
-* **With `waitForGlobeReady={false}`, `onGlobeReady` does NOT fire** — it runs during `new ThreeGlobe()`
-  construction, before react-kapsule forwards the prop. Do globe setup (controls, `pointOfView`,
-  `resumeAnimation`, lifecycle `register`) once per instance in an effect keyed on the lifecycle key,
-  guarded by a ref (see `JobsGlobe.jsx` › `onReady` / `initedFor`).
+* **Globe setup must be idempotent — the kapsule can silently re-initialize.** React replaying the
+  mount layout-effect (Suspense reveal, dev fast-refresh, effect cleanup+re-run on the same fiber)
+  makes react-kapsule call `comp(domEl)` *again* on the same instance. globe.gl's `init` has no guard:
+  it wipes the DOM, rebuilds renderer + OrbitControls, and resets the camera to the default POV
+  (`{lat≈10.84, lng≈1.60, altitude:2.5}`). Nothing re-fires `onGlobeReady` afterwards, so a
+  once-per-mount setup effect leaves the camera staring at the dimmed non-Europe hemisphere — which
+  looks exactly like "the globe is not appearing" (canvas alive, scene populated, wrong hemisphere).
+  Every section's `onReady` is therefore guard-free, *and* `useGlobeWatchdog(globeRef, onReady)`
+  (`src/components/useGlobeLifecycle.js`) polls ~every 700ms: if the camera sits at that exact
+  init-default signature it re-runs `onReady`. Our home POVs use altitude ≠ 2.5 so the signature
+  can't false-positive on a user-driven view.
+* **With `waitForGlobeReady={false}`, `onGlobeReady` does NOT fire before mount** — it runs during
+  `new ThreeGlobe()` construction, before react-kapsule forwards the prop. The mount-effect
+  `onReady()` covers that first pass; the watchdog covers every later re-init.
 * **`<StrictMode>` is removed** (`main.jsx`): its simulated unmount runs react-kapsule's `comp._destructor()`
   → `emptyObject(state.scene)` + `renderer.dispose()` on the *same* mounted globe → permanently blank canvas
   in dev (prod unaffected). Verified: production build renders the globe, dev with StrictMode doesn't.
