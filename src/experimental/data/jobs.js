@@ -1,4 +1,4 @@
-import { geocode } from './cities'
+import { geocode, EUROPE } from './cities'
 
 /**
  * Frontend openings for the Experimental globe.
@@ -9,17 +9,17 @@ import { geocode } from './cities'
  * European listings, 300 per page, newest first). Each job links to the
  * original posting and to an equivalent LinkedIn search for the same role/city.
  *
- * Filter: frontend-ish titles, posted within the last 7 days (widened to 30 if
- * the week is thin), located in a city we can geocode. Cached for one hour.
+ * Filter: frontend-ish titles, posted within the last 30 days, located in a
+ * European city we can geocode. Cached for one hour.
  */
 const API = 'https://www.arbeitnow.com/api/job-board-api'
 const PAGES = 8
 const FRONTEND = /front.?end|react|angular|vue|svelte|next\.?js|typescript|javascript|web ?developer|ui ?engineer|ui ?developer/i
-const CACHE_KEY = 'xp:jobs:v1'
+const CACHE_KEY = 'xp:jobs:v2'
 const TTL = 60 * 60 * 1000
 
 export const linkedinSearch = (title, city) =>
-  `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(title)}&location=${encodeURIComponent(city)}&f_TPR=r604800`
+  `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(title)}&location=${encodeURIComponent(city)}&f_TPR=r2592000`
 
 const normalise = (j) => {
   const geo = geocode(j.location)
@@ -32,6 +32,7 @@ const normalise = (j) => {
     city: geo.city,
     lat: geo.lat,
     lng: geo.lng,
+    cc: geo.cc,
     remote: Boolean(j.remote),
     tags: (j.tags || []).slice(0, 5),
     types: j.job_types || [],
@@ -54,11 +55,9 @@ export async function loadJobs() {
   if (!raw.length) throw new Error('Arbeitnow unavailable')
 
   const all = raw.filter((j) => FRONTEND.test(j.title)).map(normalise).filter(Boolean)
-  const since = (days) => Date.now() - days * 86400000
-  let jobs = all.filter((j) => j.posted > since(7))
-  if (jobs.length < 8) jobs = all.filter((j) => j.posted > since(30))
+  let jobs = all.filter((j) => j.posted > Date.now() - 30 * 86400000 && EUROPE.has(j.cc))
   jobs.sort((a, b) => b.posted - a.posted)
-  jobs = jobs.slice(0, 60)
+  jobs = jobs.slice(0, 80)
   sessionStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), jobs }))
   return jobs
 }
@@ -68,7 +67,7 @@ export function groupByCity(jobs) {
   const map = new Map()
   for (const j of jobs) {
     const key = `${j.lat},${j.lng}`
-    if (!map.has(key)) map.set(key, { city: j.city, lat: j.lat, lng: j.lng, jobs: [] })
+    if (!map.has(key)) map.set(key, { city: j.city, lat: j.lat, lng: j.lng, cc: j.cc, jobs: [] })
     map.get(key).jobs.push(j)
   }
   return [...map.values()]

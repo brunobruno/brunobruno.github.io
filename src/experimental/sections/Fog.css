@@ -17,8 +17,11 @@
 }
 
 .fog__copy--intro {
-  top: 14vh;
-  align-items: flex-start;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  align-items: center;
+  text-align: center;
 }
 
 .fog__copy--intro .phrase,

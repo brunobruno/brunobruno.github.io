@@ -56,6 +56,7 @@ src/
     Chrome.jsx/.css            scroll progress bar + chapter dots (receives `chapters` prop)
     ViewSwitcher.jsx/.css      centered "Design | Tech | Experimental" pill (framer layoutId pill)
     ErrorBoundary.jsx          view-level crash boundary (keyed by view in App)
+    Flag.jsx                   shared flagcdn <img> flag (a2 code → PNG, ◍ fallback); Earth + JobsGlobe use it
     useGlobeLifecycle.js       globe instance registry: pause/resume on visibility, context loss on unmount,
                                remount key on webglcontextlost
     FlowField.jsx              canvas flow field used by Design › Velocity
@@ -78,8 +79,8 @@ src/
     experimental.css           tokens (--void, --magenta, --acid, glass, .hud)
     components/VortexScene.jsx R3F kaleidoscope tunnel (rings of drei <Text> glyphs + primitives, FUTURE finale)
     components/FogScene.jsx    R3F fullscreen shader quad: domain-warped FBM smoke + embers
-    data/cities.js             city → lat/lng table + geocode(location)
-    data/jobs.js               Arbeitnow client (frontend filter, last 7/30 days), groupByCity, LinkedIn search URL
+    data/cities.js             city → lat/lng + ISO-3166 alpha-2 cc table, geocode(location), EUROPE set
+    data/jobs.js               Arbeitnow client (frontend filter, Europe-only, last 30 days), groupByCity, LinkedIn search URL
     sections/                  Vortex, JobsGlobe, Gears, Fog (+ .css)
 ```
 
@@ -204,7 +205,7 @@ yellow / violet on near-black (`experimental.css`).
 | # | id | File | Height | What it does |
 |---|---|---|---|---|
 | 01 | `vortex` | `sections/Vortex.jsx` + `components/VortexScene.jsx` | pinned 620vh | **Kaleidoscopic tunnel** in R3F: 30 rings, 12 slots each (4 drei `<Text>` glyphs in 3-fold symmetry + 8 primitives: torus/octa/box/cone/ring, some wireframe), counter-rotating with time *and* scroll; two wireframe tubes, 1,500 dust points, fog. Scroll flies the camera down the tube with a full 360° barrel roll (ends upright) and a pointer-driven sway. **Finale (p 0.78→0.97):** the six letters of **FUTURE** fly in from the walls, un-tumble and lock into a line lit by a magenta point light. Font: Unbounded 900 woff from Google Fonts (`FONT` const; troika needs woff/ttf, not woff2). HTML copy: intro top-left, mid line, outro at the bottom. |
-| 02 | `jobs` | `sections/JobsGlobe.jsx` | section 150vh | **Globe of live frontend openings.** `react-globe.gl`, dark sphere, dim violet hex land, magenta atmosphere. Pins = `pointsData` per city (height ∝ count). **Hover tooltip on the planet shows only the first 10 characters of the first title + "…" (and `+N`)** — `clip()` in `data/jobs.js`. **Click a pin** (or a city in the list) → fly-to, white pin, acid rings, and the right-hand glass panel lists that city's openings: title, company, posted-ago, tags, remote flag, "View posting" (original URL) and "Search on LinkedIn" (pre-filled LinkedIn jobs search for title + city, last 7 days). Click empty globe / × to reset. `waitForGlobeReady={false}` + per-instance init effect + `useGlobeLifecycle` keep it alive across view switches; pauses off-screen. |
+| 02 | `jobs` | `sections/JobsGlobe.jsx` | section 150vh | **Globe of live frontend openings — Europe only, last 30 days.** `react-globe.gl`, dark sphere, magenta atmosphere; European hex land bright violet, rest of world dimmed. Camera parked zoomed on central Europe (`EURO_POV`, altitude 1.5), **autoRotate off** so Europe stays in view; click → fly-to altitude 1.0. Pins = `pointsData` per city (height ∝ count). **Hover tooltip on the planet shows only the first 10 characters of the first title + "…" (and `+N`)** — `clip()` in `data/jobs.js`. **Click a pin** (or a city in the list) → fly-to, white pin, acid rings, and the right-hand glass panel lists that city's openings: country flag + city in the header, then title, company, posted-ago, tags, remote flag, "View posting" and "Search on LinkedIn" (pre-filled search, `f_TPR=r2592000` = last month). The unselected panel lists the top cities with a flag before each name. `waitForGlobeReady={false}` + per-instance init effect + `useGlobeLifecycle` keep it alive across view switches; pauses off-screen. |
 | 03 | `gears` | `sections/Gears.jsx` | pinned 480vh | **Procedural SVG gear train.** `gearPath(n, m)` draws trapezoid teeth + hub + spoke windows (evenodd). `buildTrain()` chains 12 gears (teeth in `TEETH`, heading angles in `ANGLES`) with one shared module so pitch circles touch, alternates direction, and solves each gear's **phase** so a tooth meets a gap at the contact point. One shared `drive` MotionValue = scroll × 4 turns + idle spin (`useAnimationFrame`, 14°/s); each gear's angle is `drive × ratio × dir + phase`, written **imperatively** to the SVG `transform` attribute via `useMotionValueEvent` (see gotchas). The SVG is taller than the viewport and pans down with scroll. A glass "drive shaft" dial shows the current angle. Finishes: brass / steel / copper gradients + drop shadow. |
 | 04 | `fog` | `sections/Fog.jsx` + `components/FogScene.jsx` | pinned 460vh | **Procedural fog chamber.** One fullscreen shader quad in R3F (`FogScene.jsx`): double domain-warped FBM smoke that churns while idle, drifts sideways and thickens to white-out with scroll, then **parts at p ≈ 0.8** to reveal the word **EMERGE**. Pointer steers the warp field; sparse ember specks drift upward. Uniforms: `uTime`, `uProgress`, `uPointer`, `uRes`. Copy acts: intro top-left, mid corridor line, outro word centered. |
 | 05 | `contact` | `../sections/Footer.jsx` | — | shared footer |
@@ -216,8 +217,9 @@ yellow / violet on near-black (`experimental.css`).
   newest first, mostly DACH/NL/UK). Every card still links to an equivalent **LinkedIn search**
   (`linkedinSearch(title, city)` → `f_TPR=r604800` = past week).
 * Pipeline: fetch pages 1–8 in parallel (`allSettled`) → title matches `FRONTEND` regex → `geocode()` via
-  `data/cities.js` (lower-case, diacritics stripped, token match; unknown cities/remote are dropped) →
-  posted ≤ 7 days (widened to 30 if < 8 results) → newest 60 → `sessionStorage` for 1 h (`xp:jobs:v1`).
+  `data/cities.js` (lower-case, diacritics stripped, token match; unknown cities/remote are dropped; each
+  hit also yields `cc`, the ISO alpha-2 from `CITY_CC`) → **posted ≤ 30 days AND `EUROPE.has(cc)`** →
+  newest 80 → `sessionStorage` for 1 h (`xp:jobs:v2`). Bump the cache key if the job shape or filter changes.
 * To add a city, add a key to `CITIES` (include German/local spellings, e.g. `muenchen`, `koeln`).
 
 ---

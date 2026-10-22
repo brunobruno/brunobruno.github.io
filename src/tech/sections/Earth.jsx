@@ -4,6 +4,7 @@ import Globe from 'react-globe.gl'
 import { MeshPhongMaterial, Color } from 'three'
 import { ParallaxSection, Reveal } from '../../components/Parallax'
 import { useGlobeLifecycle } from '../../components/useGlobeLifecycle'
+import Flag from '../../components/Flag'
 import { useWorld } from '../world'
 import { companyFor, asOf } from '../data/companies'
 import { money, people } from '../data/worldbank'
@@ -15,27 +16,6 @@ const CYAN = new Color('#19c3e6')
 const DIM = new Color('#17304a')
 
 const iso3 = (f) => (f.properties.ISO_A3 !== '-99' ? f.properties.ISO_A3 : f.properties.ADM0_A3)
-/**
- * SVG flags from flagcdn.com (the open-source `flag-icons` set, MIT). Emoji flags
- * don't render on Windows, so we use images with a small globe glyph as fallback.
- */
-function Flag({ a2, size = 20, className = '' }) {
-  const code = a2 && a2 !== '-99' ? a2.toLowerCase() : null
-  const [broken, setBroken] = useState(false)
-  if (!code || broken) return <span className={`earth__flagimg earth__flagimg--none ${className}`} style={{ width: size * 1.33, height: size }} aria-hidden>◍</span>
-  return (
-    <img
-      className={`earth__flagimg ${className}`}
-      src={`https://flagcdn.com/w80/${code}.png`}
-      srcSet={`https://flagcdn.com/w160/${code}.png 2x`}
-      width={size * 1.33}
-      height={size}
-      alt=""
-      loading="lazy"
-      onError={() => setBroken(true)}
-    />
-  )
-}
 
 /** Centroid of the largest ring, so France isn't placed in the Atlantic by its territories. */
 function centroid(f) {
@@ -289,7 +269,7 @@ function Inner({ p }) {
             <div className={`earth__cursor-label hud${hover && metrics[hover] ? ' is-on' : ''}`}>
               {hover && metrics[hover] ? (
                 <>
-                  <Flag a2={metrics[hover].a2} size={14} /> {metrics[hover].name}
+                  <Flag a2={metrics[hover].a2} size={14} className="earth__flagimg" /> {metrics[hover].name}
                 </>
               ) : null}
             </div>
@@ -326,7 +306,7 @@ function Inner({ p }) {
                   {focus ? (
                     <>
                       <div className="earth__panel-head">
-                        <span className="earth__flag"><Flag a2={focus.a2} size={30} /></span>
+                        <span className="earth__flag"><Flag a2={focus.a2} size={30} className="earth__flagimg" /></span>
                         <div>
                           <h3 className="wide earth__country">{focus.name}</h3>
                           <p className="hud">{focus.continent}{focus.live ? ` · World Bank ${focus.gdpYear}` : ' · estimate'}</p>
@@ -401,7 +381,7 @@ function Inner({ p }) {
                 <li key={m.id}>
                   <button className={selected?.id === m.id ? 'is-active' : ''} onClick={() => flyTo(m)}>
                     <span className="hud">{String(i + 1).padStart(2, '0')}</span>
-                    <span className="earth__top-name"><Flag a2={m.a2} size={14} /> {m.name}</span>
+                    <span className="earth__top-name"><Flag a2={m.a2} size={14} className="earth__flagimg" /> {m.name}</span>
                     <span className="earth__top-bar"><i style={{ width: `${(m.gdp / maxGdp) * 100}%` }} /></span>
                     <span className="earth__top-val">{money(m.gdp, 1)}</span>
                   </button>

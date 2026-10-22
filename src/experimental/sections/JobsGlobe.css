@@ -222,6 +222,32 @@
   background: rgba(255, 63, 164, 0.1);
 }
 
+.jobs__cityname {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.jobs__flag {
+  display: inline-block;
+  object-fit: cover;
+  border-radius: 2px;
+  vertical-align: -0.15em;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  margin-right: 0.35rem;
+}
+
+.jobs__flag--none {
+  display: inline-grid;
+  place-items: center;
+  color: var(--acid);
+  font-size: 1em;
+}
+
+.jobs__cityname .jobs__flag {
+  margin-right: 0;
+}
+
 .jobs__cities b {
   font-family: var(--mono);
   color: var(--magenta);

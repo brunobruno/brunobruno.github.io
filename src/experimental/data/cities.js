@@ -29,6 +29,52 @@ export const CITIES = {
   bangalore: [12.972, 77.594], bengaluru: [12.972, 77.594], 'tel aviv': [32.085, 34.782], dubai: [25.205, 55.271],
 }
 
+/** Every CITIES key → ISO 3166-1 alpha-2 country code (flag display + Europe filter). */
+const CITY_CC = Object.fromEntries(
+  [
+    ['de', ['berlin', 'munich', 'muenchen', 'munchen', 'hamburg', 'frankfurt', 'frankfurt am main', 'cologne', 'koeln', 'koln', 'stuttgart', 'duesseldorf', 'dusseldorf', 'nuremberg', 'nuernberg', 'nurnberg', 'darmstadt', 'leipzig', 'dresden', 'hannover', 'karlsruhe', 'bremen', 'bonn', 'mannheim', 'heidelberg', 'essen', 'dortmund', 'mainz', 'wiesbaden', 'regensburg', 'augsburg', 'freiburg']],
+    ['ch', ['zurich', 'zuerich', 'bern', 'basel', 'geneva', 'genf', 'lucerne', 'luzern', 'lausanne', 'zug', 'winterthur', 'st. gallen']],
+    ['at', ['vienna', 'wien', 'graz', 'linz']],
+    ['nl', ['amsterdam', 'utrecht', 'rotterdam', 'the hague', 'den haag', 'eindhoven', 'groningen', 'nijmegen']],
+    ['gb', ['london', 'manchester', 'edinburgh']],
+    ['ie', ['dublin']],
+    ['fr', ['paris', 'lyon']],
+    ['es', ['barcelona', 'madrid']],
+    ['pt', ['lisbon', 'lisboa', 'porto']],
+    ['it', ['milan', 'milano', 'rome', 'roma']],
+    ['be', ['brussels']],
+    ['lu', ['luxembourg']],
+    ['dk', ['copenhagen']],
+    ['se', ['stockholm']],
+    ['no', ['oslo']],
+    ['fi', ['helsinki']],
+    ['pl', ['warsaw', 'krakow']],
+    ['cz', ['prague']],
+    ['hu', ['budapest']],
+    ['ro', ['bucharest']],
+    ['gr', ['athens']],
+    ['ee', ['tallinn']],
+    ['lv', ['riga']],
+    ['lt', ['vilnius']],
+    ['hr', ['zagreb']],
+    ['rs', ['belgrade']],
+    ['us', ['new york', 'san francisco', 'boston', 'austin', 'seattle']],
+    ['ca', ['toronto', 'vancouver']],
+    ['br', ['sao paulo']],
+    ['mx', ['mexico city']],
+    ['ar', ['buenos aires']],
+    ['au', ['sydney', 'melbourne']],
+    ['sg', ['singapore']],
+    ['jp', ['tokyo']],
+    ['in', ['bangalore', 'bengaluru']],
+    ['il', ['tel aviv']],
+    ['ae', ['dubai']],
+  ].flatMap(([cc, keys]) => keys.map((k) => [k, cc])),
+)
+
+/** Country codes we show on the globe — the lab focuses on Europe. */
+export const EUROPE = new Set(['de', 'ch', 'at', 'nl', 'gb', 'ie', 'fr', 'es', 'pt', 'it', 'be', 'lu', 'dk', 'se', 'no', 'fi', 'pl', 'cz', 'hu', 'ro', 'gr', 'ee', 'lv', 'lt', 'hr', 'rs', 'tr', 'bg', 'sk', 'si', 'ua', 'is', 'mt', 'cy'])
+
 const strip = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
 
 /** Returns { city, lat, lng } for a free-text location, or null if no known city matches. */
@@ -41,7 +87,7 @@ export function geocode(location = '') {
     const key = Object.keys(CITIES).find((c) => t === c || t.startsWith(`${c} `) || t.endsWith(` ${c}`))
     if (key) {
       const [lat, lng] = CITIES[key]
-      return { city: key.replace(/\b\w/g, (m) => m.toUpperCase()), lat, lng }
+      return { city: key.replace(/\b\w/g, (m) => m.toUpperCase()), lat, lng, cc: CITY_CC[key] }
     }
   }
   return null

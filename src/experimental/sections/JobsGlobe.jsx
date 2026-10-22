@@ -4,10 +4,12 @@ import Globe from 'react-globe.gl'
 import { MeshPhongMaterial } from 'three'
 import { ParallaxSection, Reveal } from '../../components/Parallax'
 import { useGlobeLifecycle } from '../../components/useGlobeLifecycle'
+import Flag from '../../components/Flag'
 import { loadJobs, groupByCity, ago, clip } from '../data/jobs'
 import './JobsGlobe.css'
 
 const GEO_URL = `${import.meta.env.BASE_URL}data/countries.geojson`
+const EURO_POV = { lat: 50, lng: 10, altitude: 1.5 } // zoomed on central Europe
 
 export default function JobsGlobe() {
   return (
@@ -40,15 +42,11 @@ function Inner({ p }) {
 
   const flyTo = useCallback((c) => {
     setSelected(c)
-    globeRef.current?.pointOfView({ lat: c.lat, lng: c.lng, altitude: 1.4 }, 1000)
-    if (globeRef.current) globeRef.current.controls().autoRotate = false
+    globeRef.current?.pointOfView({ lat: c.lat, lng: c.lng, altitude: 1.0 }, 1000)
   }, [])
   const reset = useCallback(() => {
     setSelected(null)
-    if (globeRef.current) {
-      globeRef.current.pointOfView({ lat: 48, lng: 8, altitude: 2.1 }, 1000)
-      globeRef.current.controls().autoRotate = true
-    }
+    globeRef.current?.pointOfView(EURO_POV, 1000)
   }, [])
   // `waitForGlobeReady={false}` makes the scene visible immediately but means
   // onGlobeReady can fire before React forwards the callback — so setup runs
@@ -59,11 +57,10 @@ function Inner({ p }) {
     if (!g || initedFor.current === globeKey) return
     initedFor.current = globeKey
     const c = g.controls()
-    c.autoRotate = true
-    c.autoRotateSpeed = 0.4
+    c.autoRotate = false // keep Europe in view
     c.enableZoom = false
     c.enablePan = false
-    g.pointOfView({ lat: 48, lng: 8, altitude: 2.1 }, 0)
+    g.pointOfView(EURO_POV, 0)
     g.resumeAnimation() // IO may have paused it before the first frame landed
     register(g)
   }, [globeKey, register])
@@ -97,8 +94,6 @@ function Inner({ p }) {
     return `<div class="jobs__tip">${first}${c.jobs.length > 1 ? ` <b>+${c.jobs.length - 1}</b>` : ''}</div>`
   }
 
-  const week = jobs?.length ? Math.max(0, ...jobs.map((j) => (Date.now() - j.posted) / 86400000)) : 0
-
   return (
     <div className="container jobs__layout">
       <motion.div className="jobs__globe-wrap" style={{ y: rise, scale, opacity: fade }}>
@@ -117,7 +112,7 @@ function Inner({ p }) {
               hexPolygonResolution={3}
               hexPolygonMargin={0.55}
               hexPolygonUseDots
-              hexPolygonColor={() => 'rgba(139,92,246,0.45)'}
+              hexPolygonColor={(f) => (f.properties.CONTINENT === 'Europe' ? 'rgba(139,92,246,0.55)' : 'rgba(139,92,246,0.14)')}
               pointsData={cities}
               pointLat="lat"
               pointLng="lng"
@@ -163,7 +158,7 @@ function Inner({ p }) {
         </Reveal>
         <Reveal delay={0.2}>
           <p className="phrase">
-            Live frontend openings from the last <em>{week > 7 ? '30' : '7'} days</em>. Click a pin.
+            Live frontend openings from the last <em>month</em> — Europe only. Click a pin.
           </p>
         </Reveal>
 
@@ -181,7 +176,9 @@ function Inner({ p }) {
                   <>
                     <div className="jobs__panel-head">
                       <div>
-                        <h3 className="wide jobs__city">{selected.city}</h3>
+                        <h3 className="wide jobs__city">
+                          <Flag a2={selected.cc} size={18} className="jobs__flag" /> {selected.city}
+                        </h3>
                         <p className="hud">
                           {selected.jobs.length} opening{selected.jobs.length > 1 ? 's' : ''}
                         </p>
@@ -216,7 +213,7 @@ function Inner({ p }) {
                   <>
                     <h3 className="wide jobs__city">{error ? 'Board offline' : jobs ? `${jobs.length} openings` : 'Scanning…'}</h3>
                     <p className="hud">
-                      {error ? 'Try again later' : jobs ? `${cities.length} cities · Arbeitnow` : 'Arbeitnow job board'}
+                      {error ? 'Try again later' : jobs ? `${cities.length} European cities · last 30 days` : 'Arbeitnow job board'}
                     </p>
                     {jobs && (
                       <ul className="jobs__cities">
@@ -226,7 +223,10 @@ function Inner({ p }) {
                           .map((c) => (
                             <li key={c.city}>
                               <button onClick={() => flyTo(c)}>
-                                <span>{c.city}</span>
+                                <span className="jobs__cityname">
+                                  <Flag a2={c.cc} size={13} className="jobs__flag" />
+                                  {c.city}
+                                </span>
                                 <b>{c.jobs.length}</b>
                               </button>
                             </li>
