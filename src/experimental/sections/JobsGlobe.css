@@ -1,0 +1,245 @@
+.jobs {
+  min-height: 150vh;
+  display: flex;
+  align-items: center;
+  padding: 10vh 0;
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(255, 63, 164, 0.1), transparent 55%),
+    radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.12), transparent 50%) !important;
+}
+
+.jobs__layout {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(2rem, 4vw, 5rem);
+  align-items: center;
+}
+
+.jobs__globe-wrap {
+  position: relative;
+  will-change: transform;
+}
+
+.jobs__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  max-height: 86vh;
+  margin: 0 auto;
+  cursor: grab;
+}
+
+.jobs__frame:active {
+  cursor: grabbing;
+}
+
+/* the on-planet tooltip: 10 chars + ellipsis */
+.jobs__tip {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.6rem;
+  border-radius: 6px;
+  background: rgba(5, 3, 8, 0.85);
+  border: 1px solid rgba(255, 230, 0, 0.5);
+  color: #fff;
+  white-space: nowrap;
+}
+
+.jobs__tip b {
+  color: var(--acid);
+  font-weight: 600;
+}
+
+.jobs__loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  pointer-events: none;
+}
+
+.jobs__loading-ring {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 63, 164, 0.25);
+  border-top-color: var(--magenta);
+  animation: jobs-spin 1.1s linear infinite;
+}
+
+@keyframes jobs-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.jobs__side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.jobs__title {
+  font-size: clamp(3.4rem, 7.5vw, 8rem);
+}
+
+.jobs__title-accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 900;
+  text-transform: none;
+  font-size: 0.82em;
+}
+
+.jobs__panel {
+  padding: 1.5rem 1.6rem;
+  max-height: 60vh;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.jobs__panel-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.jobs__city {
+  font-size: clamp(1.1rem, 1.6vw, 1.5rem);
+  font-weight: 700;
+  margin: 0 0 0.2rem;
+}
+
+.jobs__close {
+  margin-left: auto;
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  color: var(--paper);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.jobs__list,
+.jobs__cities {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.jobs__job {
+  padding: 1rem 0;
+  border-top: 1px solid var(--glass-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.jobs__job-title {
+  font-size: clamp(1.05rem, 1.4vw, 1.3rem);
+  line-height: 1.25;
+}
+
+.jobs__job-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.jobs__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.jobs__tags span {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  opacity: 0.8;
+}
+
+.jobs__links {
+  display: flex;
+  gap: 1.2rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.jobs__links a {
+  text-decoration: none;
+  color: var(--acid);
+  border-bottom: 1px solid rgba(255, 230, 0, 0.4);
+  transition: border-color 0.2s;
+}
+
+.jobs__links a:hover {
+  border-color: var(--acid);
+}
+
+.jobs__cities {
+  margin-top: 1rem;
+}
+
+.jobs__cities button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--glass-border);
+  color: var(--paper);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  padding: 0.6rem 0.3rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.jobs__cities button:hover {
+  background: rgba(255, 63, 164, 0.1);
+}
+
+.jobs__cities b {
+  font-family: var(--mono);
+  color: var(--magenta);
+  font-weight: 500;
+}
+
+.jobs__hint {
+  margin-top: 1.2rem;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  opacity: 0.55;
+}
+
+@media (max-width: 960px) {
+  .jobs__layout {
+    grid-template-columns: 1fr;
+  }
+  .jobs__frame {
+    max-width: 92vw;
+  }
+}

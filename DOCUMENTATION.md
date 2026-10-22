@@ -11,13 +11,14 @@ Live: https://brunobruno.github.io · Repo root: this folder · Stack: React 19 
 
 ## 1. One-paragraph summary
 
-A single-page, scroll-driven portfolio with **two independent parallax "worlds"** selected by a fixed pill
+A single-page, scroll-driven portfolio with **three independent parallax "worlds"** selected by a fixed pill
 switcher at the top of the page:
 
 | View | URL | Theme | Entry file |
 |---|---|---|---|
 | **Design** (default) | `/` | A walk through art history (Lascaux → Rothko → AI) on paper/ink colours | `src/App.jsx` → `DesignView()` |
 | **Tech** | `/?view=tech` | Outer space: evolution of tools → interactive Earth with live World Bank data → capital → technology → people → interactive Moon | `src/tech/TechView.jsx` (lazy) |
+| **Experimental** | `/?view=experimental` | Playground, pure entertainment: kaleidoscopic 3D vortex → globe of live frontend job openings → meshing gear train | `src/experimental/ExperimentalView.jsx` (lazy) |
 
 Both views share the chrome (progress bar, right-hand chapter nav, switcher), the Footer, the global type
 system and the parallax primitives in `src/components/Parallax.jsx`.
@@ -69,6 +70,13 @@ src/
       Counter.jsx              Counter (count-up on view) + LiveCounter (keeps ticking, e.g. population clock)
       MoonScene.jsx            R3F <Canvas>: procedural GLSL moon, OrbitControls, click-to-land markers
     sections/                  TECH slides – Evolution, Earth, Money, Technology, Population, Moon (+ .css)
+  experimental/                EXPERIMENTAL VIEW
+    ExperimentalView.jsx       renders the three labs + Footer (no shared data layer)
+    experimental.css           tokens (--void, --magenta, --acid, glass, .hud)
+    components/VortexScene.jsx R3F kaleidoscope tunnel (rings of drei <Text> glyphs + primitives, FUTURE finale)
+    data/cities.js             city → lat/lng table + geocode(location)
+    data/jobs.js               Arbeitnow client (frontend filter, last 7/30 days), groupByCity, LinkedIn search URL
+    sections/                  Vortex, JobsGlobe, Gears (+ .css)
 ```
 
 ---
@@ -108,9 +116,12 @@ otherwise the visitor sees an empty screen for the first few hundred pixels.
 * `AnimatePresence mode="wait"` swaps the whole view with **opacity + y only**. Do **not** animate `filter`
   or `scale` on that wrapper: a non-`none` filter/transform turns it into a containing block and breaks the
   `position: fixed` starfield and the sticky stages inside.
-* `TechView` is `React.lazy` → three.js/globe.gl (≈665 KB gzip) are only downloaded when the switch is used.
-  The Design bundle stays ≈120 KB gzip.
+* `TechView` and `ExperimentalView` are `React.lazy` (`LAZY_VIEWS` map in `App.jsx`) → three.js/globe.gl
+  (≈665 KB gzip, shared chunk) are only downloaded when a switch is used. The Design bundle stays ≈120 KB gzip.
 * Chapter nav: `Chrome` receives `VIEWS[view].chapters`; ids must match the rendered section ids.
+* `ViewSwitcher` builds its tabs from `VIEWS`, so adding a view = add an entry in `views.js` + `LAZY_VIEWS`.
+  The pill is centred with the CSS `translate` property, **not** `transform` — framer-motion owns `transform`
+  on that element (its `y` entrance animation would overwrite a `translateX(-50%)`).
 
 ### 4.3 Type & colour system (`global.css`, `tech.css`)
 
@@ -181,6 +192,31 @@ one italic lime accent word per phrase.
 
 ---
 
+## 6b. Experimental view (playground) — slide by slide
+
+No shared data layer; each lab is self-contained. Eyebrows read `Lab 0N · Name`; palette is magenta / acid
+yellow / violet on near-black (`experimental.css`).
+
+| # | id | File | Height | What it does |
+|---|---|---|---|---|
+| 01 | `vortex` | `sections/Vortex.jsx` + `components/VortexScene.jsx` | pinned 620vh | **Kaleidoscopic tunnel** in R3F: 30 rings, 12 slots each (4 drei `<Text>` glyphs in 3-fold symmetry + 8 primitives: torus/octa/box/cone/ring, some wireframe), counter-rotating with time *and* scroll; two wireframe tubes, 1,500 dust points, fog. Scroll flies the camera down the tube with a full 360° barrel roll (ends upright) and a pointer-driven sway. **Finale (p 0.78→0.97):** the six letters of **FUTURE** fly in from the walls, un-tumble and lock into a line lit by a magenta point light. Font: Unbounded 900 woff from Google Fonts (`FONT` const; troika needs woff/ttf, not woff2). HTML copy: intro top-left, mid line, outro at the bottom. |
+| 02 | `jobs` | `sections/JobsGlobe.jsx` | section 150vh | **Globe of live frontend openings.** `react-globe.gl`, dark sphere, dim violet hex land, magenta atmosphere. Pins = `pointsData` per city (height ∝ count). **Hover tooltip on the planet shows only the first 10 characters of the first title + "…" (and `+N`)** — `clip()` in `data/jobs.js`. **Click a pin** (or a city in the list) → fly-to, white pin, acid rings, and the right-hand glass panel lists that city's openings: title, company, posted-ago, tags, remote flag, "View posting" (original URL) and "Search on LinkedIn" (pre-filled LinkedIn jobs search for title + city, last 7 days). Click empty globe / × to reset. Globe pauses off-screen. |
+| 03 | `gears` | `sections/Gears.jsx` | pinned 480vh | **Procedural SVG gear train.** `gearPath(n, m)` draws trapezoid teeth + hub + spoke windows (evenodd). `buildTrain()` chains 12 gears (teeth in `TEETH`, heading angles in `ANGLES`) with one shared module so pitch circles touch, alternates direction, and solves each gear's **phase** so a tooth meets a gap at the contact point. One shared `drive` MotionValue = scroll × 2.5 turns + slow idle (`useAnimationFrame`); each gear rotates `drive × ratio × dir + phase`. The SVG is taller than the viewport and pans down with scroll. A glass "drive shaft" dial shows the current angle. Finishes: brass / steel / copper gradients + drop shadow. |
+| 04 | `contact` | `../sections/Footer.jsx` | — | shared footer |
+
+### Jobs data (`experimental/data/jobs.js`)
+
+* **Why not LinkedIn?** LinkedIn's Jobs API is partner-only and scraping breaks its ToS. We use the free,
+  CORS-enabled **Arbeitnow job board** (`https://www.arbeitnow.com/api/job-board-api?page=N`, 300/page,
+  newest first, mostly DACH/NL/UK). Every card still links to an equivalent **LinkedIn search**
+  (`linkedinSearch(title, city)` → `f_TPR=r604800` = past week).
+* Pipeline: fetch pages 1–8 in parallel (`allSettled`) → title matches `FRONTEND` regex → `geocode()` via
+  `data/cities.js` (lower-case, diacritics stripped, token match; unknown cities/remote are dropped) →
+  posted ≤ 7 days (widened to 30 if < 8 results) → newest 60 → `sessionStorage` for 1 h (`xp:jobs:v1`).
+* To add a city, add a key to `CITIES` (include German/local spellings, e.g. `muenchen`, `koeln`).
+
+---
+
 ## 7. Data sources & how to refresh them
 
 | Data | Source | Where | Notes |
@@ -235,6 +271,12 @@ self-contained except for the World Bank calls.
 * **World Bank CORS** – intermittent missing `Access-Control-Allow-Origin` on CDN cache hits; handled by the
   daily cache-buster + `allSettled` + Natural Earth fallbacks (`live: false` → the panel says "estimate").
 * **`useWorld` lives in `tech/world.js`**, not `TechView.jsx`, to avoid a circular import with the slides.
+* **Rotating SVG groups with framer**: `style={{ rotate }}` on a `motion.g` rotates around the *viewBox*
+  origin (gears orbited instead of spinning). Use the attribute instead:
+  `transform={useMotionTemplate\`rotate(${rotate})\`}` inside a plain `<g transform="translate(x y)">`.
+* **Panning a tall SVG**: percentage `y` is relative to the element's own height — compute the pan in px from
+  the rendered width × viewBox aspect (see `Gears.jsx` › `trainY`).
+* **R3F camera roll**: `camera.lookAt()` resets roll every frame; set `camera.rotation.z` *after* it.
 * Console noise that is expected in dev: framer's "container has a non-static position" (fires while
   Suspense hides the tree), drei/React 19 "Attempted to synchronously unmount a root", `THREE.Clock`
   deprecation from drei. None affect the build.

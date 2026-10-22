@@ -31,6 +31,15 @@ export const VIEWS = {
       ['contact', 'Contact'],
     ],
   },
+  experimental: {
+    label: 'Experimental',
+    chapters: [
+      ['vortex', 'Vortex'],
+      ['jobs', 'Openings'],
+      ['gears', 'Gears'],
+      ['contact', 'Contact'],
+    ],
+  },
 }
 
 export const readView = () => {

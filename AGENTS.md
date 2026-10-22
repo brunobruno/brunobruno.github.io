@@ -1,6 +1,6 @@
 # Agent notes
 
-Read `DOCUMENTATION.md` first — it describes both parallax views (Design `/`, Tech `/?view=tech`), every
+Read `DOCUMENTATION.md` first — it describes all three parallax views (Design `/`, Tech `/?view=tech`, Experimental `/?view=experimental`), every
 slide's scroll choreography, data sources and known gotchas.
 
 - Verify with `npm run lint && npm run build` (3 pre-existing oxlint warnings are expected).

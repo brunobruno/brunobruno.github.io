@@ -1,12 +1,10 @@
 import { motion } from 'framer-motion'
+import { VIEWS } from '../views'
 import './ViewSwitcher.css'
 
-const options = [
-  ['design', 'Design'],
-  ['tech', 'Tech'],
-]
+const options = Object.entries(VIEWS).map(([id, v]) => [id, v.label])
 
-/** Fixed pill at the top of the page that swaps between the two parallax worlds. */
+/** Fixed pill at the top of the page that swaps between the parallax worlds. */
 export default function ViewSwitcher({ view, onChange }) {
   return (
     <motion.div

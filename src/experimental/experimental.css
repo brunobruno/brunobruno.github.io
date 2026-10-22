@@ -1,0 +1,59 @@
+/* Shared tokens for the Experimental view. Slides keep their own files. */
+.xp {
+  --void: #050308;
+  --magenta: #ff3fa4;
+  --acid: #ffe600;
+  --cyan: #19c3e6;
+  --lime: #c6ff3f;
+  --violet: #8b5cf6;
+  --glass: rgba(14, 8, 24, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --mono: 'Space Grotesk', ui-monospace, Menlo, monospace;
+
+  position: relative;
+  background: var(--void);
+  color: var(--paper);
+  isolation: isolate;
+}
+
+.xp .section,
+.xp .pinned__stage {
+  background: transparent;
+}
+
+.xp .footer {
+  position: relative;
+  z-index: 1;
+}
+
+.xp .hud {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--magenta);
+}
+
+.xp .hud--acid {
+  color: var(--acid);
+}
+
+.xp .glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  backdrop-filter: blur(16px) saturate(130%);
+  -webkit-backdrop-filter: blur(16px) saturate(130%);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.xp .gradient-text {
+  background: linear-gradient(120deg, #fff 0%, var(--magenta) 45%, var(--acid) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.xp .phrase em {
+  color: var(--acid);
+}

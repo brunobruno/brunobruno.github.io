@@ -18,6 +18,9 @@ import { VIEWS, readView } from './views'
 // The Tech view pulls in three.js + globe.gl, so it is code-split and only
 // downloaded when the visitor flips the switch.
 const TechView = lazy(() => import('./tech/TechView'))
+const ExperimentalView = lazy(() => import('./experimental/ExperimentalView'))
+
+const LAZY_VIEWS = { tech: TechView, experimental: ExperimentalView }
 
 function DesignView() {
   return (
@@ -71,6 +74,8 @@ export default function App() {
     document.documentElement.dataset.view = view
   }, [view])
 
+  const Lazy = LAZY_VIEWS[view]
+
   return (
     <>
       <ViewSwitcher view={view} onChange={setView} />
@@ -80,8 +85,8 @@ export default function App() {
           {view === 'design' ? (
             <DesignView />
           ) : (
-            <Suspense fallback={<div className="view-loading" aria-busy="true"><span>Loading the universe…</span></div>}>
-              <TechView />
+            <Suspense fallback={<div className="view-loading" aria-busy="true"><span>Loading…</span></div>}>
+              <Lazy />
             </Suspense>
           )}
         </motion.div>

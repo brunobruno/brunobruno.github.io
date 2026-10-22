@@ -2,7 +2,8 @@
   position: fixed;
   top: 1.1rem;
   left: 50%;
-  transform: translateX(-50%);
+  /* `translate`, not `transform`: framer-motion owns `transform` on this element */
+  translate: -50% 0;
   z-index: 1100;
   display: flex;
   padding: 0.25rem;
@@ -45,6 +46,11 @@
 :root[data-view='tech'] .switcher__pill {
   background: linear-gradient(120deg, #19c3e6, #c6ff3f);
   box-shadow: 0 0 24px rgba(25, 195, 230, 0.45);
+}
+
+:root[data-view='experimental'] .switcher__pill {
+  background: linear-gradient(120deg, #ff3fa4, #ffe600);
+  box-shadow: 0 0 24px rgba(255, 63, 164, 0.5);
 }
 
 .switcher__label {

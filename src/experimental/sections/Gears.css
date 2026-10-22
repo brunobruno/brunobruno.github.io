@@ -1,0 +1,96 @@
+.gears .pinned__stage {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.gears__bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(200, 134, 43, 0.18), transparent 55%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 48px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 48px),
+    #0a0709;
+  pointer-events: none;
+}
+
+.gears__svg {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+  width: min(92vw, 1100px);
+  height: auto;
+  overflow: visible;
+  will-change: transform;
+}
+
+
+.gears__copy {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.gears__copy--intro {
+  top: 12vh;
+  align-items: flex-start;
+}
+
+.gears__copy--intro .phrase,
+.gears__outro-phrase {
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.95);
+}
+
+.gears__copy--outro {
+  bottom: 10vh;
+  align-items: center;
+  text-align: center;
+}
+
+.gears__outro-phrase {
+  max-width: 26ch;
+}
+
+.gears__title {
+  font-size: clamp(3.6rem, 11vw, 12rem);
+  text-shadow: 0 10px 60px rgba(0, 0, 0, 0.9);
+}
+
+.gears__title-accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 900;
+  text-transform: none;
+  font-size: 0.8em;
+}
+
+.gears__dial {
+  position: absolute;
+  right: 4vw;
+  bottom: 6vh;
+  padding: 0.9rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
+  z-index: 2;
+}
+
+.gears__dial-value {
+  font-family: var(--font-wide);
+  font-weight: 200;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-variant-numeric: tabular-nums;
+  color: var(--acid);
+}
+
+@media (max-width: 760px) {
+  .gears__dial {
+    display: none;
+  }
+}
