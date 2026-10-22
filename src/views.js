@@ -39,6 +39,7 @@ export const VIEWS = {
       ['gears', 'Gears'],
       ['fog', 'Fog'],
       ['fire', 'Fire'],
+      ['memes', 'Casino'],
       ['contact', 'Contact'],
     ],
   },

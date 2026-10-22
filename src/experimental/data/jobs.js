@@ -9,14 +9,19 @@ import { geocode, EUROPE } from './cities'
  * European listings, 300 per page, newest first). Each job links to the
  * original posting and to an equivalent LinkedIn search for the same role/city.
  *
- * Filter: frontend-ish titles, posted within the last 6 months, located in a
- * European city we can geocode (data/cities.js covers ~40 countries).
- * Cached for one hour.
+ * Primary source: public/data/jobs.json — a daily snapshot rebuilt by the
+ * "Refresh jobs data" GitHub Action from Arbeitnow + Adzuna (Adzuna needs the
+ * ADZUNA_APP_ID/ADZUNA_APP_KEY repo secrets; see .github/workflows/jobs.yml).
+ * Live fallback: the free, CORS-enabled Arbeitnow board, fetched client-side.
+ *
+ * Filter: frontend-ish titles (incl. full-stack), last 6 months, geocoded to
+ * a European city (data/cities.js covers ~40 countries). Cached for one hour.
  */
 const API = 'https://www.arbeitnow.com/api/job-board-api'
+const SNAPSHOT = `${import.meta.env.BASE_URL}data/jobs.json`
 const PAGES = 16 // newest-first; more pages = deeper history for the 6-month window
 const FRONTEND = /front.?end|full.?stack|react|angular|vue|svelte|next\.?js|typescript|javascript|web ?developer|ui ?engineer|ui ?developer/i
-const CACHE_KEY = 'xp:jobs:v3'
+const CACHE_KEY = 'xp:jobs:v4'
 const TTL = 60 * 60 * 1000
 
 export const linkedinSearch = (title, city) =>
@@ -49,6 +54,14 @@ export async function loadJobs() {
     const { at, jobs } = JSON.parse(cached)
     if (Date.now() - at < TTL) return jobs
   }
+  // Prefer the CI-built snapshot (Arbeitnow + Adzuna, all of Europe).
+  const snap = await fetch(SNAPSHOT).then((r) => (r.ok ? r.json() : null)).catch(() => null)
+  if (snap?.jobs?.length) {
+    const jobs = snap.jobs.filter((j) => j.posted > Date.now() - 180 * 86400000)
+    sessionStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), jobs }))
+    return jobs
+  }
+  // Live fallback: Arbeitnow only (mostly DACH + UK/NL).
   const pages = await Promise.allSettled(
     Array.from({ length: PAGES }, (_, i) => fetch(`${API}?page=${i + 1}`).then((r) => (r.ok ? r.json() : Promise.reject(r.status)))),
   )

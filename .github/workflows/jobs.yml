@@ -1,0 +1,37 @@
+name: Refresh jobs data
+
+on:
+  schedule:
+    - cron: '23 5 * * *' # daily ~05:23 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Rebuilds public/data/jobs.json from Arbeitnow + Adzuna (secrets
+# ADZUNA_APP_ID / ADZUNA_APP_KEY — free at developer.adzuna.com; without them
+# the snapshot is Arbeitnow-only). The commit pushes to main, which triggers
+# the deploy workflow and republishes the site.
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/fetch-jobs.mjs
+        env:
+          ADZUNA_APP_ID: ${{ secrets.ADZUNA_APP_ID }}
+          ADZUNA_APP_KEY: ${{ secrets.ADZUNA_APP_KEY }}
+      - name: Commit snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/jobs.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: refresh jobs snapshot"
+            git push
+          else
+            echo "no changes"
+          fi

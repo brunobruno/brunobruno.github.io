@@ -3,6 +3,7 @@ import JobsGlobe from './sections/JobsGlobe'
 import Gears from './sections/Gears'
 import Fog from './sections/Fog'
 import Fire from './sections/Fire'
+import Memes from './sections/Memes'
 import Footer from '../sections/Footer'
 import './experimental.css'
 
@@ -19,6 +20,7 @@ export default function ExperimentalView() {
         <Gears />
         <Fog />
         <Fire />
+        <Memes />
       </main>
       <Footer />
     </div>

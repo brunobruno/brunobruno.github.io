@@ -234,8 +234,8 @@ function Inner({ p }) {
                       </ul>
                     )}
                     <p className="jobs__hint">
-                      LinkedIn exposes no public jobs API, so pins come from the open Arbeitnow board; each posting links
-                      to the matching LinkedIn search.
+                      LinkedIn exposes no public jobs API, so pins come from the open Arbeitnow + Adzuna boards; each
+                      posting links to the matching LinkedIn search.
                     </p>
                   </>
                 )}
