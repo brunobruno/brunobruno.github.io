@@ -15,19 +15,37 @@ import { geocode } from './cities'
  * Remotive + Himalayas + HN "Who is hiring"; see scripts/fetch-jobs.mjs.
  * Live fallback: the free, CORS-enabled Arbeitnow board, fetched client-side.
  *
- * Filter: frontend-ish titles (incl. full-stack), last 6 months, geocoded to
- * a known city anywhere in the world (data/cities.js covers ~80 countries).
+ * Filter: frontend-ish titles (incl. full-stack), newest-first — the globe
+ * shows the LATEST openings per city, not a date range — geocoded to a known
+ * place anywhere in the world (data/cities.js covers ~85 countries).
  * Cached for one hour.
  */
 const API = 'https://www.arbeitnow.com/api/job-board-api'
 const SNAPSHOT = `${import.meta.env.BASE_URL}data/jobs.json`
 const PAGES = 16 // newest-first; more pages = deeper history for the 6-month window
 const FRONTEND = /front.?end|full.?stack|react|angular|vue|svelte|next\.?js|typescript|javascript|web ?developer|ui ?engineer|ui ?developer/i
-const CACHE_KEY = 'xp:jobs:v6'
+const CACHE_KEY = 'xp:jobs:v7'
 const TTL = 60 * 60 * 1000
+const KEEP = 250 // newest-first selection — "latest openings", not a date range
+const PER_COUNTRY = 60 // floor: every country keeps its own newest posts
+
+/** Newest-first, but each country keeps up to PER_COUNTRY of its freshest posts
+ *  before the global cap — so tail countries aren't crowded out by US/DE volume. */
+const pickLatest = (list) => {
+  const per = new Map()
+  const out = []
+  for (const j of [...list].sort((a, b) => b.posted - a.posted)) {
+    const n = per.get(j.cc) || 0
+    if (n < PER_COUNTRY) {
+      out.push(j)
+      per.set(j.cc, n + 1)
+    }
+  }
+  return out.slice(0, KEEP)
+}
 
 export const linkedinSearch = (title, city) =>
-  `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(title)}&location=${encodeURIComponent(city)}&f_TPR=r15552000`
+  `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(title)}&location=${encodeURIComponent(city)}&f_TPR=r2592000`
 
 const normalise = (j) => {
   const geo = geocode(j.location)
@@ -59,21 +77,18 @@ export async function loadJobs() {
   // Prefer the CI-built snapshot (Arbeitnow + Adzuna + RemoteOK + Jobicy + Remotive, worldwide).
   const snap = await fetch(SNAPSHOT).then((r) => (r.ok ? r.json() : null)).catch(() => null)
   if (snap?.jobs?.length) {
-    const jobs = snap.jobs.filter((j) => j.posted > Date.now() - 180 * 86400000)
+    const jobs = pickLatest(snap.jobs)
     sessionStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), jobs }))
     return jobs
   }
-  // Live fallback: Arbeitnow only (mostly DACH + UK/NL).
+  // Live fallback: Arbeitnow only (mostly DACH + UK/NL), newest 250.
   const pages = await Promise.allSettled(
     Array.from({ length: PAGES }, (_, i) => fetch(`${API}?page=${i + 1}`).then((r) => (r.ok ? r.json() : Promise.reject(r.status)))),
   )
   const raw = pages.flatMap((p) => (p.status === 'fulfilled' ? p.value.data : []))
   if (!raw.length) throw new Error('Arbeitnow unavailable')
 
-  const all = raw.filter((j) => FRONTEND.test(j.title)).map(normalise).filter(Boolean)
-  let jobs = all.filter((j) => j.posted > Date.now() - 180 * 86400000)
-  jobs.sort((a, b) => b.posted - a.posted)
-  jobs = jobs.slice(0, 200)
+  const jobs = pickLatest(raw.filter((j) => FRONTEND.test(j.title)).map(normalise).filter(Boolean))
   sessionStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), jobs }))
   return jobs
 }

@@ -28,7 +28,7 @@ const FRONTEND = /front.?end|full.?stack|react|angular|vue|svelte|next\.?js|type
 const SINCE = Date.now() - 180 * 86400000
 
 const linkedinSearch = (title, city) =>
-  `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(title)}&location=${encodeURIComponent(city)}&f_TPR=r15552000`
+  `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(title)}&location=${encodeURIComponent(city)}&f_TPR=r2592000`
 
 const normalise = ({ id, title, company, location, posted, url, remote = false, tags = [], types = [], source }) => {
   const geo = geocode(location)
@@ -226,11 +226,19 @@ const [a, z, r, j, m, h, n] = await Promise.all([
   hnHiring().catch((e) => (console.log('hn:', e.message || e), [])),
 ])
 const seen = new Set()
+// Newest-first, but each country keeps up to 60 of its freshest posts before the
+// global cap — "the latest positions in most countries", not a date range.
+const per = new Map()
 const jobs = [...z, ...n, ...r, ...j, ...m, ...h, ...a]
   .sort((x, y) => y.posted - x.posted)
   .filter((x) => {
     const k = `${x.title}|${x.company}|${x.city}`.toLowerCase()
-    return seen.has(k) ? false : seen.add(k)
+    if (seen.has(k)) return false
+    seen.add(k)
+    const n = per.get(x.cc) || 0
+    if (n >= 60) return false
+    per.set(x.cc, n + 1)
+    return true
   })
   .slice(0, 400)
 

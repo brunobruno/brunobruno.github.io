@@ -165,7 +165,7 @@ function Inner({ p }) {
         </Reveal>
         <Reveal delay={0.2}>
           <p className="phrase">
-            Live frontend openings from the last <em>six months</em> — every continent. Click a pin.
+            The <em>latest</em> frontend openings — every continent, newest first. Click a pin.
           </p>
         </Reveal>
 
@@ -220,13 +220,13 @@ function Inner({ p }) {
                   <>
                     <h3 className="wide jobs__city">{error ? 'Board offline' : jobs ? `${jobs.length} openings` : 'Scanning…'}</h3>
                     <p className="hud">
-                      {error ? 'Try again later' : jobs ? `${cities.length} cities · ${new Set(cities.map((c) => c.cc)).size} countries · last 6 months` : 'Arbeitnow job board'}
+                      {error ? 'Try again later' : jobs ? `${cities.length} cities · ${new Set(cities.map((c) => c.cc)).size} countries · newest first` : 'public job boards'}
                     </p>
                     {jobs && (
                       <ul className="jobs__cities">
                         {[...cities]
                           .sort((a, b) => b.jobs.length - a.jobs.length)
-                          .slice(0, 8)
+                          .slice(0, 12)
                           .map((c) => (
                             <li key={c.city}>
                               <button onClick={() => flyTo(c)}>
