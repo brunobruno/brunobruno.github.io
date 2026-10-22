@@ -118,6 +118,15 @@ export const CITIES = {
   lagos: [6.524, 3.379], casablanca: [33.589, -7.59],
   // region-only locations pin at a representative hub
   europe: [47.0, 9.0], emea: [47.0, 9.0],
+  latam: [-23.551, -46.633], 'latin america': [-23.551, -46.633], apac: [1.352, 103.82],
+  // US/CA metro + province shorthands used heavily in job posts (HN, remote boards)
+  nyc: [40.713, -74.006], 'new york city': [40.713, -74.006], sf: [37.775, -122.419],
+  'bay area': [37.55, -122.28], 'silicon valley': [37.386, -122.084], 'sf bay area': [37.55, -122.28],
+  la: [34.052, -118.244], dc: [38.907, -77.037], dmv: [38.907, -77.037], 'washington d.c.': [38.907, -77.037],
+  sea: [47.606, -122.332], pdx: [45.515, -122.679], texas: [30.267, -97.743], california: [37.775, -122.419],
+  'new york state': [40.713, -74.006], massachusetts: [42.36, -71.059], colorado: [39.739, -104.99],
+  florida: [25.762, -80.192], illinois: [41.878, -87.63], georgia: [33.749, -84.388],
+  ontario: [43.653, -79.383], quebec: [45.502, -73.567], 'british columbia': [49.283, -123.121],
   // country-only locations pin at the capital, labelled with the country name
   germany: [52.52, 13.405], 'united kingdom': [51.507, -0.128], uk: [51.507, -0.128], england: [51.507, -0.128],
   france: [48.857, 2.352], netherlands: [52.37, 4.895], holland: [52.37, 4.895], austria: [48.208, 16.374],
@@ -189,9 +198,9 @@ const CITY_CC = Object.fromEntries(
     ['md', ['chisinau']],
     ['by', ['minsk']],
     ['ru', ['moscow', 'saint petersburg', 'st. petersburg']],
-    ['us', ['new york', 'san francisco', 'boston', 'austin', 'seattle', 'los angeles', 'san diego', 'san jose', 'palo alto', 'mountain view', 'cupertino', 'menlo park', 'sunnyvale', 'redmond', 'portland', 'chicago', 'denver', 'miami', 'atlanta', 'dallas', 'houston', 'phoenix', 'minneapolis', 'detroit', 'philadelphia', 'washington', 'washington dc', 'raleigh', 'charlotte', 'nashville', 'salt lake city', 'columbus', 'pittsburgh', 'baltimore', 'united states', 'usa', 'united states of america']],
-    ['ca', ['toronto', 'vancouver', 'montreal', 'ottawa', 'calgary', 'waterloo', 'edmonton', 'canada']],
-    ['br', ['sao paulo', 'rio de janeiro', 'belo horizonte', 'curitiba', 'porto alegre', 'florianopolis', 'campinas', 'brazil', 'brasil']],
+    ['us', ['new york', 'san francisco', 'boston', 'austin', 'seattle', 'los angeles', 'san diego', 'san jose', 'palo alto', 'mountain view', 'cupertino', 'menlo park', 'sunnyvale', 'redmond', 'portland', 'chicago', 'denver', 'miami', 'atlanta', 'dallas', 'houston', 'phoenix', 'minneapolis', 'detroit', 'philadelphia', 'washington', 'washington dc', 'raleigh', 'charlotte', 'nashville', 'salt lake city', 'columbus', 'pittsburgh', 'baltimore', 'united states', 'usa', 'united states of america', 'nyc', 'new york city', 'sf', 'bay area', 'silicon valley', 'sf bay area', 'la', 'dc', 'dmv', 'washington d.c.', 'sea', 'pdx', 'texas', 'california', 'new york state', 'massachusetts', 'colorado', 'florida', 'illinois', 'georgia']],
+    ['ca', ['toronto', 'vancouver', 'montreal', 'ottawa', 'calgary', 'waterloo', 'edmonton', 'canada', 'ontario', 'quebec', 'british columbia']],
+    ['br', ['sao paulo', 'rio de janeiro', 'belo horizonte', 'curitiba', 'porto alegre', 'florianopolis', 'campinas', 'brazil', 'brasil', 'latam', 'latin america']],
     ['mx', ['mexico city', 'guadalajara', 'monterrey', 'mexico']],
     ['ar', ['buenos aires', 'argentina']],
     ['cl', ['santiago', 'chile']],
@@ -202,7 +211,7 @@ const CITY_CC = Object.fromEntries(
     ['cr', ['costa rica']],
     ['au', ['sydney', 'melbourne', 'brisbane', 'perth', 'adelaide', 'australia']],
     ['nz', ['auckland', 'wellington', 'new zealand']],
-    ['sg', ['singapore']],
+    ['sg', ['singapore', 'apac']],
     ['jp', ['tokyo', 'osaka', 'fukuoka', 'japan']],
     ['in', ['bangalore', 'bengaluru', 'mumbai', 'delhi', 'new delhi', 'hyderabad', 'pune', 'chennai', 'gurgaon', 'gurugram', 'noida', 'kolkata', 'india']],
     ['pk', ['karachi', 'lahore', 'islamabad', 'pakistan']],
@@ -234,7 +243,11 @@ const strip = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerC
 const LABELS = {
   usa: 'USA', 'united states': 'USA', 'united states of america': 'USA',
   uk: 'UK', 'united kingdom': 'UK', uae: 'UAE', 'united arab emirates': 'UAE',
-  emea: 'EMEA', 'ho chi minh': 'Ho Chi Minh City',
+  emea: 'EMEA', latam: 'LATAM', 'latin america': 'LATAM', apac: 'APAC',
+  'ho chi minh': 'Ho Chi Minh City', nyc: 'New York', 'new york city': 'New York',
+  sf: 'San Francisco', 'sf bay area': 'Bay Area', 'bay area': 'Bay Area',
+  'silicon valley': 'Silicon Valley', la: 'Los Angeles', dc: 'Washington DC',
+  'washington d.c.': 'Washington DC', dmv: 'Washington DC', sea: 'Seattle', pdx: 'Portland',
 }
 
 /** Returns { city, lat, lng, cc } for a free-text location, or null if no known place matches. */

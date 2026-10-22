@@ -41,12 +41,15 @@ function buildRings() {
       letters,
       shape,
       wire: rnd() > 0.5,
+      // per-element opacity so the tunnel reads as layered glass, not neon wall
+      slotAlpha: Array.from({ length: ITEMS }, () => 0.28 + rnd() * 0.62),
+      halo: 0.08 + rnd() * 0.2,
     }
   })
 }
 
-function Shape({ kind, color, wire }) {
-  const mat = <meshBasicMaterial color={color} wireframe={wire} toneMapped={false} />
+function Shape({ kind, color, wire, opacity = 1 }) {
+  const mat = <meshBasicMaterial color={color} wireframe={wire} transparent={opacity < 1} opacity={opacity} depthWrite={opacity >= 0.85} toneMapped={false} />
   switch (kind) {
     case 'torus':
       return <mesh>{mat}<torusGeometry args={[0.42, 0.14, 10, 24]} /></mesh>
@@ -95,12 +98,13 @@ function Ring({ r, progressRef }) {
               scale={[s.mirror ? -1 : 1, 1, 1]}
               outlineWidth={0.03}
               outlineColor="#000"
+              fillOpacity={r.slotAlpha[k]}
             >
               {s.letter}
             </Text>
           ) : (
             <group rotation={[s.a, s.a * 0.5, 0]}>
-              <Shape kind={r.shape} color={k % 4 === 2 ? r.alt : r.color} wire={r.wire ? k % 2 === 0 : false} />
+              <Shape kind={r.shape} color={k % 4 === 2 ? r.alt : r.color} wire={r.wire ? k % 2 === 0 : false} opacity={r.slotAlpha[k]} />
             </group>
           )}
         </group>
@@ -108,7 +112,7 @@ function Ring({ r, progressRef }) {
       {/* a thin halo ring per slice gives the kaleidoscope its spokes */}
       <mesh>
         <ringGeometry args={[r.radius + 1.1, r.radius + 1.16, 48]} />
-        <meshBasicMaterial color={r.alt} transparent opacity={0.35} toneMapped={false} />
+        <meshBasicMaterial color={r.alt} transparent opacity={r.halo} toneMapped={false} />
       </mesh>
     </group>
   )

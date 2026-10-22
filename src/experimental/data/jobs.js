@@ -12,7 +12,7 @@ import { geocode } from './cities'
  * Primary source: public/data/jobs.json — a daily snapshot rebuilt by the
  * "Refresh jobs data" GitHub Action from Arbeitnow + Adzuna (20 world markets;
  * needs ADZUNA_APP_ID/ADZUNA_APP_KEY repo secrets) + RemoteOK + Jobicy +
- * Remotive; see .github/workflows/jobs.yml and scripts/fetch-jobs.mjs.
+ * Remotive + Himalayas + HN "Who is hiring"; see scripts/fetch-jobs.mjs.
  * Live fallback: the free, CORS-enabled Arbeitnow board, fetched client-side.
  *
  * Filter: frontend-ish titles (incl. full-stack), last 6 months, geocoded to
@@ -23,7 +23,7 @@ const API = 'https://www.arbeitnow.com/api/job-board-api'
 const SNAPSHOT = `${import.meta.env.BASE_URL}data/jobs.json`
 const PAGES = 16 // newest-first; more pages = deeper history for the 6-month window
 const FRONTEND = /front.?end|full.?stack|react|angular|vue|svelte|next\.?js|typescript|javascript|web ?developer|ui ?engineer|ui ?developer/i
-const CACHE_KEY = 'xp:jobs:v5'
+const CACHE_KEY = 'xp:jobs:v6'
 const TTL = 60 * 60 * 1000
 
 export const linkedinSearch = (title, city) =>

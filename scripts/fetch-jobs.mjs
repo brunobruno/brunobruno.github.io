@@ -13,6 +13,9 @@
  *  - RemoteOK board (no key, worldwide)    https://remoteok.com/api
  *  - Jobicy remote board (no key)          https://jobicy.com/api/v2/remote-jobs
  *  - Remotive remote board (no key)        https://remotive.com/api/remote-jobs
+ *  - Himalayas remote board (no key)       https://himalayas.app/jobs/api
+ *  - HN "Who is hiring" (no key, worldwide) https://hn.algolia.com — the largest
+ *    monthly tech-hiring thread; ~400 comments, worldwide locations
  *
  * Every entry carries `cc` (ISO alpha-2) and lat/lng so the globe can pin and
  * flag it; jobs are worldwide, posted within the last 180 days.
@@ -146,21 +149,90 @@ async function remotive() {
     .filter(Boolean)
 }
 
-const [a, z, r, j, m] = await Promise.all([
+/** Himalayas: free, no key — worldwide remote board, cursor-paginated. */
+async function himalayas() {
+  const out = []
+  let cursor = ''
+  for (let i = 0; i < 4; i++) {
+    const raw = await fetch(`https://himalayas.app/jobs/api?limit=100${cursor ? `&cursor=${cursor}` : ''}`, UA)
+      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+    out.push(...(raw.jobs || []))
+    cursor = raw.nextCursor
+    if (!cursor) break
+  }
+  return out
+    .filter((j) => FRONTEND.test(j.title) || (j.categories || []).some((c) => FRONTEND.test(c)))
+    .map((j) =>
+      normalise({
+        id: `hm-${j.guid || j.companySlug}`, title: j.title, company: j.companyName,
+        location: (j.locationRestrictions || [])[0] || '',
+        posted: Date.parse(j.pubDate) || Date.now(), url: j.applicationLink || 'https://himalayas.app',
+        remote: true, tags: (j.categories || []).slice(0, 5), types: [j.employmentType].filter(Boolean),
+        source: 'himalayas',
+      }),
+    )
+    .filter(Boolean)
+}
+
+/**
+ * HN "Who is hiring" — the biggest worldwide tech-hiring thread, posted monthly.
+ * Comments are loosely pipe-separated ("Company | Role | Location"); every
+ * fragment is offered to the geocoder, first hit wins. Algolia API, no key.
+ */
+const HN_US = /^(u\.?s\.?a?\.?|united states|america|us only|usa only|us remote|remote us)$/i
+const HN_UK = /^(u\.?k\.?|uk only|united kingdom)$/i
+const NOISE = /\b(remote[- ]?first|on[- ]?site|onsite|hybrid|full[- ]?time|part[- ]?time|contract(ors?)?|visa|relocat\w*|authorized|eligible|citizenship|required|preferred|series [a-e]|y ?combinator|yc ?[ws]\d{2})\b/gi
+async function hnHiring() {
+  const search = await fetch('https://hn.algolia.com/api/v1/search_by_date?tags=story&query=who%20is%20hiring&hitsPerPage=30', UA)
+    .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+  const story = search.hits.find((h) => /^Ask HN: Who is hiring/i.test(h.title))
+  if (!story) return []
+  const item = await fetch(`https://hn.algolia.com/api/v1/items/${story.objectID}`, UA)
+    .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+  return (item.children || [])
+    .filter((c) => c.text && FRONTEND.test(c.text))
+    .map((c) => {
+      const text = c.text.replace(/<[^>]+>/g, ' ').replace(/&[a-z#0-9]+;/gi, ' ').replace(/\s+/g, ' ').trim()
+      const parts = text.split(/\s*[|•·]\s*|\s+[—–]\s+/).map((s) => s.trim()).filter(Boolean)
+      let geo = null
+      for (const raw of parts) {
+        const p = raw.replace(NOISE, ' ').replace(/\s+/g, ' ').trim()
+        if (!p || p.length > 80) continue
+        geo = geocode(HN_US.test(p) ? 'united states' : HN_UK.test(p) ? 'united kingdom' : p)
+        if (geo) break
+      }
+      if (!geo) return null
+      const role = parts.find((p) => FRONTEND.test(p)) || parts[1] || parts[0]
+      return normalise({
+        id: `hn-${c.id}`,
+        title: role && role.length < 90 ? role.replace(/\s*\([^)]*\)/g, '').trim() : 'Frontend Engineer',
+        company: (parts[0] || 'HN').replace(/\s*\(.*$/, '').replace(NOISE, ' ').replace(/\s+/g, ' ').trim().slice(0, 60),
+        location: geo.city,
+        posted: story.created_at_i * 1000,
+        url: `https://news.ycombinator.com/item?id=${c.id}`,
+        remote: /remote/i.test(text), tags: [], types: [], source: 'hackernews',
+      })
+    })
+    .filter(Boolean)
+}
+
+const [a, z, r, j, m, h, n] = await Promise.all([
   arbeitnow().catch(() => []),
   adzuna().catch(() => []),
   remoteok().catch(() => []),
   jobicy().catch(() => []),
   remotive().catch(() => []),
+  himalayas().catch(() => []),
+  hnHiring().catch((e) => (console.log('hn:', e.message || e), [])),
 ])
 const seen = new Set()
-const jobs = [...z, ...r, ...j, ...m, ...a]
+const jobs = [...z, ...n, ...r, ...j, ...m, ...h, ...a]
   .sort((x, y) => y.posted - x.posted)
   .filter((x) => {
     const k = `${x.title}|${x.company}|${x.city}`.toLowerCase()
     return seen.has(k) ? false : seen.add(k)
   })
-  .slice(0, 300)
+  .slice(0, 400)
 
 writeFileSync(OUT, JSON.stringify({ at: new Date().toISOString(), jobs }))
-console.log(`jobs.json: ${jobs.length} jobs (adzuna ${z.length}, remoteok ${r.length}, jobicy ${j.length}, remotive ${m.length}, arbeitnow ${a.length})`)
+console.log(`jobs.json: ${jobs.length} jobs (adzuna ${z.length}, hn ${n.length}, remoteok ${r.length}, jobicy ${j.length}, remotive ${m.length}, himalayas ${h.length}, arbeitnow ${a.length})`)

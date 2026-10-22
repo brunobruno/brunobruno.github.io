@@ -215,7 +215,7 @@ yellow / violet on near-black (`experimental.css`).
 
 | # | id | File | Height | What it does |
 |---|---|---|---|---|
-| 01 | `vortex` | `sections/Vortex.jsx` + `components/VortexScene.jsx` | pinned 620vh | **Kaleidoscopic tunnel** in R3F: 30 rings, 12 slots each (4 drei `<Text>` glyphs in 3-fold symmetry + 8 primitives: torus/octa/box/cone/ring, some wireframe), counter-rotating with time *and* scroll; two wireframe tubes, 1,500 dust points, fog. Scroll flies the camera down the tube with a full 360° barrel roll (ends upright) and a pointer-driven sway. **Finale (p 0.78→0.97):** the six letters of **FUTURE** fly in from the walls, un-tumble and lock into a line lit by a magenta point light. Font: Unbounded 900 woff from Google Fonts (`FONT` const; troika needs woff/ttf, not woff2). HTML copy: intro top-left, mid line, outro at the bottom. |
+| 01 | `vortex` | `sections/Vortex.jsx` + `components/VortexScene.jsx` | pinned 620vh | **Kaleidoscopic tunnel** in R3F: 30 rings, 12 slots each (4 drei `<Text>` glyphs in 3-fold symmetry + 8 primitives: torus/octa/box/cone/ring, some wireframe), counter-rotating with time *and* scroll; two wireframe tubes, 1,500 dust points, fog. Every element gets a seeded per-slot opacity (0.28–0.9, `slotAlpha`; halo rings 0.08–0.28) so the tunnel reads as layered glass instead of uniform neon. Scroll flies the camera down the tube with a full 360° barrel roll (ends upright) and a pointer-driven sway. **Finale (p 0.78→0.97):** the six letters of **FUTURE** fly in from the walls, un-tumble and lock into a line lit by a magenta point light. Font: Unbounded 900 woff from Google Fonts (`FONT` const; troika needs woff/ttf, not woff2). HTML copy: intro top-left, mid line, outro at the bottom. |
 | 02 | `jobs` | `sections/JobsGlobe.jsx` | section 150vh | **Globe of live frontend-ish openings — worldwide, last 6 months** ("every continent has frontend positions — the area is far from end"). Data: `public/data/jobs.json` snapshot (5 sources via `jobs.yml` cron) with a live Arbeitnow fallback. `react-globe.gl`, dark sphere, magenta atmosphere; all hex land uniform bright violet. Camera on a whole-planet POV (`WORLD_POV` lat 22 / alt 2.3), **slow autoRotate (0.4)** so every continent tours past; click → fly-to altitude 1.0 and rotation pauses; reset resumes it. Pins = `pointsData` per city (height ∝ count). **Hover tooltip on the planet shows only the first 10 characters of the first title + "…" (and `+N`)** — `clip()` in `data/jobs.js`. **Click a pin** (or a city in the list) → fly-to, white pin, acid rings, and the right-hand glass panel lists that city's openings: country flag + city in the header, then title, company, posted-ago, tags, remote flag, "View posting" and "Search on LinkedIn" (pre-filled search, `f_TPR=r15552000` = last 6 months). The unselected panel lists the top cities with a flag before each name + "N cities · M countries". `waitForGlobeReady={false}` + per-instance init effect + `useGlobeLifecycle`/`useGlobeWatchdog` keep it alive across view switches; pauses off-screen. |
 | 03 | `gears` | `sections/Gears.jsx` | pinned 480vh | **Procedural SVG gear train.** `gearPath(n, m)` draws trapezoid teeth + hub + spoke windows (evenodd). `buildTrain()` chains 12 gears (teeth in `TEETH`, heading angles in `ANGLES`) with one shared module so pitch circles touch, alternates direction, and solves each gear's **phase** so a tooth meets a gap at the contact point. One shared `drive` MotionValue = scroll × 4 turns + idle spin (`useAnimationFrame`, 14°/s); each gear's angle is `drive × ratio × dir + phase`, written **imperatively** to the SVG `transform` attribute via `useMotionValueEvent` (see gotchas). The SVG is taller than the viewport and pans down with scroll. A glass "drive shaft" dial shows the current angle. Finishes: brass / steel / copper gradients + drop shadow. |
 | 04 | `fog` | `sections/Fog.jsx` + `components/FogScene.jsx` | pinned 460vh | **Procedural fog chamber.** One fullscreen shader quad in R3F (`FogScene.jsx`): double domain-warped FBM smoke that churns while idle, drifts sideways and thickens to white-out with scroll, then **parts at p ≈ 0.8** to reveal the word **EMERGE**. Pointer steers the warp field; sparse ember specks drift upward. Uniforms: `uTime`, `uProgress`, `uPointer`, `uRes`. Copy acts: intro top-left, mid corridor line, outro word centered. |
@@ -228,21 +228,26 @@ yellow / violet on near-black (`experimental.css`).
 * **Why not LinkedIn?** LinkedIn's Jobs API is partner-only and scraping breaks its ToS. Every card links
   to an equivalent **LinkedIn search** (`linkedinSearch(title, city)` → `f_TPR=r15552000` = 6 months).
 * **Snapshot path (primary):** `.github/workflows/jobs.yml` runs `scripts/fetch-jobs.mjs` daily →
-  Arbeitnow (16 pages, CORS-free DACH/NL/UK board) + **Adzuna** (one newest page of "frontend developer"
-  across its **20 world markets**: gb us au at be br ca fr de in it mx nl nz pl sg es ch za ru —
-  needs the `ADZUNA_APP_ID` / `ADZUNA_APP_KEY` repo secrets, free at developer.adzuna.com) +
-  **RemoteOK** + **Jobicy** + **Remotive** (free worldwide remote boards, no key) → normalised, geocoded,
-  deduped (title+company+city), newest 300 → `public/data/jobs.json` → committed to main → the deploy
-  workflow republishes. `loadJobs()` reads the snapshot first (`sessionStorage` 1 h, `xp:jobs:v5`).
+  **HN "Who is hiring"** (Algolia API, no key — the largest worldwide tech-hiring thread; finds the
+  latest monthly story, parses each comment's `|`/`—` fragments through the geocoder, links to the
+  comment) + **Adzuna** (one newest page of "frontend developer" across its **20 world markets**:
+  gb us au at be br ca fr de in it mx nl nz pl sg es ch za ru — needs the `ADZUNA_APP_ID` /
+  `ADZUNA_APP_KEY` repo secrets, free at developer.adzuna.com) + Arbeitnow (16 pages, DACH/NL/UK) +
+  **RemoteOK** + **Jobicy** + **Remotive** + **Himalayas** (free worldwide remote boards, no key) →
+  normalised, geocoded, deduped (title+company+city), newest 400 → `public/data/jobs.json` →
+  committed to main → the deploy workflow republishes. `loadJobs()` reads the snapshot first
+  (`sessionStorage` 1 h, `xp:jobs:v6`).
 * **Live fallback:** if the snapshot is missing/empty, fetch Arbeitnow pages 1–16 client-side — same
   filter (the only public board with CORS headers, so the fallback skews DACH/Europe).
 * Pipeline: title matches the `FRONTEND` regex (incl. `full.?stack`) → `geocode()` via `data/cities.js`
-  (~700 places across ~80 countries: city keys, country-name→capital/hub fallbacks like `usa`→NYC coords,
-  region fallbacks `europe`/`emea`→central Europe; `LABELS` fixes display names like `usa`→"USA";
+  (~750 places across ~85 countries: city keys, metro/province shorthands used in posts (`nyc`, `sf`,
+  `bay area`, `dc`, `pdx`, `ontario`, `latam`→São Paulo, `apac`→Singapore…), country-name→capital/hub
+  fallbacks like `usa`→NYC coords, region fallbacks `europe`/`emea`→central Europe; `LABELS` fixes
+  display names like `usa`→"USA";
   remote/unknown locations are dropped; each hit yields `cc` from `CITY_CC`) → **posted ≤ 180 days** →
-  newest 300. Bump the cache key if the job shape changes. Reality check: without Adzuna secrets the
-  snapshot is still Europe-heavy (~100 jobs, ~13 countries — the remote boards add US/CA/LATAM); with
-  secrets the 20 Adzuna markets fill in the rest of the world.
+  newest 400. Bump the cache key if the job shape changes. Reality check: without Adzuna secrets the
+  snapshot is ~170 jobs / ~15 countries — HN carries the Americas (us:47 was the largest block at
+  generation time), remote boards add LATAM/CA/AU; with secrets the 20 Adzuna markets fill in the rest.
 * To add a city/country, add a key to `CITIES` (include local spellings) and to its `CITY_CC` row; add a
   `LABELS` entry when title-casing the key isn't the right display name.
 
