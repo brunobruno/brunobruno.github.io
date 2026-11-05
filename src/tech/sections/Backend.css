@@ -239,3 +239,20 @@
     padding: 0.9rem 1rem 1rem;
   }
 }
+
+@media (max-width: 620px) {
+  .backend__chart:nth-of-type(2) {
+    display: none;
+  }
+  .backend__charts {
+    top: 52%;
+    width: min(480px, 92vw);
+  }
+  .backend__copy--mid {
+    bottom: 2vh;
+    gap: 0.8rem;
+  }
+  .backend__copy--mid .body {
+    font-size: 0.85rem;
+  }
+}
