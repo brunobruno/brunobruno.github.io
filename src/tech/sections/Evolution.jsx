@@ -1,5 +1,6 @@
 import { motion, useTransform } from 'framer-motion'
 import { PinnedSection } from '../../components/Parallax'
+import { tenurePhrase } from '../../data/content'
 import './Evolution.css'
 
 const eras = [
@@ -88,7 +89,7 @@ function Scene({ p }) {
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5, duration: 1.2 }}
         >
-          I've rebuilt my toolkit five times in eighteen years — jQuery to Angular to React, PHP to Node to models that
+          I've rebuilt my toolkit five times in {tenurePhrase()} — jQuery to Angular to React, PHP to Node to models that
           write Node. Every stack I ever mastered is now a museum piece, and that is the most exciting thing about this
           job. The tools evolve; the craft is learning to evolve with them, and knowing which parts of you shouldn't.
         </motion.p>

@@ -145,7 +145,7 @@ function Inner({ p }) {
 
       <div className="memes__side">
         <Reveal>
-          <p className="hud">Lab 06 · Casino</p>
+          <p className="hud">Lab 07 · Casino</p>
         </Reveal>
         <Reveal delay={0.1}>
           <h2 className="display memes__title">

@@ -1,5 +1,6 @@
 import { motion, useTransform } from 'framer-motion'
 import { ParallaxSection, Reveal } from '../components/Parallax'
+import { tenure } from '../data/content'
 import './Pop.css'
 
 const words = ['Ship', 'Learn', 'Repeat']
@@ -38,7 +39,7 @@ function Inner({ p }) {
       </motion.div>
       <motion.div className="pop__marquee pop__marquee--bottom display" style={{ x: marqueeB }}>
         {Array.from({ length: 6 }).map((_, i) => (
-          <span key={i}>18 years · 4 countries · 5 languages · </span>
+          <span key={i}>{tenure().years} years · 4 countries · 5 languages · </span>
         ))}
       </motion.div>
 

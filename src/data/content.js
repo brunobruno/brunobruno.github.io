@@ -1,7 +1,32 @@
+// Career started 1 March 2008 — copy derives the current tenure from this date
+// so the site ages correctly without yearly edits.
+export const CAREER_START = '2008-03-01'
+
+export function tenure(now = new Date()) {
+  let years = now.getFullYear() - 2008
+  let months = now.getMonth() - 2
+  let days = now.getDate() - 1
+  if (days < 0) {
+    months--
+    days += new Date(now.getFullYear(), now.getMonth(), 0).getDate()
+  }
+  if (months < 0) {
+    years--
+    months += 12
+  }
+  return { years, months, days }
+}
+
+/** "18 years, 9 months and 14 days" */
+export const tenurePhrase = (now) => {
+  const t = tenure(now)
+  return `${t.years} years, ${t.months} months and ${t.days} days`
+}
+
 export const profile = {
   name: 'Bruno Galati',
-  role: 'Frontend Lead · Digital Designer',
-  years: 18,
+  role: 'Fullstack Developer · Digital Designer',
+  years: tenure().years,
   email: 'brngalati@gmail.com',
   phone: '+34 695 818 210',
   linkedin: 'https://www.linkedin.com/in/brunogalatideveloper/',

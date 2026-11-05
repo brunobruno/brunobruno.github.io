@@ -1,6 +1,6 @@
 import { motion, useTransform } from 'framer-motion'
 import { ParallaxSection, Layer } from '../components/Parallax'
-import { profile } from '../data/content'
+import { tenurePhrase } from '../data/content'
 import './Hero.css'
 
 export default function Hero() {
@@ -29,7 +29,7 @@ function HeroInner({ p }) {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 1 }}
         >
-          Frontend lead · Digital designer · Europe
+          Fullstack developer · Digital designer · Europe
         </motion.p>
 
         <h1 className="display hero__title">
@@ -66,7 +66,7 @@ function HeroInner({ p }) {
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5, duration: 1.2 }}
         >
-          Eighteen years composing interfaces the way painters compose canvases — with structure, rhythm and
+          {tenurePhrase()} composing software the way painters compose canvases — with structure, rhythm and
           restraint. From São Paulo to Rome, Cologne, Barcelona and Berlin, I've led teams that turn complex systems
           into things people actually enjoy touching. What follows is not a résumé. It's a walk through the ideas
           that shaped how I build.
@@ -82,15 +82,19 @@ function HeroInner({ p }) {
         </motion.p>
       </motion.div>
 
-      <motion.div
-        className="hero__scroll"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2.4 }}
-        style={{ opacity: fade }}
-      >
-        <span>Scroll</span>
-        <span className="hero__scroll-line" />
+      {/* the scroll fade and the entrance animation must live on different elements:
+          giving one element a shared MotionValue *and* initial/animate makes framer
+          animate that MotionValue, which blanks everything else bound to it */}
+      <motion.div className="hero__scroll" style={{ opacity: fade }}>
+        <motion.div
+          className="hero__scroll-inner"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2.4 }}
+        >
+          <span>Scroll</span>
+          <span className="hero__scroll-line" />
+        </motion.div>
       </motion.div>
     </>
   )

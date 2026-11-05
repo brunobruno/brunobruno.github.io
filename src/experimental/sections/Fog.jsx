@@ -37,7 +37,7 @@ function Scene({ p }) {
       </div>
 
       <motion.div className="container fog__copy fog__copy--intro" style={{ opacity: introOpacity, y: introY }}>
-        <p className="hud">Lab 04 · Fog</p>
+        <p className="hud">Lab 05 · Fog</p>
         <h2 className="display fog__title">
           Sit inside
           <br />

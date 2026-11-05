@@ -24,7 +24,7 @@ export const VIEWS = {
     chapters: [
       ['evolution', 'Evolution'],
       ['earth', 'Earth'],
-      ['money', 'Capital'],
+      ['backend', 'Backend'],
       ['technology', 'Technology'],
       ['population', 'People'],
       ['moon', 'Moon'],
@@ -37,6 +37,7 @@ export const VIEWS = {
       ['vortex', 'Vortex'],
       ['jobs', 'Openings'],
       ['gears', 'Gears'],
+      ['icons', 'Icons'],
       ['fog', 'Fog'],
       ['fire', 'Fire'],
       ['memes', 'Casino'],

@@ -37,7 +37,7 @@ function Scene({ p }) {
       </div>
 
       <motion.div className="container fire__copy fire__copy--intro" style={{ opacity: introOpacity, y: introY }}>
-        <p className="hud">Lab 05 · Combustion</p>
+        <p className="hud">Lab 06 · Combustion</p>
         <h2 className="display fire__title">
           Some ideas
           <br />

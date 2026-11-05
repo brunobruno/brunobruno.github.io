@@ -165,7 +165,7 @@ function Inner({ p }) {
         </Reveal>
         <Reveal delay={0.2}>
           <p className="phrase">
-            The <em>latest</em> frontend openings — every continent, newest first. Click a pin.
+            The <em>latest</em> fullstack openings — every continent, newest first. Click a pin.
           </p>
         </Reveal>
 

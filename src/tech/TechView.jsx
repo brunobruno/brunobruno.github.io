@@ -3,7 +3,7 @@ import { WorldContext } from './world'
 import Starfield from './components/Starfield'
 import Evolution from './sections/Evolution'
 import Earth from './sections/Earth'
-import Money from './sections/Money'
+import Backend from './sections/Backend'
 import Technology from './sections/Technology'
 import Population from './sections/Population'
 import Moon from './sections/Moon'
@@ -13,7 +13,7 @@ import './tech.css'
 
 /**
  * The "Tech" parallax: a journey from the evolution of tools, out to the
- * planet (live World Bank data on an interactive globe), through capital,
+ * planet (live World Bank data on an interactive globe), through backend systems,
  * technology and people, and finally to the Moon.
  *
  * One starfield canvas sits behind every slide so the whole view reads as a
@@ -39,7 +39,7 @@ export default function TechView() {
         <main className="tech__main">
           <Evolution />
           <Earth />
-          <Money />
+          <Backend />
           <Technology />
           <Population />
           <Moon />

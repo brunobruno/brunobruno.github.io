@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { ParallaxSection, Layer, Reveal } from '../components/Parallax'
+import { tenurePhrase } from '../data/content'
 import './Cave.css'
 
 const orbs = [
@@ -63,8 +64,8 @@ function CaveInner({ p }) {
               human can understand at a glance.
             </p>
             <p className="body" style={{ marginTop: '1rem' }}>
-              I started as a digital designer in 2008, hand in paint. Eighteen years later I lead frontend teams across
-              Europe, still trying to leave a clean mark on the wall.
+              I started as a digital designer in 2008, hand in paint. {tenurePhrase()} later I lead full-stack teams
+              across Europe, still trying to leave a clean mark on the wall.
             </p>
           </Reveal>
         </div>

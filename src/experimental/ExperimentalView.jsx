@@ -1,6 +1,7 @@
 import Vortex from './sections/Vortex'
 import JobsGlobe from './sections/JobsGlobe'
 import Gears from './sections/Gears'
+import Icons from './sections/Icons'
 import Fog from './sections/Fog'
 import Fire from './sections/Fire'
 import Memes from './sections/Memes'
@@ -18,6 +19,7 @@ export default function ExperimentalView() {
         <Vortex />
         <JobsGlobe />
         <Gears />
+        <Icons />
         <Fog />
         <Fire />
         <Memes />

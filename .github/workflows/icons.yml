@@ -1,0 +1,35 @@
+name: Refresh icons data
+
+on:
+  schedule:
+    - cron: '41 4 * * 1,4' # twice a week ~04:41 UTC (Mon/Thu) — keeps the ~$0.15/run cost inside Apify's free credit
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Rebuilds public/data/icons.json + public/data/icons/*.jpg from Apify's
+# Instagram Profile Scraper (secret APIFY_TOKEN — free at apify.com). The
+# commit pushes to main, which triggers the deploy workflow and republishes.
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/fetch-icons.mjs
+        env:
+          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
+      - name: Commit snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/icons.json 'public/data/icons/*'
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: refresh icons snapshot"
+            git push
+          else
+            echo "no changes"
+          fi
