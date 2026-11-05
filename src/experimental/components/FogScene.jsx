@@ -17,7 +17,7 @@ const vertex = /* glsl */ `
 `
 
 const fragment = /* glsl */ `
-  precision highp float;
+  precision mediump float;
   uniform float uTime;
   uniform float uProgress;
   uniform vec2 uPointer;
@@ -122,7 +122,7 @@ export default function FogScene({ progressRef, active }) {
     <Canvas
       orthographic
       camera={{ position: [0, 0, 1], zoom: 1 }}
-      dpr={[1, 1.5]}
+      dpr={typeof window !== 'undefined' && window.innerWidth < 768 ? [1, 1] : [1, 1.5]}
       gl={{ antialias: false, powerPreference: 'high-performance' }}
       frameloop="always"
       style={{ background: '#050308' }}

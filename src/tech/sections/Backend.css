@@ -208,29 +208,40 @@
 }
 
 @media (max-width: 860px) {
+  /* single chart, parked between intro and outro copy — no overlap */
+  .backend__chart:nth-of-type(2) {
+    display: none;
+  }
   .backend__charts {
     grid-template-columns: 1fr;
-    gap: 1rem;
-    width: min(560px, 92vw);
+    width: min(460px, 92vw);
+    top: 34%;
   }
   .backend__copy--intro {
-    top: 6vh;
+    top: 4vh;
   }
   .backend__copy--mid {
     top: auto;
-    bottom: 3vh;
+    bottom: 2vh;
     right: auto;
     left: 50%;
     translate: -50% 0;
     width: min(560px, 92vw);
+    gap: 0.8rem;
+  }
+  .backend__copy--mid .body {
+    font-size: 0.85rem;
   }
   .backend__row {
     grid-template-columns: 5.8em 1fr 2.4em;
     gap: 0.45rem;
-    padding: 0.22rem 0;
+    padding: 0.18rem 0;
   }
   .backend__row-name {
     font-size: 0.72rem;
+  }
+  .backend__row-track {
+    height: 7px;
   }
   .backend__row-pct {
     font-size: 0.68rem;
@@ -240,19 +251,3 @@
   }
 }
 
-@media (max-width: 620px) {
-  .backend__chart:nth-of-type(2) {
-    display: none;
-  }
-  .backend__charts {
-    top: 52%;
-    width: min(480px, 92vw);
-  }
-  .backend__copy--mid {
-    bottom: 2vh;
-    gap: 0.8rem;
-  }
-  .backend__copy--mid .body {
-    font-size: 0.85rem;
-  }
-}

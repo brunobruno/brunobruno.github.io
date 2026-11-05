@@ -241,8 +241,8 @@ export default function VortexScene({ progressRef, active }) {
   return (
     <Canvas
       camera={{ position: [0, 0, 0], fov: 78, near: 0.1, far: 90 }}
-      dpr={[1, 1.5]}
-      gl={{ antialias: true, powerPreference: 'high-performance' }}
+      dpr={typeof window !== 'undefined' && window.innerWidth < 768 ? [1, 1] : [1, 1.5]}
+      gl={{ antialias: typeof window !== 'undefined' && window.innerWidth < 768 ? false : true, powerPreference: 'high-performance' }}
       frameloop="always"
       scene={{ background: bg }}
     >
