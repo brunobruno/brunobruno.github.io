@@ -258,10 +258,10 @@ function Inner({ p }) {
                   <>
                     <h3 className="wide fame__heading">≈{fmtFollowers(total)} followers</h3>
                     <p className="hud">
-                      {ICONS.length} icons · {countries} countries · 2025 snapshot
+                      {leaderboard.length} icons · {countries} countries · refreshed weekly
                     </p>
                     <ul className="fame__board">
-                      {leaderboard.slice(0, 10).map((i, n) => (
+                      {leaderboard.map((i, n) => (
                         <li key={i.handle}>
                           <button onClick={() => flyTo(i)} onMouseEnter={() => ensureProfile(i)}>
                             <span className="fame__rank">{String(n + 1).padStart(2, '0')}</span>

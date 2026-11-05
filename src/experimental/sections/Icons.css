@@ -170,6 +170,19 @@
   list-style: none;
   margin: 1rem 0 0;
   padding: 0;
+  max-height: 46vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 230, 0, 0.35) transparent;
+}
+
+.fame__board::-webkit-scrollbar {
+  width: 5px;
+}
+
+.fame__board::-webkit-scrollbar-thumb {
+  background: rgba(255, 230, 0, 0.35);
+  border-radius: 3px;
 }
 
 .fame__board button {
