@@ -166,8 +166,8 @@ function Inner({ p }) {
             pointsData={items}
             pointLat="lat"
             pointLng="lng"
-            pointAltitude={(i) => 0.03 + (i.followers / maxFollowers) * 0.3}
-            pointRadius={(i) => (i === active ? 0.75 : i === hovered ? 0.65 : 0.32 + (i.followers / maxFollowers) * 0.3)}
+            pointAltitude={(i) => 0.005 + (i.followers / maxFollowers) * 0.07}
+            pointRadius={(i) => (i === active ? 0.8 : i === hovered ? 0.7 : 0.3 + (i.followers / maxFollowers) * 0.4)}
             pointColor={(i) => (i === active ? '#ffffff' : i === hovered ? '#ffe600' : '#ff3fa4')}
             pointResolution={16}
             pointsMerge={false}

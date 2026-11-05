@@ -49,7 +49,7 @@ function Inner({ p }) {
       <div className="container techno__content">
         <div className="techno__lead">
           <Reveal>
-            <p className="hud">Transmission 04 · Technology</p>
+            <p className="hud">Transmission 04 · Platforms</p>
           </Reveal>
           <Reveal delay={0.1}>
             <h2 className="display techno__title">
@@ -60,25 +60,26 @@ function Inner({ p }) {
           </Reveal>
           <Reveal delay={0.2}>
             <p className="phrase">
-              The telephone took a lifetime to reach 100 million people. The last one took a <em>weekend</em>.
+              The telephone took a lifetime to reach 100 million people. The last one took a <em>weekend</em> — and it needed an app store to do it.
             </p>
           </Reveal>
           <Reveal delay={0.3}>
             <p className="body">
-              Technology doesn't just change what we can do; it changes how fast the next change arrives. Money moves
-              at the speed of code. Cities are organised by the apps on their phones. Elections, medicine, language,
-              love — all now routed through interfaces somebody designed, on a deadline, with taste or without it.
+              A webpage was enough in 2008; then it had to be a store, a PWA, a <em>native</em> app on iOS and Android,
+              a hybrid, a kiosk in a hospital corridor. I've shipped all of them — and every one stood on the same
+              invisible foundation: APIs, queues, databases and deploys. Different technologies, one discipline.
             </p>
           </Reveal>
           <Reveal delay={0.4}>
             <p className="body">
-              That's the responsibility hiding inside the word "frontend": we are the last layer between a trillion
-              transistors and a human being. Make it kind. Make it clear. Make it fast enough to feel like trust.
+              That's why I build <em>both</em> halves — the glass and the engine room. jQuery-era pages to React
+              microfrontends, Angular monoliths to Laravel middleware, Cordova hybrids to Node workers. Make the
+              request invisible and the answer instant.
             </p>
           </Reveal>
           <Reveal delay={0.45}>
             <p className="italic techno__note">
-              There are now more connected devices than human beings — and every one of them ends in an interface.
+              There are now more connected devices than human beings — and every one of them ends in a request somebody has to answer.
             </p>
           </Reveal>
         </div>

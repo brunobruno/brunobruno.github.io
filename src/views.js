@@ -27,7 +27,7 @@ export const VIEWS = {
       ['backend', 'Backend'],
       ['technology', 'Technology'],
       ['population', 'People'],
-      ['moon', 'Moon'],
+      ['deploy', 'Deploy'],
       ['contact', 'Contact'],
     ],
   },

@@ -6,7 +6,7 @@ import Earth from './sections/Earth'
 import Backend from './sections/Backend'
 import Technology from './sections/Technology'
 import Population from './sections/Population'
-import Moon from './sections/Moon'
+import Deploy from './sections/Deploy'
 import Footer from '../sections/Footer'
 import { loadWorldData } from './data/worldbank'
 import './tech.css'
@@ -14,7 +14,7 @@ import './tech.css'
 /**
  * The "Tech" parallax: a journey from the evolution of tools, out to the
  * planet (live World Bank data on an interactive globe), through backend systems,
- * technology and people, and finally to the Moon.
+ * technology and people, and finally to the deploy.
  *
  * One starfield canvas sits behind every slide so the whole view reads as a
  * single continuous flight through space.
@@ -42,7 +42,7 @@ export default function TechView() {
           <Backend />
           <Technology />
           <Population />
-          <Moon />
+          <Deploy />
         </main>
         <Footer />
       </div>

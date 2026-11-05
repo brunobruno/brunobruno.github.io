@@ -1,0 +1,114 @@
+.deploy {
+  color: var(--paper);
+}
+
+.deploy__copy {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  translate: -50% 0;
+  width: min(1400px, 92vw);
+}
+
+.deploy__copy--intro {
+  top: 12vh;
+}
+
+.deploy__title {
+  font-size: clamp(4rem, 11vw, 12rem);
+  margin: 1rem 0 3vh;
+}
+
+.deploy__title-accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 900;
+  text-transform: none;
+}
+
+.deploy__copy--outro {
+  bottom: 10vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+  align-items: center;
+}
+
+/* terminal */
+.deploy__term {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  width: min(640px, 86vw);
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 14px;
+  will-change: transform;
+}
+
+.deploy__term-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--glass-border, rgba(255, 255, 255, 0.12));
+}
+
+.deploy__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.deploy__dot:first-child { background: rgba(255, 95, 86, 0.7); }
+.deploy__dot:nth-child(2) { background: rgba(255, 189, 46, 0.7); }
+.deploy__dot:nth-child(3) { background: rgba(39, 201, 63, 0.7); }
+
+.deploy__term-title {
+  margin-left: 0.6rem;
+  font-family: var(--mono, 'Space Grotesk', monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+
+.deploy__term-body {
+  padding: 1.1rem 1.2rem 1.4rem;
+  font-family: var(--mono, 'Space Grotesk', monospace);
+  font-size: clamp(0.72rem, 1.15vw, 0.92rem);
+  line-height: 1.9;
+  min-height: 24em;
+}
+
+.deploy__line {
+  margin: 0;
+  color: rgba(243, 238, 228, 0.75);
+  white-space: pre-wrap;
+}
+
+.deploy__line--cmd { color: var(--paper); font-weight: 500; }
+.deploy__line--ok { color: var(--lime); }
+.deploy__line--live { color: var(--lime); text-shadow: 0 0 14px rgba(198, 255, 63, 0.5); font-weight: 600; }
+
+.deploy__cursor {
+  color: var(--lime);
+  animation: deploy-blink 1.1s steps(1) infinite;
+}
+
+@keyframes deploy-blink {
+  50% { opacity: 0; }
+}
+
+.deploy__bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  transform-origin: left;
+  background: linear-gradient(90deg, var(--cyan), var(--lime));
+}
