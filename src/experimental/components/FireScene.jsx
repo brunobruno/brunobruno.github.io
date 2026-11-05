@@ -152,7 +152,7 @@ export default function FireScene({ progressRef, active }) {
       camera={{ position: [0, 0, 1], zoom: 1 }}
       dpr={[1, 1.5]}
       gl={{ antialias: false, powerPreference: 'high-performance' }}
-      frameloop={active ? 'always' : 'never'}
+      frameloop="always"
       style={{ background: '#050308' }}
     >
       <Burn progressRef={progressRef} />

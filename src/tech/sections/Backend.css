@@ -213,9 +213,29 @@
     gap: 1rem;
     width: min(560px, 92vw);
   }
+  .backend__copy--intro {
+    top: 6vh;
+  }
   .backend__copy--mid {
+    top: auto;
+    bottom: 3vh;
     right: auto;
     left: 50%;
     translate: -50% 0;
+    width: min(560px, 92vw);
+  }
+  .backend__row {
+    grid-template-columns: 5.8em 1fr 2.4em;
+    gap: 0.45rem;
+    padding: 0.22rem 0;
+  }
+  .backend__row-name {
+    font-size: 0.72rem;
+  }
+  .backend__row-pct {
+    font-size: 0.68rem;
+  }
+  .backend__chart {
+    padding: 0.9rem 1rem 1rem;
   }
 }

@@ -243,7 +243,7 @@ export default function VortexScene({ progressRef, active }) {
       camera={{ position: [0, 0, 0], fov: 78, near: 0.1, far: 90 }}
       dpr={[1, 1.5]}
       gl={{ antialias: true, powerPreference: 'high-performance' }}
-      frameloop={active ? 'always' : 'never'}
+      frameloop="always"
       scene={{ background: bg }}
     >
       <fog attach="fog" args={['#050308', 8, 55]} />
