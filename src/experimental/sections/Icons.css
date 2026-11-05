@@ -386,3 +386,94 @@
     width: min(280px, 85%);
   }
 }
+
+/* ---------- expand post ---------- */
+.fame__expand {
+  position: relative;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+
+.fame__expand .fame__portrait {
+  transition: transform 0.3s ease;
+}
+
+.fame__expand:hover .fame__portrait {
+  transform: scale(1.04);
+}
+
+.fame__expand-tag {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  font-family: 'Space Grotesk', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: var(--acid);
+}
+
+/* ---------- lightbox ---------- */
+.fame__lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 2, 10, 0.82);
+  backdrop-filter: blur(6px);
+  padding: 4vh 4vw;
+}
+
+.fame__lightbox-card {
+  max-width: min(560px, 92vw);
+  max-height: 88vh;
+  overflow: auto;
+  border-radius: 16px;
+}
+
+.fame__lightbox-card img {
+  display: block;
+  width: 100%;
+  max-height: 62vh;
+  object-fit: contain;
+  background: #000;
+}
+
+.fame__lightbox-card figcaption {
+  padding: 1rem 1.2rem 1.2rem;
+}
+
+.fame__lightbox-caption {
+  margin-top: 0.5rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  opacity: 0.92;
+}
+
+.fame__lightbox-close {
+  position: fixed;
+  top: 2rem;
+  right: 2.4rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.4);
+  color: var(--paper);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.fame__lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+}

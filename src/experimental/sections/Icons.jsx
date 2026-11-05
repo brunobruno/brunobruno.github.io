@@ -25,6 +25,7 @@ function Inner({ p }) {
   const [land, setLand] = useState([])
   const [profiles, setProfiles] = useState({})
   const [live, setLive] = useState(null)
+  const [lightbox, setLightbox] = useState(null)
   const [selected, setSelected] = useState(null)
   const [hover, setHover] = useState(null)
   const [cursor, setCursor] = useState({ x: 0, y: 0 })
@@ -209,7 +210,7 @@ function Inner({ p }) {
                   {hovered.live?.post ? (
                     <>
                       <p className="fame__card-post">
-                        {hovered.live.post.location ? 'Latest geotagged post' : 'Latest post'} · {ago(hovered.live.post.timestamp)}
+                        'Latest post' · {ago(hovered.live.post.timestamp)}
                         {hovered.live.post.likes != null && ` · ${fmtCount(hovered.live.post.likes)} likes`}
                       </p>
                       <p className="fame__card-text">{clip(hovered.live.post.caption || '—', 170)}</p>
@@ -237,7 +238,7 @@ function Inner({ p }) {
         </Reveal>
         <Reveal delay={0.2}>
           <p className="phrase">
-            The most-followed <em>humans</em> on Instagram — pins land on their latest geotagged post. Hover one.
+            The most-followed <em>humans</em> on Instagram — pins land on their latest post. Hover one.
           </p>
         </Reveal>
 
@@ -252,7 +253,7 @@ function Inner({ p }) {
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               >
                 {active ? (
-                  <Detail icon={active} profile={profiles[active.wiki]} rank={leaderboard.indexOf(active) + 1} onClose={reset} />
+                  <Detail icon={active} profile={profiles[active.wiki]} rank={leaderboard.indexOf(active) + 1} onClose={reset} onExpand={() => setLightbox(active)} />
                 ) : (
                   <>
                     <h3 className="wide fame__heading">≈{fmtFollowers(total)} followers</h3>
@@ -275,7 +276,7 @@ function Inner({ p }) {
                       ))}
                     </ul>
                     <p className="fame__hint">
-                      Pins mark each icon's latest post that carries a geotag — home city when they never geotag.
+                      Pins mark each icon's latest post — where it was posted when there's a location, their home city otherwise.
                       Posts, images and follower counts refresh twice a week from public Instagram data via Apify;
                       portraits and bios stream live from Wikipedia.
                     </p>
@@ -286,7 +287,40 @@ function Inner({ p }) {
           </div>
         </Reveal>
       </div>
+
+      <AnimatePresence>
+        {lightbox?.live?.post?.image && (
+          <PostLightbox post={lightbox.live.post} icon={lightbox} onClose={() => setLightbox(null)} />
+        )}
+      </AnimatePresence>
     </div>
+  )
+}
+
+function PostLightbox({ post, icon, onClose }) {
+  return (
+    <motion.div className="fame__lightbox" onClick={onClose}>
+      <motion.figure
+        className="fame__lightbox-card glass"
+        initial={{ opacity: 0, scale: 0.92 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.96 }}
+        transition={{ duration: 0.25 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <img src={asset(post.image)} alt={`Latest post by @${icon.handle}`} />
+        <figcaption>
+          <p className="hud hud--acid">@{icon.handle} · {ago(post.timestamp)}{post.location ? ` · ${post.location}` : ''}</p>
+          <p className="fame__lightbox-caption">{post.caption || 'No caption.'}</p>
+          <p className="fame__post-meta">
+            {post.likes != null && <span>{fmtCount(post.likes)} likes</span>}
+            {post.comments != null && <span>{fmtCount(post.comments)} comments</span>}
+            <a href={post.url} target="_blank" rel="noreferrer">View post ↗</a>
+          </p>
+        </figcaption>
+      </motion.figure>
+      <button className="fame__lightbox-close" onClick={onClose} aria-label="Close">×</button>
+    </motion.div>
   )
 }
 
@@ -309,12 +343,19 @@ function Avatar({ profile, name, live }) {
   )
 }
 
-function Detail({ icon, profile, rank, onClose }) {
+function Detail({ icon, profile, rank, onClose, onExpand }) {
   const post = icon.live?.post
   return (
     <>
       <div className="fame__detail-head">
-        <Portrait profile={profile} name={icon.name} live={icon.live} />
+        {icon.live?.post?.image ? (
+          <button className="fame__expand" onClick={onExpand} title="Expand post">
+            <Portrait profile={profile} name={icon.name} live={icon.live} />
+            <span className="fame__expand-tag">expand</span>
+          </button>
+        ) : (
+          <Portrait profile={profile} name={icon.name} live={icon.live} />
+        )}
         <div>
           <p className="hud hud--acid">@{icon.handle}</p>
           <h3 className="wide fame__heading">{icon.name}</h3>
@@ -337,7 +378,7 @@ function Detail({ icon, profile, rank, onClose }) {
       {post && (
         <div className="fame__post">
           <p className="hud hud--acid">
-            {post.location ? 'Latest geotagged post' : 'Latest post'} · {ago(post.timestamp)}
+            'Latest post' · {ago(post.timestamp)}
             {post.location ? ` · ${post.location}` : ''}
           </p>
           <p className="fame__post-caption">{clip(post.caption || 'No caption.', 420)}</p>
