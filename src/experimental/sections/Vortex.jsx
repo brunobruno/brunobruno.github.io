@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import { motion, useMotionValueEvent, useTransform } from 'framer-motion'
 import { PinnedSection } from '../../components/Parallax'
 import VortexScene from '../components/VortexScene'
@@ -15,14 +15,7 @@ export default function Vortex() {
 function Scene({ p }) {
   const progressRef = useRef(0)
   const wrapRef = useRef(null)
-  const [active, setActive] = useState(false)
   useMotionValueEvent(p, 'change', (v) => (progressRef.current = v))
-
-  useEffect(() => {
-    const io = new IntersectionObserver(([e]) => setActive(e.isIntersecting), { rootMargin: '20%' })
-    io.observe(wrapRef.current)
-    return () => io.disconnect()
-  }, [])
 
   const introOpacity = useTransform(p, [0, 0.08, 0.14], [1, 1, 0])
   const introY = useTransform(p, [0, 0.14], [0, -40])
@@ -33,7 +26,7 @@ function Scene({ p }) {
   return (
     <>
       <div ref={wrapRef} className="vortex__canvas">
-        <VortexScene progressRef={progressRef} active={active} />
+        <VortexScene progressRef={progressRef} />
       </div>
       <motion.div className="vortex__vignette" style={{ opacity: vignette }} />
 

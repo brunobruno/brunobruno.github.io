@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import { motion, useMotionValueEvent, useTransform } from 'framer-motion'
 import { PinnedSection } from '../../components/Parallax'
 import FogScene from '../components/FogScene'
@@ -15,14 +15,7 @@ export default function Fog() {
 function Scene({ p }) {
   const progressRef = useRef(0)
   const wrapRef = useRef(null)
-  const [active, setActive] = useState(false)
   useMotionValueEvent(p, 'change', (v) => (progressRef.current = v))
-
-  useEffect(() => {
-    const io = new IntersectionObserver(([e]) => setActive(e.isIntersecting), { rootMargin: '20%' })
-    io.observe(wrapRef.current)
-    return () => io.disconnect()
-  }, [])
 
   const introOpacity = useTransform(p, [0, 0.1, 0.16], [1, 1, 0])
   const introY = useTransform(p, [0, 0.16], [0, -40])
@@ -33,7 +26,7 @@ function Scene({ p }) {
   return (
     <>
       <div ref={wrapRef} className="fog__canvas">
-        <FogScene progressRef={progressRef} active={active} />
+        <FogScene progressRef={progressRef} />
       </div>
 
       <motion.div className="container fog__copy fog__copy--intro" style={{ opacity: introOpacity, y: introY }}>
