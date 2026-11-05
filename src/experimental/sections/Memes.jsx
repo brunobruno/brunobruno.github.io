@@ -4,6 +4,7 @@ import Globe from 'react-globe.gl'
 import { MeshPhongMaterial } from 'three'
 import { ParallaxSection, Reveal } from '../../components/Parallax'
 import { useGlobeLifecycle, useGlobeWatchdog } from '../../components/useGlobeLifecycle'
+import { useNearViewport } from '../components/useNearViewport'
 import { loadMemes, cap, price, pct, coinPage } from '../data/memes'
 import './Memes.css'
 
@@ -27,6 +28,7 @@ function Inner({ p }) {
   const [size, setSize] = useState({ w: 600, h: 600 })
   const globeRef = useRef(null)
   const frameRef = useRef(null)
+  const near = useNearViewport(frameRef)
   const { key: globeKey, register } = useGlobeLifecycle()
 
   useEffect(() => {
@@ -96,6 +98,8 @@ function Inner({ p }) {
     <div className="container memes__layout">
       <motion.div className="memes__globe-wrap" style={{ y: rise, scale, opacity: fade }}>
         <div ref={frameRef} className="memes__frame">
+          {near && (
+
           <Globe
             key={globeKey}
             ref={globeRef}
@@ -134,6 +138,7 @@ function Inner({ p }) {
             animateIn={false}
             waitForGlobeReady={false}
           />
+          )}
           {!data && !error && (
             <div className="memes__loading hud">
               <span className="memes__loading-ring" />

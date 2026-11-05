@@ -4,6 +4,7 @@ import Globe from 'react-globe.gl'
 import { MeshPhongMaterial } from 'three'
 import { ParallaxSection, Reveal } from '../../components/Parallax'
 import { useGlobeLifecycle, useGlobeWatchdog } from '../../components/useGlobeLifecycle'
+import { useNearViewport } from '../components/useNearViewport'
 import Flag from '../../components/Flag'
 import { loadJobs, groupByCity, ago, clip } from '../data/jobs'
 import './JobsGlobe.css'
@@ -28,6 +29,7 @@ function Inner({ p }) {
   const [size, setSize] = useState({ w: 600, h: 600 })
   const globeRef = useRef(null)
   const frameRef = useRef(null)
+  const near = useNearViewport(frameRef)
   const { key: globeKey, register } = useGlobeLifecycle()
 
   useEffect(() => {
@@ -105,6 +107,8 @@ function Inner({ p }) {
     <div className="container jobs__layout">
       <motion.div className="jobs__globe-wrap" style={{ y: rise, scale, opacity: fade }}>
         <div ref={frameRef} className="jobs__frame">
+          {near && (
+
           <Globe
               key={globeKey}
               ref={globeRef}
@@ -143,6 +147,7 @@ function Inner({ p }) {
               animateIn={false}
               waitForGlobeReady={false}
             />
+          )}
           {!jobs && !error && (
             <div className="jobs__loading hud">
               <span className="jobs__loading-ring" />

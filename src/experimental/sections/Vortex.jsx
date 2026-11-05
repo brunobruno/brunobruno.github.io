@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { motion, useMotionValueEvent, useTransform } from 'framer-motion'
 import { PinnedSection } from '../../components/Parallax'
 import VortexScene from '../components/VortexScene'
+import { useNearViewport } from '../components/useNearViewport'
 import './Vortex.css'
 
 export default function Vortex() {
@@ -15,6 +16,7 @@ export default function Vortex() {
 function Scene({ p }) {
   const progressRef = useRef(0)
   const wrapRef = useRef(null)
+  const near = useNearViewport(wrapRef)
   useMotionValueEvent(p, 'change', (v) => (progressRef.current = v))
 
   const introOpacity = useTransform(p, [0, 0.08, 0.14], [1, 1, 0])
@@ -26,7 +28,7 @@ function Scene({ p }) {
   return (
     <>
       <div ref={wrapRef} className="vortex__canvas">
-        <VortexScene progressRef={progressRef} />
+        {near && <VortexScene progressRef={progressRef} />}
       </div>
       <motion.div className="vortex__vignette" style={{ opacity: vignette }} />
 

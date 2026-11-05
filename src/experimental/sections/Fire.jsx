@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { motion, useMotionValueEvent, useTransform } from 'framer-motion'
 import { PinnedSection } from '../../components/Parallax'
 import FireScene from '../components/FireScene'
+import { useNearViewport } from '../components/useNearViewport'
 import './Fire.css'
 
 export default function Fire() {
@@ -15,6 +16,7 @@ export default function Fire() {
 function Scene({ p }) {
   const progressRef = useRef(0)
   const wrapRef = useRef(null)
+  const near = useNearViewport(wrapRef)
   useMotionValueEvent(p, 'change', (v) => (progressRef.current = v))
 
   const introOpacity = useTransform(p, [0, 0.08, 0.14], [1, 1, 0])
@@ -26,7 +28,7 @@ function Scene({ p }) {
   return (
     <>
       <div ref={wrapRef} className="fire__canvas">
-        <FireScene progressRef={progressRef} />
+        {near && <FireScene progressRef={progressRef} />}
       </div>
 
       <motion.div className="container fire__copy fire__copy--intro" style={{ opacity: introOpacity, y: introY }}>

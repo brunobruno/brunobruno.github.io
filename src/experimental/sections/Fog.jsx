@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { motion, useMotionValueEvent, useTransform } from 'framer-motion'
 import { PinnedSection } from '../../components/Parallax'
 import FogScene from '../components/FogScene'
+import { useNearViewport } from '../components/useNearViewport'
 import './Fog.css'
 
 export default function Fog() {
@@ -15,6 +16,7 @@ export default function Fog() {
 function Scene({ p }) {
   const progressRef = useRef(0)
   const wrapRef = useRef(null)
+  const near = useNearViewport(wrapRef)
   useMotionValueEvent(p, 'change', (v) => (progressRef.current = v))
 
   const introOpacity = useTransform(p, [0, 0.1, 0.16], [1, 1, 0])
@@ -26,7 +28,7 @@ function Scene({ p }) {
   return (
     <>
       <div ref={wrapRef} className="fog__canvas">
-        <FogScene progressRef={progressRef} />
+        {near && <FogScene progressRef={progressRef} />}
       </div>
 
       <motion.div className="container fog__copy fog__copy--intro" style={{ opacity: introOpacity, y: introY }}>

@@ -4,6 +4,7 @@ import Globe from 'react-globe.gl'
 import { MeshPhongMaterial } from 'three'
 import { ParallaxSection, Reveal } from '../../components/Parallax'
 import { useGlobeLifecycle, useGlobeWatchdog } from '../../components/useGlobeLifecycle'
+import { useNearViewport } from '../components/useNearViewport'
 import Flag from '../../components/Flag'
 import { ICONS, loadProfile, loadSnapshot, prefetchProfiles, instagramUrl, wikipediaUrl, fmtFollowers, fmtCount, ago } from '../data/famous'
 import './Icons.css'
@@ -32,6 +33,7 @@ function Inner({ p }) {
   const [size, setSize] = useState({ w: 600, h: 600 })
   const globeRef = useRef(null)
   const frameRef = useRef(null)
+  const near = useNearViewport(frameRef)
   const { key: globeKey, register } = useGlobeLifecycle()
 
   useEffect(() => {
@@ -149,6 +151,8 @@ function Inner({ p }) {
     <div className="container fame__layout">
       <motion.div className="fame__globe-wrap" style={{ y: rise, scale, opacity: fade }}>
         <div ref={frameRef} className="fame__frame" onPointerMove={onMove}>
+          {near && (
+
           <Globe
             key={globeKey}
             ref={globeRef}
@@ -187,6 +191,7 @@ function Inner({ p }) {
             animateIn={false}
             waitForGlobeReady={false}
           />
+          )}
 
           {/* hover card: portrait + bio streamed from Wikipedia */}
           <AnimatePresence>
