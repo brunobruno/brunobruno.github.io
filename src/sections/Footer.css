@@ -172,3 +172,52 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------- WebGL caustics + marine snow ---------- */
+.footer__gl {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.footer__gl canvas {
+  display: block;
+}
+
+/* ---------- fish silhouettes ---------- */
+.footer__fish {
+  position: absolute;
+  left: -12%;
+  opacity: 0.55;
+  color: #03141f;
+  animation: footer-swim-r var(--dur) linear infinite;
+  animation-delay: var(--delay);
+  will-change: transform;
+}
+
+.footer__fish svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  fill: currentColor;
+}
+
+@keyframes footer-swim-r {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(100vw + 24vw)); }
+}
+
+@keyframes footer-swim-l {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-100vw - 24vw)); }
+}
+
+.footer__fish--back {
+  left: auto;
+  right: -12%;
+  animation-name: footer-swim-l;
+}
+
+.footer__fish--back svg {
+  transform: scaleX(-1);
+}

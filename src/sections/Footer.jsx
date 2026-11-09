@@ -1,7 +1,18 @@
 import { motion } from 'framer-motion'
 import { Reveal } from '../components/Parallax'
+import SeaScene from '../components/SeaScene'
 import { profile } from '../data/content'
 import './Footer.css'
+
+// fish crossing the water — far ones small/blurred, near ones bigger
+const fish = Array.from({ length: 5 }, (_, i) => ({
+  top: `${14 + i * 15}%`,
+  size: 60 + ((i * 29) % 90),
+  dur: 46 + ((i * 13) % 30),
+  delay: -((i * 11) % 50),
+  dir: i % 2 === 0 ? 1 : -1,
+  blur: i < 2 ? 2.5 : i < 4 ? 1 : 0,
+}))
 
 // fixed bubble field — deterministic so render stays pure
 const bubbles = Array.from({ length: 18 }, (_, i) => ({
@@ -36,7 +47,25 @@ export default function Footer() {
             }}
           />
         ))}
+        <SeaScene />
         <div className="footer__depth" />
+        {fish.map((f, i) => (
+          <span
+            key={i}
+            className={`footer__fish${f.dir === -1 ? ' footer__fish--back' : ''}`}
+            style={{
+              top: f.top,
+              width: f.size,
+              '--dur': `${f.dur}s`,
+              '--delay': `${f.delay}s`,
+              filter: `blur(${f.blur}px)`,
+            }}
+          >
+            <svg viewBox="0 0 42 14" aria-hidden>
+              <path d="M2 7 Q12 0 24 3.5 L41 7 L24 10.5 Q12 14 2 7 Z M24 3.5 L33 0 L30.5 4 L33 7 L30.5 10 L33 14 L24 10.5 Z" />
+            </svg>
+          </span>
+        ))}
       </div>
       <div className="container footer__content">
         <Reveal>
