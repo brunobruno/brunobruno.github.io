@@ -3,10 +3,41 @@ import { Reveal } from '../components/Parallax'
 import { profile } from '../data/content'
 import './Footer.css'
 
+// fixed bubble field — deterministic so render stays pure
+const bubbles = Array.from({ length: 18 }, (_, i) => ({
+  left: `${(i * 53 + 11) % 96}%`,
+  size: 4 + ((i * 7) % 14),
+  dur: 9 + ((i * 5) % 9),
+  delay: -((i * 3.7) % 16),
+  drift: ((i % 3) - 1) * 30,
+}))
+
 export default function Footer() {
   return (
     <footer id="contact" className="footer">
-      <div className="footer__klein" />
+      <div className="footer__sea" aria-hidden>
+        <div className="footer__rays">
+          {[0, 1, 2, 3].map((i) => (
+            <span key={i} className="footer__ray" style={{ '--i': i }} />
+          ))}
+        </div>
+        <div className="footer__caustics" />
+        {bubbles.map((b, i) => (
+          <span
+            key={i}
+            className="footer__bubble"
+            style={{
+              left: b.left,
+              width: b.size,
+              height: b.size,
+              '--dur': `${b.dur}s`,
+              '--delay': `${b.delay}s`,
+              '--drift': `${b.drift}px`,
+            }}
+          />
+        ))}
+        <div className="footer__depth" />
+      </div>
       <div className="container footer__content">
         <Reveal>
           <p className="eyebrow">Let's make something</p>
