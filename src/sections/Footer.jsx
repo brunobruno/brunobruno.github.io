@@ -26,9 +26,7 @@ const bubbles = Array.from({ length: 18 }, (_, i) => ({
 export default function Footer() {
   return (
     <footer id="contact" className="footer">
-      <div className="footer__sea" aria-hidden>
-        {/* the waterline — layered waves replace the straight seam */}
-        <div className="footer__waves">
+              <div className="footer__waves">
           <svg className="footer__wave footer__wave--back" viewBox="0 0 2880 110" preserveAspectRatio="none">
             <path d="M0,55 C240,15 480,95 720,55 C960,15 1200,95 1440,55 C1680,15 1920,95 2160,55 C2400,15 2640,95 2880,55 L2880,110 L0,110 Z" />
           </svg>
@@ -37,6 +35,8 @@ export default function Footer() {
             <path className="footer__wave-crest" d="M0,55 C240,15 480,95 720,55 C960,15 1200,95 1440,55 C1680,15 1920,95 2160,55 C2400,15 2640,95 2880,55" fill="none" />
           </svg>
         </div>
+      <div className="footer__sea" aria-hidden>
+        {/* the waterline — layered waves replace the straight seam */}
         <div className="footer__rays">
           {[0, 1, 2, 3].map((i) => (
             <span key={i} className="footer__ray" style={{ '--i': i }} />

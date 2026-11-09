@@ -1,9 +1,9 @@
 .footer {
   position: relative;
+  overflow: visible;
   /* surface glow → mid water → abyss: the deeper you scroll, the deeper it gets */
   background: linear-gradient(180deg, #0d4258 0%, #082f42 22%, #041d2b 55%, #020f18 82%, #010810 100%);
   color: var(--paper);
-  overflow: hidden;
   isolation: isolate;
 }
 
@@ -225,7 +225,7 @@
 /* ---------- waterline waves ---------- */
 .footer__waves {
   position: absolute;
-  top: 0;
+  top: -110px;
   left: 0;
   right: 0;
   height: 110px;
