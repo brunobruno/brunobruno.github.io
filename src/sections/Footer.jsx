@@ -28,7 +28,7 @@ export default function Footer() {
               <linearGradient id="seaGrad" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0" stopColor="#1e7ea8" stopOpacity="0.55" />
                 <stop offset="0.6" stopColor="#0d4258" stopOpacity="0.85" />
-                <stop offset="1" stopColor="#0d4258" stopOpacity="0" />
+                <stop offset="1" stopColor="#0d4258" />
               </linearGradient>
             </defs>
             <path fill="url(#seaGrad)" d="M0,55 C240,15 480,95 720,55 C960,15 1200,95 1440,55 C1680,15 1920,95 2160,55 C2400,15 2640,95 2880,55 L2880,110 L0,110 Z" />
