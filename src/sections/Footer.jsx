@@ -4,15 +4,21 @@ import SeaScene from '../components/SeaScene'
 import { profile } from '../data/content'
 import './Footer.css'
 
-// fish crossing the water — far ones small/blurred, near ones bigger
-const fish = Array.from({ length: 5 }, (_, i) => ({
-  top: `${14 + i * 15}%`,
-  size: 60 + ((i * 29) % 90),
-  dur: 46 + ((i * 13) % 30),
-  delay: -((i * 11) % 50),
-  dir: i % 2 === 0 ? 1 : -1,
-  blur: i < 2 ? 2.5 : i < 4 ? 1 : 0,
-}))
+// silhouettes crossing the water — far ones small/blurred, near ones bigger.
+// all paths face RIGHT; --back instances swim left with the sprite flipped.
+const FISH_PATHS = {
+  fish: 'M8 10 C16 2 34 0 48 7 L62 10 L48 13 C34 20 16 18 8 10 Z M8 10 L-4 2 L1 10 L-4 18 Z',
+  shark: 'M4 11 C14 4 34 2 50 7 L64 10 L50 13 C36 18 16 17 4 11 Z M30 4 L39 0 L34 4 L39 8 L30 8 Z M50 7 L61 2 L58 8 L61 16 L50 13 Z',
+  whale: 'M2 12 C10 4 34 2 52 8 L66 11 L52 14 C34 21 12 20 2 12 Z M52 8 L64 2 L61 9 L64 19 L52 14 Z',
+}
+const fish = [
+  { kind: 'whale', top: '68%', size: 210, dur: 95, delay: -30, dir: -1, blur: 2 },
+  { kind: 'shark', top: '30%', size: 150, dur: 60, delay: -12, dir: 1, blur: 0.6 },
+  { kind: 'fish', top: '52%', size: 90, dur: 44, delay: -40, dir: -1, blur: 1.2 },
+  { kind: 'shark', top: '18%', size: 110, dur: 74, delay: -55, dir: -1, blur: 2 },
+  { kind: 'fish', top: '80%', size: 70, dur: 38, delay: -8, dir: 1, blur: 0 },
+  { kind: 'fish', top: '40%', size: 55, dur: 52, delay: -25, dir: 1, blur: 1.8 },
+]
 
 // fixed bubble field — deterministic so render stays pure
 const bubbles = Array.from({ length: 18 }, (_, i) => ({
@@ -31,7 +37,14 @@ export default function Footer() {
             <path d="M0,55 C240,15 480,95 720,55 C960,15 1200,95 1440,55 C1680,15 1920,95 2160,55 C2400,15 2640,95 2880,55 L2880,110 L0,110 Z" />
           </svg>
           <svg className="footer__wave footer__wave--front" viewBox="0 0 2880 110" preserveAspectRatio="none">
-            <path d="M0,55 C240,15 480,95 720,55 C960,15 1200,95 1440,55 C1680,15 1920,95 2160,55 C2400,15 2640,95 2880,55 L2880,110 L0,110 Z" />
+            <defs>
+              <linearGradient id="seaGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stopColor="#1a6a8a" />
+                <stop offset="0.55" stopColor="#0d4258" />
+                <stop offset="1" stopColor="#0d4258" />
+              </linearGradient>
+            </defs>
+            <path fill="url(#seaGrad)" d="M0,55 C240,15 480,95 720,55 C960,15 1200,95 1440,55 C1680,15 1920,95 2160,55 C2400,15 2640,95 2880,55 L2880,110 L0,110 Z" />
             <path className="footer__wave-crest" d="M0,55 C240,15 480,95 720,55 C960,15 1200,95 1440,55 C1680,15 1920,95 2160,55 C2400,15 2640,95 2880,55" fill="none" />
           </svg>
         </div>
@@ -71,8 +84,8 @@ export default function Footer() {
               filter: `blur(${f.blur}px)`,
             }}
           >
-            <svg viewBox="0 0 42 14" aria-hidden>
-              <path d="M2 7 Q12 0 24 3.5 L41 7 L24 10.5 Q12 14 2 7 Z M24 3.5 L33 0 L30.5 4 L33 7 L30.5 10 L33 14 L24 10.5 Z" />
+            <svg viewBox="-8 0 76 22" aria-hidden>
+              <path d={FISH_PATHS[f.kind]} />
             </svg>
           </span>
         ))}

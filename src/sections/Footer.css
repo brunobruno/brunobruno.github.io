@@ -267,3 +267,8 @@
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
+
+/* species-aware silhouettes: whale sits deepest, sharks mid-water */
+.footer__fish svg {
+  overflow: visible;
+}
