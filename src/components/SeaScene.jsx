@@ -51,6 +51,7 @@ const fragment = /* glsl */ `
 `
 
 function Caustics() {
+  const mesh = useRef()
   const material = useRef()
   const uniforms = useMemo(
     () => ({
@@ -61,6 +62,7 @@ function Caustics() {
   )
   const { size } = useThree()
   useFrame((_, dt) => {
+    if (mesh.current) mesh.current.scale.x = size.width / size.height
     const u = material.current?.uniforms
     if (!u) return
     u.uTime.value += dt
@@ -68,7 +70,7 @@ function Caustics() {
     u.uRes.value[1] = size.height
   })
   return (
-    <mesh>
+    <mesh ref={mesh}>
       <planeGeometry args={[2, 2]} />
       {/* eslint-disable-next-line react/no-unknown-property */}
       <shaderMaterial
@@ -112,25 +114,28 @@ function Snow() {
     }
     pos.needsUpdate = true
   })
+  const { size } = useThree()
   return (
+    <group scale={[Math.max(0.5, size.width / size.height), 1, 1]}>
     <points ref={ref}>
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
-      <pointsMaterial size={0.035} color="#cfeaff" transparent opacity={0.55} sizeAttenuation depthWrite={false} />
+      <pointsMaterial size={0.006} color="#cfeaff" transparent opacity={0.55} sizeAttenuation depthWrite={false} />
     </points>
+    </group>
   )
 }
 
 /* Fish silhouettes — flat dark shapes with a tail beat, swimming the
    ±1 ortho water column. Whale deepest, sharks mid, fish near surface. */
 const FISH = [
-  { kind: 'whale', y: -0.7, scale: 0.85, speed: 0.1, dir: -1, phase: 0.0, op: 0.6 },
-  { kind: 'shark', y: -0.25, scale: 0.48, speed: 0.22, dir: 1, phase: 1.7, op: 0.7 },
-  { kind: 'shark', y: 0.45, scale: 0.38, speed: 0.18, dir: -1, phase: 3.4, op: 0.62 },
-  { kind: 'fish', y: 0.8, scale: 0.22, speed: 0.42, dir: 1, phase: 0.9, op: 0.9 },
-  { kind: 'fish', y: -0.02, scale: 0.19, speed: 0.5, dir: -1, phase: 2.6, op: 0.85 },
-  { kind: 'fish', y: 0.24, scale: 0.17, speed: 0.46, dir: 1, phase: 4.1, op: 0.8 },
+  { kind: 'whale', y: -0.68, scale: 0.34, speed: 0.09, dir: -1, phase: 0.0, op: 0.6 },
+  { kind: 'shark', y: -0.22, scale: 0.22, speed: 0.2, dir: 1, phase: 1.7, op: 0.7 },
+  { kind: 'shark', y: 0.48, scale: 0.17, speed: 0.16, dir: -1, phase: 3.4, op: 0.62 },
+  { kind: 'fish', y: 0.82, scale: 0.1, speed: 0.4, dir: 1, phase: 0.9, op: 0.9 },
+  { kind: 'fish', y: 0.0, scale: 0.085, speed: 0.48, dir: -1, phase: 2.6, op: 0.85 },
+  { kind: 'fish', y: 0.28, scale: 0.075, speed: 0.44, dir: 1, phase: 4.1, op: 0.8 },
 ]
 
 function FishBody({ kind, op }) {
@@ -170,7 +175,7 @@ function Fish({ cfg }) {
     if (!g.current) return
     const halfW = (camera.right - camera.left) / 2 + 0.35
     const halfH = (camera.top - camera.bottom) / 2
-    const span = Math.min(halfW, 2.6)
+    const span = Math.min(halfW, 3.2)
     const x = ((((t * cfg.speed * cfg.dir + cfg.phase) % (span * 2)) + span * 2) % (span * 2)) - span
     g.current.position.set(x, cfg.y * halfH + Math.sin(t * 0.6 + cfg.phase) * halfH * 0.08, 0)
     g.current.rotation.y = cfg.dir > 0 ? 0 : Math.PI
@@ -197,8 +202,14 @@ function FishField() {
 }
 
 function Rig() {
-  const { camera } = useThree()
+  const { camera, size } = useThree()
   useFrame(() => {
+    const a = size.width / size.height
+    camera.left = -a
+    camera.right = a
+    camera.top = 1
+    camera.bottom = -1
+    camera.updateProjectionMatrix()
     camera.position.set(0, 0, 1)
     camera.lookAt(0, 0, 0)
   })
