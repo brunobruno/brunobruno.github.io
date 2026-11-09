@@ -138,31 +138,55 @@ const FISH = [
   { kind: 'fish', y: 0.28, scale: 0.075, speed: 0.44, dir: 1, phase: 4.1, op: 0.8 },
 ]
 
-function FishBody({ kind, op }) {
+function FishBody({ kind, op, tailRef }) {
   const material = useMemo(
-    () => new THREE.MeshBasicMaterial({ color: '#03141f', transparent: true, opacity: op, depthWrite: false }),
+    () => new THREE.MeshBasicMaterial({ color: '#03141f', transparent: true, opacity: op, side: THREE.DoubleSide, depthWrite: false }),
     [op],
   )
-  if (kind === 'whale')
-    return (
-      <group>
-        <mesh scale={[1.5, 0.42, 0.22]} material={material}><sphereGeometry args={[0.5, 14, 10]} /></mesh>
-        <mesh position={[-0.95, 0.05, 0]} rotation={[0, 0, 0.5]} scale={[0.5, 0.28, 0.06]} material={material}><coneGeometry args={[0.16, 0.5, 4]} /></mesh>
-        <mesh position={[-0.95, -0.05, 0]} rotation={[0, 0, -0.5]} scale={[0.5, 0.28, 0.06]} material={material}><coneGeometry args={[0.16, 0.5, 4]} /></mesh>
-      </group>
-    )
-  if (kind === 'shark')
-    return (
-      <group>
-        <mesh scale={[1.7, 0.42, 0.2]} material={material}><sphereGeometry args={[0.4, 12, 9]} /></mesh>
-        <mesh position={[-1.0, 0, 0]} rotation={[0, 0, Math.PI / 2]} scale={[0.16, 0.5, 0.05]} material={material}><coneGeometry args={[0.22, 0.7, 4]} /></mesh>
-        <mesh position={[0.1, 0.24, 0]} rotation={[0, 0, -0.5]} scale={[0.14, 0.34, 0.05]} material={material}><coneGeometry args={[0.18, 0.4, 4]} /></mesh>
-      </group>
-    )
+  const geos = useMemo(() => {
+    const shape = (pts) => {
+      const sh = new THREE.Shape()
+      sh.moveTo(pts[0][0], pts[0][1])
+      for (let i = 1; i < pts.length; i++) sh.lineTo(pts[i][0], pts[i][1])
+      sh.closePath()
+      return new THREE.ShapeGeometry(sh)
+    }
+    const body = (halfH, noseX) => {
+      const sh = new THREE.Shape()
+      sh.moveTo(noseX, 0)
+      sh.bezierCurveTo(noseX - 0.05, halfH * 0.75, 0.15, halfH, -0.05, halfH * 0.92)
+      sh.bezierCurveTo(-0.32, halfH * 0.85, -0.46, halfH * 0.4, -0.5, 0)
+      sh.bezierCurveTo(-0.46, -halfH * 0.4, -0.32, -halfH * 0.85, -0.05, -halfH * 0.92)
+      sh.bezierCurveTo(0.15, -halfH, noseX - 0.05, -halfH * 0.75, noseX, 0)
+      return new THREE.ShapeGeometry(sh)
+    }
+    if (kind === 'whale') {
+      return {
+        body: body(0.34, 0.52),
+        tail: shape([[0, 0.07], [-0.4, 0.24], [-0.26, -0.01], [-0.4, -0.2], [0, -0.07]]),
+        dorsal: null,
+      }
+    }
+    if (kind === 'shark') {
+      return {
+        body: body(0.22, 0.56),
+        tail: shape([[0, 0.02], [-0.4, 0.32], [-0.16, 0.02], [-0.26, -0.16], [0, -0.02]]),
+        dorsal: shape([[0.02, 0.19], [-0.1, 0.38], [-0.26, 0.18]]),
+      }
+    }
+    return {
+      body: body(0.26, 0.5),
+      tail: shape([[0, 0.03], [-0.34, 0.28], [-0.2, 0.01], [-0.34, -0.24], [0, -0.03]]),
+      dorsal: shape([[0.04, 0.22], [-0.08, 0.36], [-0.24, 0.2]]),
+    }
+  }, [kind])
   return (
     <group>
-      <mesh scale={[1.8, 0.5, 0.18]} material={material}><sphereGeometry args={[0.35, 12, 9]} /></mesh>
-      <mesh position={[-1.0, 0, 0]} rotation={[0, 0, Math.PI / 2]} scale={[0.18, 0.4, 0.05]} material={material}><coneGeometry args={[0.18, 0.5, 4]} /></mesh>
+      <mesh geometry={geos.body} material={material} />
+      {geos.dorsal && <mesh geometry={geos.dorsal} material={material} />}
+      <group ref={tailRef} position={[-0.48, 0, 0]}>
+        <mesh geometry={geos.tail} material={material} />
+      </group>
     </group>
   )
 }
@@ -180,13 +204,11 @@ function Fish({ cfg }) {
     g.current.position.set(x, cfg.y * halfH + Math.sin(t * 0.6 + cfg.phase) * halfH * 0.08, 0)
     g.current.rotation.y = cfg.dir > 0 ? 0 : Math.PI
     g.current.rotation.z = Math.sin(t * 0.9 + cfg.phase) * 0.05
-    if (tail.current) tail.current.rotation.z = Math.sin(t * 5 + cfg.phase) * 0.18
+    if (tail.current) tail.current.rotation.z = Math.sin(t * 6 + cfg.phase) * 0.3
   })
   return (
     <group ref={g} scale={cfg.scale}>
-      <group ref={tail}>
-        <FishBody kind={cfg.kind} op={cfg.op} />
-      </group>
+      <FishBody kind={cfg.kind} op={cfg.op} tailRef={tail} />
     </group>
   )
 }
