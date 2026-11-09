@@ -221,3 +221,49 @@
 .footer__fish--back svg {
   transform: scaleX(-1);
 }
+
+/* ---------- waterline waves ---------- */
+.footer__waves {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 110px;
+  overflow: hidden;
+}
+
+.footer__wave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  animation: footer-wave-x 22s linear infinite;
+}
+
+.footer__wave--back {
+  opacity: 0.45;
+  fill: #0d4258;
+  animation-duration: 34s;
+  animation-direction: reverse;
+}
+
+.footer__wave--front {
+  fill: #0d4258;
+  animation-duration: 22s;
+}
+
+.footer__wave--front path:first-child {
+  filter: drop-shadow(0 -6px 10px rgba(170, 235, 255, 0.18));
+}
+
+.footer__wave-crest {
+  stroke: rgba(190, 240, 255, 0.5);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+@keyframes footer-wave-x {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
